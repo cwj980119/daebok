@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "476855778717",
+    "project_id": "daebok-e65d7",
+    "storage_bucket": "daebok-e65d7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:476855778717:android:513f5e3c6f77a2905fc374",
+        "android_client_info": {
+          "package_name": "com.example.daebok"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "476855778717-mhdk5tgepa40ho6g0n57965jlcqhd3h2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlOZ3vxBNbLpIgzpqQlSXh4ZJsvHxNkic"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "476855778717-mhdk5tgepa40ho6g0n57965jlcqhd3h2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

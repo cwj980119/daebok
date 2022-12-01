@@ -187,3 +187,231 @@ class PormBoard{
 
 
 }
+
+class OffSet{
+  NameCard? nameCard;
+  Leaflet? leaflet;
+  Sticker? sticker;
+  Envelope? envelope;
+  Banner? banner;
+
+  OffSet(){
+    this.nameCard = NameCard();
+    this.leaflet = Leaflet();
+    this.sticker = Sticker();
+    this.envelope = Envelope();
+    this.banner = Banner();
+  }
+
+}
+
+class NameCard{
+  String? paper_type;
+  String? side;
+  int? quantity;
+  int? design_page;
+  int? addtional_price;
+  int price = 0;
+
+  List paper_type_list = ['일반지','수입지'];
+  List side_list = ['단면', '양면'];
+
+  NameCard(){
+    this.paper_type = paper_type_list[0];
+    this.side = side_list[0];
+    this.quantity = 0;
+    this.design_page = 0;
+    this.addtional_price = 0;
+  }
+
+  setPaperType(value){
+    paper_type = value.toString();
+  }
+
+  setSide(value){
+    side = value.toString();
+  }
+
+  setQuantity(value){
+    quantity = value;
+  }
+
+  setDesignPage(value){
+    design_page = value;
+  }
+
+  setAdditionalPrice(value){
+    addtional_price = value;
+  }
+
+
+}
+
+class Leaflet{
+  String? size;
+  String? side;
+  int? quantity;
+  int? design_page;
+  int? addtional_price;
+  int price = 0;
+
+  List size_list = ['A5','B5','A4','B4','A3'];
+  List side_list = ['단면', '양면'];
+
+  Leaflet(){
+    this.size = size_list[0];
+    this.side = side_list[0];
+    this.quantity = 0;
+    this.design_page = 0;
+    this.addtional_price = 0;
+  }
+
+  setSize(value){
+    size = value.toString();
+  }
+
+  setSide(value){
+    side = value.toString();
+  }
+
+  setQuantity(value){
+    quantity = value;
+  }
+
+  setDesignPage(value){
+    design_page = value;
+  }
+
+  setAdditionalPrice(value){
+    addtional_price = value;
+  }
+
+}
+
+class Sticker{
+  String? paper_type;
+  String? laminate;
+  String? size;
+  int? quantity;
+  int? design_page;
+  int? addtional_price;
+  int price = 0;
+
+  List paper_type_list = ['일반지','수입지'];
+  List laminate_list = ['없음', '있음'];
+  List size_list = ['10이하','10이상','15이상','6이하','6이상'];
+
+  Sticker(){
+    this.paper_type = paper_type_list[0];
+    this.laminate = laminate_list[0];
+    this.size = size_list[0];
+    this.quantity = 0;
+    this.design_page = 0;
+    this.addtional_price = 0;
+  }
+
+  setPaperType(value){
+    paper_type = value.toString();
+  }
+
+  setLaminate(value){
+    laminate = value.toString();
+  }
+
+  setSize(value){
+    size = value.toString();
+  }
+
+
+  setQuantity(value){
+    quantity = value;
+  }
+
+  setDesignPage(value){
+    design_page = value;
+  }
+
+  setAdditionalPrice(value){
+    addtional_price = value;
+  }
+}
+
+class Envelope{
+  String? size;
+  String? paper_type;
+  int? quantity;
+  int? design_page;
+  int? addtional_price;
+  int price = 0;
+
+  List size_list = ['Small', 'Big'];
+  List paper_type_list = ['Mojo 100','Rejak Line','Rejak Check','Mojo 120','Craft'];
+
+  Envelope(){
+    this.size = size_list[0];
+    this.paper_type = paper_type_list[0];
+    this.quantity = 0;
+    this.design_page = 0;
+    this.addtional_price = 0;
+  }
+
+  setPaperType(value){
+    paper_type = value.toString();
+  }
+
+  setSize(value){
+    size = value.toString();
+  }
+
+  setQuantity(value){
+    quantity = value;
+  }
+
+  setDesignPage(value){
+    design_page = value;
+  }
+
+  setAdditionalPrice(value){
+    addtional_price = value;
+  }
+}
+
+class Banner{
+  String? paper_type;
+  String? rests;
+  int? quantity;
+  int? design_page;
+  int? addtional_price;
+  int price = 0;
+
+  List paper_type_list = ['일반지','수입지'];
+  List rests_list = ['단면', '양면'];
+
+  Banner(){
+    this.paper_type = paper_type_list[0];
+    this.rests = rests_list[0];
+    this.quantity = 0;
+    this.design_page = 0;
+    this.addtional_price = 0;
+  }
+
+  setPaperType(value){
+    paper_type = value.toString();
+  }
+
+  setRests(value){
+    rests = value.toString();
+  }
+
+  setQuantity(value){
+    quantity = value;
+  }
+
+  setDesignPage(value){
+    design_page = value;
+  }
+
+  setAdditionalPrice(value){
+    addtional_price = value;
+  }
+}
