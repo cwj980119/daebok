@@ -1,6 +1,7 @@
 import 'package:daebok/estimate.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -18,20 +19,7 @@ class Home extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
       ),
-      body: Container(
-        child: Center(
-          child: Column(
-            children: [
-              TextButton(
-                onPressed: () {
-                  Get.to(() => Estimate());
-                },
-                child: Text('hi'),
-              ),
-            ],
-          ),
-        ),
-      ),
+      body: Container(child: Text('hi')),
       floatingActionButton: FloatingActionButton.extended(
         icon: Icon(Icons.add),
         label: Text('새로운 견적'),
