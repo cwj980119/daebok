@@ -381,6 +381,7 @@ class OtherService {
     this.laminate = 0;
     this.scan = 0;
     this.staple = 0;
+    this.reminder = "";
   }
 
   sumAll() {

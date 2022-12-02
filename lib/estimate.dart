@@ -985,7 +985,7 @@ class Estimate extends StatelessWidget {
                               animationDuration: Duration(milliseconds: 500),
                               children: [
                                 ExpansionPanel(
-                                    backgroundColor: Colors.orangeAccent,
+                                    backgroundColor: Colors.green[200],
                                     isExpanded: controller.offSetExpanded[0],
                                     canTapOnHeader: true,
                                     headerBuilder: (context, isExpanded) {
@@ -1258,13 +1258,13 @@ class Estimate extends StatelessWidget {
                                       ],
                                     )), //NameCard
                                 ExpansionPanel(
-                                    backgroundColor: Colors.orangeAccent,
+                                    backgroundColor: Colors.green[200],
                                     isExpanded: controller.offSetExpanded[1],
                                     canTapOnHeader: true,
                                     headerBuilder: (context, isExpanded) {
                                       return Container(
                                         height: 50,
-                                        color: Colors.orangeAccent,
+                                        color: Colors.green[200],
                                         child: Center(
                                           child: Text(
                                             '리플렛',
@@ -1533,13 +1533,13 @@ class Estimate extends StatelessWidget {
                                       ],
                                     )), //Leaflet
                                 ExpansionPanel(
-                                    backgroundColor: Colors.orangeAccent,
+                                    backgroundColor: Colors.green[200],
                                     isExpanded: controller.offSetExpanded[2],
                                     canTapOnHeader: true,
                                     headerBuilder: (context, isExpanded) {
                                       return Container(
                                         height: 50,
-                                        color: Colors.orangeAccent,
+                                        color: Colors.green[200],
                                         child: Center(
                                           child: Text(
                                             '스티커',
@@ -1845,13 +1845,13 @@ class Estimate extends StatelessWidget {
                                       ],
                                     )), //Sticker
                                 ExpansionPanel(
-                                  backgroundColor: Colors.orangeAccent,
+                                  backgroundColor: Colors.green[200],
                                   isExpanded: controller.offSetExpanded[3],
                                   canTapOnHeader: true,
                                   headerBuilder: (context, isExpanded) {
                                     return Container(
                                       height: 50,
-                                      color: Colors.orangeAccent,
+                                      color: Colors.green[200],
                                       child: Center(
                                         child: Text(
                                           '봉투',
@@ -2114,13 +2114,13 @@ class Estimate extends StatelessWidget {
                                   ),
                                 ),
                                 ExpansionPanel(
-                                  backgroundColor: Colors.orangeAccent,
+                                  backgroundColor: Colors.green[200],
                                   isExpanded: controller.offSetExpanded[4],
                                   canTapOnHeader: true,
                                   headerBuilder: (context, isExpanded) {
                                     return Container(
                                       height: 50,
-                                      color: Colors.orangeAccent,
+                                      color: Colors.green[200],
                                       child: Center(
                                         child: Text(
                                           '배너',
@@ -2456,18 +2456,21 @@ class Estimate extends StatelessWidget {
                             ),
                           ),
                           builder: (context) {
-                            return Container(
-                              child: Column(
-                                children: [
-                                  SizedBox(height: 10,),
-                                  Text(
-                                    "내역 확인",
-                                    style: TextStyle(fontSize: 25),
-                                  ),
-                                  SizedBox(height: 15,),
-                                  if(controller.printNBook.price != 0) PrintNBookWidget(),
-                                  if(controller.bigprint.price != 0) BigPrintWidget(model: controller.bigprint)
-                                ],
+                            return SingleChildScrollView(
+                              child: Container(
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: 10,),
+                                    Text(
+                                      "내역 확인",
+                                      style: TextStyle(fontSize: 25),
+                                    ),
+                                    SizedBox(height: 15,),
+                                    if(controller.printNBook.price != 0) PrintNBookWidget(model: controller.printNBook),
+                                    if(controller.bigprint.price != 0) BigPrintWidget(model: controller.bigprint),
+                                    if(controller.otherService.price != 0) OtherServiceWidget(model: controller.otherService),
+                                  ],
+                                ),
                               ),
                             );
                           });
