@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 class Estimate extends StatelessWidget {
   Estimate({Key? key}) : super(key: key);
 
+  var f = NumberFormat('###,###,###,###');
   final controller = Get.put(EstimateController());
 
   @override
@@ -51,7 +52,7 @@ class Estimate extends StatelessWidget {
                         child: Center(
                           child: Text(
                             '프린트 / 제본',
-                            style: TextStyle(fontSize: 25),
+                            style: TextStyle(fontSize: 25, color: Colors.white),
                           ),
                         ),
                       );
@@ -85,7 +86,7 @@ class Estimate extends StatelessWidget {
                                       }).toList(),
                                       onChanged: (value) {
                                         controller.printNBook.setSize(value);
-                                        controller.update();
+                                        controller.CalcTotal();
                                       },
                                     ),
                                   ],
@@ -182,7 +183,7 @@ class Estimate extends StatelessWidget {
                                       onChanged: (value) {
                                         controller.printNBook
                                             .setBookStyle(value);
-                                        controller.update();
+                                        controller.CalcTotal();
                                       },
                                     ),
                                   ],
@@ -218,7 +219,7 @@ class Estimate extends StatelessWidget {
                                       }).toList(),
                                       onChanged: (value) {
                                         controller.printNBook.setColor(value);
-                                        controller.update();
+                                        controller.CalcTotal();
                                       },
                                     ),
                                   ],
@@ -244,7 +245,7 @@ class Estimate extends StatelessWidget {
                                       onChanged: (value) {
                                         controller.printNBook
                                             .setFileType(value);
-                                        controller.update();
+                                        controller.CalcTotal();
                                       },
                                     ),
                                   ],
@@ -282,7 +283,7 @@ class Estimate extends StatelessWidget {
                                       onChanged: (value) {
                                         controller.printNBook
                                             .setPaperType(value);
-                                        controller.update();
+                                        controller.CalcTotal();
                                       },
                                     ),
                                   ],
@@ -307,7 +308,7 @@ class Estimate extends StatelessWidget {
                                       }).toList(),
                                       onChanged: (value) {
                                         controller.printNBook.setSide(value);
-                                        controller.update();
+                                        controller.CalcTotal();
                                       },
                                     ),
                                   ],
@@ -346,7 +347,7 @@ class Estimate extends StatelessWidget {
                                       onChanged: (value) {
                                         controller.printNBook
                                             .setThickness(value);
-                                        controller.update();
+                                        controller.CalcTotal();
                                       },
                                     ),
                                   ],
@@ -429,7 +430,7 @@ class Estimate extends StatelessWidget {
                         child: Center(
                           child: Text(
                             '대형 프린트',
-                            style: TextStyle(fontSize: 25),
+                            style: TextStyle(fontSize: 25, color: Colors.white),
                           ),
                         ),
                       );
@@ -463,7 +464,7 @@ class Estimate extends StatelessWidget {
                                       }).toList(),
                                       onChanged: (value) {
                                         controller.bigprint.setSize(value);
-                                        controller.update();
+                                        controller.CalcTotal();
                                       },
                                     ),
                                   ],
@@ -517,7 +518,7 @@ class Estimate extends StatelessWidget {
                                       }).toList(),
                                       onChanged: (value) {
                                         controller.bigprint.setColor(value);
-                                        controller.update();
+                                        controller.CalcTotal();
                                       },
                                     ),
                                   ],
@@ -558,7 +559,7 @@ class Estimate extends StatelessWidget {
                                         onChanged: (value) {
                                           controller.bigprint
                                               .setPaperType(value);
-                                          controller.update();
+                                          controller.CalcTotal();
                                         },
                                       ),
                                     ],
@@ -585,7 +586,7 @@ class Estimate extends StatelessWidget {
                                         onChanged: (value) {
                                           controller.bigprint
                                               .setPercentage(value);
-                                          controller.update();
+                                          controller.CalcTotal();
                                         },
                                       ),
                                     ],
@@ -639,7 +640,7 @@ class Estimate extends StatelessWidget {
                         child: Center(
                           child: Text(
                             '코팅/스캔/스태플',
-                            style: TextStyle(fontSize: 25),
+                            style: TextStyle(fontSize: 25, color: Colors.white),
                           ),
                         ),
                       );
@@ -677,7 +678,7 @@ class Estimate extends StatelessWidget {
                                           if (value == "") value = "0";
                                           controller.otherService
                                               .setLaminate(int.parse(value));
-                                          controller.update();
+                                          controller.CalcTotal();
                                         },
                                       ),
                                     )
@@ -707,7 +708,7 @@ class Estimate extends StatelessWidget {
                                           if (value == "") value = "0";
                                           controller.otherService
                                               .setScan(int.parse(value));
-                                          controller.update();
+                                          controller.CalcTotal();
                                         },
                                       ),
                                     )
@@ -737,7 +738,7 @@ class Estimate extends StatelessWidget {
                                           if (value == "") value = "0";
                                           controller.otherService
                                               .setStaple(int.parse(value));
-                                          controller.update();
+                                          controller.CalcTotal();
                                         },
                                       ),
                                     )
@@ -792,7 +793,7 @@ class Estimate extends StatelessWidget {
                         child: Center(
                           child: Text(
                             '폼보드',
-                            style: TextStyle(fontSize: 25),
+                            style: TextStyle(fontSize: 25, color: Colors.white),
                           ),
                         ),
                       );
@@ -826,7 +827,7 @@ class Estimate extends StatelessWidget {
                                       }).toList(),
                                       onChanged: (value) {
                                         controller.pormBoard.setSize(value);
-                                        controller.update();
+                                        controller.CalcTotal();
                                       },
                                     ),
                                   ],
@@ -893,7 +894,7 @@ class Estimate extends StatelessWidget {
                                       onChanged: (value) {
                                         controller.pormBoard
                                             .setPaperType(value);
-                                        controller.update();
+                                        controller.CalcTotal();
                                       },
                                     ),
                                   ],
@@ -918,7 +919,7 @@ class Estimate extends StatelessWidget {
                                       }).toList(),
                                       onChanged: (value) {
                                         controller.pormBoard.setLaminate(value);
-                                        controller.update();
+                                        controller.CalcTotal();
                                       },
                                     ),
                                   ],
@@ -972,7 +973,7 @@ class Estimate extends StatelessWidget {
                           child: Center(
                             child: Text(
                               '인쇄',
-                              style: TextStyle(fontSize: 25),
+                              style: TextStyle(fontSize: 25, color: Colors.white),
                             ),
                           ),
                         );
@@ -1037,7 +1038,7 @@ class Estimate extends StatelessWidget {
                                                             .offSet.nameCard
                                                             ?.setPaperType(
                                                                 value);
-                                                        controller.update();
+                                                        controller.CalcTotal();
                                                       },
                                                     ),
                                                   ],
@@ -1067,7 +1068,7 @@ class Estimate extends StatelessWidget {
                                                         controller
                                                             .offSet.nameCard
                                                             ?.setSide(value);
-                                                        controller.update();
+                                                        controller.CalcTotal();
                                                       },
                                                     ),
                                                   ],
@@ -1095,34 +1096,24 @@ class Estimate extends StatelessWidget {
                                                     SizedBox(
                                                       width: 10,
                                                     ),
-                                                    SizedBox(
-                                                      width: 50,
-                                                      height: 25,
-                                                      child: TextField(
-                                                        controller: controller
-                                                            .offSet
-                                                            .nameCard
-                                                            ?.quantityController,
-                                                        inputFormatters: [
-                                                          FilteringTextInputFormatter
-                                                              .allow(RegExp(
-                                                                  '[0-9]')),
-                                                        ],
-                                                        keyboardType:
-                                                            TextInputType
-                                                                .number,
-                                                        onChanged: (value) {
-                                                          if (value == "")
-                                                            value = "0";
-                                                          controller
-                                                              .offSet.nameCard
-                                                              ?.setQuantity(
-                                                                  int.parse(
-                                                                      value));
-                                                          controller.update();
-                                                        },
-                                                      ),
-                                                    )
+                                                    DropdownButton(
+                                                      value: controller.offSet
+                                                          .nameCard?.quantity,
+                                                      items: controller.offSet
+                                                          .nameCard?.quantity_list
+                                                          .map((value) {
+                                                        return DropdownMenuItem(
+                                                          value: value,
+                                                          child: Text(value),
+                                                        );
+                                                      }).toList(),
+                                                      onChanged: (value) {
+                                                        controller
+                                                            .offSet.nameCard
+                                                            ?.setQuantity(value);
+                                                        controller.CalcTotal();
+                                                      },
+                                                    ),
                                                   ],
                                                 ), //Quantity
                                                 Row(
@@ -1159,7 +1150,7 @@ class Estimate extends StatelessWidget {
                                                               ?.setDesignPage(
                                                                   int.parse(
                                                                       value));
-                                                          controller.update();
+                                                          controller.CalcTotal();
                                                         },
                                                       ),
                                                     )
@@ -1209,7 +1200,7 @@ class Estimate extends StatelessWidget {
                                                             ?.setAdditionalPrice(
                                                                 int.parse(
                                                                     value));
-                                                        controller.update();
+                                                        controller.CalcTotal();
                                                       },
                                                     ),
                                                   )
@@ -1308,7 +1299,7 @@ class Estimate extends StatelessWidget {
                                                         controller
                                                             .offSet.leaflet
                                                             ?.setSize(value);
-                                                        controller.update();
+                                                        controller.CalcTotal();
                                                       },
                                                     ),
                                                   ],
@@ -1338,7 +1329,7 @@ class Estimate extends StatelessWidget {
                                                         controller
                                                             .offSet.leaflet
                                                             ?.setSide(value);
-                                                        controller.update();
+                                                        controller.CalcTotal();
                                                       },
                                                     ),
                                                   ],
@@ -1390,7 +1381,7 @@ class Estimate extends StatelessWidget {
                                                               ?.setQuantity(
                                                                   int.parse(
                                                                       value));
-                                                          controller.update();
+                                                          controller.CalcTotal();
                                                         },
                                                       ),
                                                     )
@@ -1430,7 +1421,7 @@ class Estimate extends StatelessWidget {
                                                               ?.setDesignPage(
                                                                   int.parse(
                                                                       value));
-                                                          controller.update();
+                                                          controller.CalcTotal();
                                                         },
                                                       ),
                                                     )
@@ -1483,7 +1474,7 @@ class Estimate extends StatelessWidget {
                                                               ?.setAdditionalPrice(
                                                                   int.parse(
                                                                       value));
-                                                          controller.update();
+                                                          controller.CalcTotal();
                                                         },
                                                       ),
                                                     )
@@ -1586,7 +1577,7 @@ class Estimate extends StatelessWidget {
                                                             .offSet.sticker
                                                             ?.setPaperType(
                                                                 value);
-                                                        controller.update();
+                                                        controller.CalcTotal();
                                                       },
                                                     ),
                                                   ],
@@ -1619,7 +1610,7 @@ class Estimate extends StatelessWidget {
                                                             .offSet.sticker
                                                             ?.setLaminate(
                                                                 value);
-                                                        controller.update();
+                                                        controller.CalcTotal();
                                                       },
                                                     ),
                                                   ],
@@ -1671,7 +1662,7 @@ class Estimate extends StatelessWidget {
                                                               ?.setQuantity(
                                                                   int.parse(
                                                                       value));
-                                                          controller.update();
+                                                          controller.CalcTotal();
                                                         },
                                                       ),
                                                     )
@@ -1702,7 +1693,7 @@ class Estimate extends StatelessWidget {
                                                         controller
                                                             .offSet.sticker
                                                             ?.setSize(value);
-                                                        controller.update();
+                                                        controller.CalcTotal();
                                                       },
                                                     ),
                                                   ],
@@ -1755,7 +1746,7 @@ class Estimate extends StatelessWidget {
                                                               ?.setDesignPage(
                                                                   int.parse(
                                                                       value));
-                                                          controller.update();
+                                                          controller.CalcTotal();
                                                         },
                                                       ),
                                                     )
@@ -1795,7 +1786,7 @@ class Estimate extends StatelessWidget {
                                                               ?.setAdditionalPrice(
                                                                   int.parse(
                                                                       value));
-                                                          controller.update();
+                                                          controller.CalcTotal();
                                                         },
                                                       ),
                                                     )
@@ -1894,7 +1885,7 @@ class Estimate extends StatelessWidget {
                                                     onChanged: (value) {
                                                       controller.offSet.envelope
                                                           ?.setSize(value);
-                                                      controller.update();
+                                                      controller.CalcTotal();
                                                     },
                                                   ),
                                                 ],
@@ -1925,7 +1916,7 @@ class Estimate extends StatelessWidget {
                                                     onChanged: (value) {
                                                       controller.offSet.envelope
                                                           ?.setPaperType(value);
-                                                      controller.update();
+                                                      controller.CalcTotal();
                                                     },
                                                   ),
                                                 ],
@@ -1976,7 +1967,7 @@ class Estimate extends StatelessWidget {
                                                             ?.setQuantity(
                                                                 int.parse(
                                                                     value));
-                                                        controller.update();
+                                                        controller.CalcTotal();
                                                       },
                                                     ),
                                                   )
@@ -2015,7 +2006,7 @@ class Estimate extends StatelessWidget {
                                                             ?.setDesignPage(
                                                                 int.parse(
                                                                     value));
-                                                        controller.update();
+                                                        controller.CalcTotal();
                                                       },
                                                     ),
                                                   )
@@ -2067,7 +2058,7 @@ class Estimate extends StatelessWidget {
                                                             ?.setAdditionalPrice(
                                                                 int.parse(
                                                                     value));
-                                                        controller.update();
+                                                        controller.CalcTotal();
                                                       },
                                                     ),
                                                   )
@@ -2163,7 +2154,7 @@ class Estimate extends StatelessWidget {
                                                     onChanged: (value) {
                                                       controller.offSet.banner
                                                           ?.setPaperType(value);
-                                                      controller.update();
+                                                      controller.CalcTotal();
                                                     },
                                                   ),
                                                 ],
@@ -2192,7 +2183,7 @@ class Estimate extends StatelessWidget {
                                                     onChanged: (value) {
                                                       controller.offSet.banner
                                                           ?.setRests(value);
-                                                      controller.update();
+                                                      controller.CalcTotal();
                                                     },
                                                   ),
                                                 ],
@@ -2242,7 +2233,7 @@ class Estimate extends StatelessWidget {
                                                             ?.setQuantity(
                                                                 int.parse(
                                                                     value));
-                                                        controller.update();
+                                                        controller.CalcTotal();
                                                       },
                                                     ),
                                                   )
@@ -2280,7 +2271,7 @@ class Estimate extends StatelessWidget {
                                                             ?.setDesignPage(
                                                                 int.parse(
                                                                     value));
-                                                        controller.update();
+                                                        controller.CalcTotal();
                                                       },
                                                     ),
                                                   )
@@ -2331,7 +2322,7 @@ class Estimate extends StatelessWidget {
                                                             ?.setAdditionalPrice(
                                                                 int.parse(
                                                                     value));
-                                                        controller.update();
+                                                        controller.CalcTotal();
                                                       },
                                                     ),
                                                   )
@@ -2437,17 +2428,18 @@ class Estimate extends StatelessWidget {
                         child: TextField(
                           onChanged: (value) {
                             controller.SetCustomer(value);
-                            controller.update();
+                            controller.CalcTotal();
                           },
                         ),
                       )
                     ],
                   ),
-                  Text('전체 가격 : ${controller.total_sum}'),
+                  Text('전체 가격 : ${f.format(controller.total_sum)}원', style: TextStyle(fontSize: 18),),
                   TextButton(
                     onPressed: () {
-                      //controller.SubmitDialog(context);
-                      showModalBottomSheet(
+                      controller.CalcTotal();
+                      if(controller.total_sum!=0) {
+                        showModalBottomSheet(
                           context: context,
                           shape: const RoundedRectangleBorder(
                             // <-- SEE HERE
@@ -2469,15 +2461,28 @@ class Estimate extends StatelessWidget {
                                     if(controller.printNBook.price != 0) PrintNBookWidget(model: controller.printNBook),
                                     if(controller.bigprint.price != 0) BigPrintWidget(model: controller.bigprint),
                                     if(controller.otherService.price != 0) OtherServiceWidget(model: controller.otherService),
+                                    if(controller.pormBoard.price != 0) PormBoardWidget(model: controller.pormBoard),
+                                    if(controller.offSet.nameCard?.price != 0) NameCardWidget(model: controller.offSet.nameCard!),
+                                    if(controller.offSet.leaflet?.price != 0) LeafletWidget(model: controller.offSet!.leaflet!),
+                                    if(controller.offSet.sticker?.price != 0) StickerWidget(model: controller.offSet.sticker!),
+                                    if(controller.offSet.envelope?.price != 0) EnvelopeWidget(model: controller.offSet.envelope!),
+                                    if(controller.offSet.banner?.price != 0) BannerWidget(model: controller.offSet.banner!),
+                                    SizedBox(height: 10,),
+                                    Text(
+                                      "총 금액 : ${f.format(controller.total_sum)}원",
+                                      style: TextStyle(fontSize: 25),
+                                    ),
+                                    SizedBox(height: 15,),
                                   ],
                                 ),
                               ),
                             );
                           });
+                      }
                     },
                     child: Text(
                       '제출',
-                      style: TextStyle(color: Colors.black),
+                      style: TextStyle(color: Colors.white),
                     ),
                     style: TextButton.styleFrom(backgroundColor: Colors.green),
                   ),

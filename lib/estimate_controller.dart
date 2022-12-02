@@ -35,11 +35,11 @@ class EstimateController extends GetxController {
     update();
   }
 
-  foldAll(){
-    for(int i =0 ; i < isExpanded.length; i++){
+  foldAll() {
+    for (int i = 0; i < isExpanded.length; i++) {
       isExpanded[i] = false;
     }
-    for(int i =0 ; i < offSetExpanded.length; i++){
+    for (int i = 0; i < offSetExpanded.length; i++) {
       offSetExpanded[i] = false;
     }
     update();
@@ -47,6 +47,20 @@ class EstimateController extends GetxController {
 
   toggleOffset(index) {
     offSetExpanded[index] = !offSetExpanded[index];
+    update();
+  }
+
+  CalcTotal() {
+    total_sum = printNBook.price +
+        bigprint.price +
+        otherService.price +
+        pormBoard.price +
+        offSet.nameCard!.price +
+        offSet.leaflet!.price +
+        offSet.sticker!.price +
+        offSet.envelope!.price +
+        offSet.banner!.price;
+    offSet.calcFee();
     update();
   }
 
@@ -133,8 +147,7 @@ class EstimateController extends GetxController {
 
       //firestore.collection('Estimate').add(value);
       //firestore.collection('Estimate').doc().collection('new').add(value);
-    } catch (ex) {
-    }
+    } catch (ex) {}
   }
 
   void SubmitDialog(BuildContext context) {

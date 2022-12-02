@@ -70,7 +70,7 @@ class EstimatePrice extends StatelessWidget {
                       TextButton(
                         onPressed: () {
                           model.Reset();
-                          controller.update();
+                          controller.CalcTotal();
                           Navigator.of(context).pop();
                         },
                         child: Text("예"),
@@ -89,9 +89,10 @@ class EstimatePrice extends StatelessWidget {
 }
 
 class PrintNBookWidget extends StatelessWidget {
-  const PrintNBookWidget({Key? key, required this.model}) : super(key: key);
+  PrintNBookWidget({Key? key, required this.model}) : super(key: key);
 
   final PrintNBook model;
+  var f = NumberFormat('###,###,###,###');
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +124,7 @@ class PrintNBookWidget extends StatelessWidget {
                   Text("용지종류 : ${map['paper_type']}"),
                 if (map['color'] == model.color_list[1])
                   Text("칼라비율 : ${map['percentage']}"),
-                if(map['reminder']!= "") Text("메모 : ${map['reminder']}"),
+                if (map['reminder'] != "") Text("메모 : ${map['reminder']}"),
               ]),
               Container(
                 width: MediaQuery.of(context).size.width - 20,
@@ -132,7 +133,7 @@ class PrintNBookWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                "가격 : ${map['price']}원 ",
+                "가격 : ${f.format(map['price'])}원 ",
                 style: TextStyle(fontSize: 25),
               ),
             ],
@@ -146,6 +147,7 @@ class PrintNBookWidget extends StatelessWidget {
 class BigPrintWidget extends StatelessWidget {
   BigPrintWidget({Key? key, required this.model}) : super(key: key);
 
+  var f = NumberFormat('###,###,###,###');
   final BigPrint model;
 
   @override
@@ -179,7 +181,7 @@ class BigPrintWidget extends StatelessWidget {
                   Text("용지종류 : ${map['paper_type']}"),
                 if (map['color'] == model.color_list[1])
                   Text("칼라비율 : ${map['percentage']}"),
-                if(map['reminder']!= "") Text("메모 : ${map['reminder']}"),
+                if (map['reminder'] != "") Text("메모 : ${map['reminder']}"),
               ]),
               Container(
                 width: MediaQuery.of(context).size.width - 20,
@@ -188,7 +190,7 @@ class BigPrintWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                "가격 : ${map['price']}원 ",
+                "가격 : ${f.format(map['price'])}원 ",
                 style: TextStyle(fontSize: 25),
               ),
             ],
@@ -200,9 +202,10 @@ class BigPrintWidget extends StatelessWidget {
 }
 
 class OtherServiceWidget extends StatelessWidget {
-  const OtherServiceWidget({Key? key, required this.model}) : super(key: key);
+  OtherServiceWidget({Key? key, required this.model}) : super(key: key);
 
   final OtherService model;
+  var f = NumberFormat('###,###,###,###');
 
   @override
   Widget build(BuildContext context) {
@@ -228,10 +231,10 @@ class OtherServiceWidget extends StatelessWidget {
                 ),
               ),
               Column(children: [
-                if(map['laminate'] != 0) Text("코팅 : ${map['laminate']}"),
-                if(map['scan'] != 0) Text("스캔 : ${map['scan']}"),
-                if(map['staple'] != 0) Text("스태플 : ${map['staple']}"),
-                if(map['reminder']!= "") Text("메모 : ${map['reminder']}"),
+                if (map['laminate'] != 0) Text("코팅 : ${map['laminate']}"),
+                if (map['scan'] != 0) Text("스캔 : ${map['scan']}"),
+                if (map['staple'] != 0) Text("스태플 : ${map['staple']}"),
+                if (map['reminder'] != "") Text("메모 : ${map['reminder']}"),
               ]),
               Container(
                 width: MediaQuery.of(context).size.width - 20,
@@ -240,7 +243,7 @@ class OtherServiceWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                "가격 : ${map['price']}원 ",
+                "가격 : ${f.format(map['price'])}원 ",
                 style: TextStyle(fontSize: 25),
               ),
             ],
@@ -252,8 +255,9 @@ class OtherServiceWidget extends StatelessWidget {
 }
 
 class PormBoardWidget extends StatelessWidget {
-  const PormBoardWidget({Key? key, required this.model}) : super(key: key);
+  PormBoardWidget({Key? key, required this.model}) : super(key: key);
 
+  var f = NumberFormat('###,###,###,###');
   final PormBoard model;
 
   @override
@@ -284,7 +288,7 @@ class PormBoardWidget extends StatelessWidget {
                 Text("수량 : ${map['quantity']}"),
                 Text("종이 종류 : ${map['paper_type']}"),
                 Text("코팅 : ${map['laminate']}"),
-                if(map['reminder']!= "") Text("메모 : ${map['reminder']}"),
+                if (map['reminder'] != "") Text("메모 : ${map['reminder']}"),
               ]),
               Container(
                 width: MediaQuery.of(context).size.width - 20,
@@ -293,7 +297,7 @@ class PormBoardWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                "가격 : ${map['price']}원 ",
+                "가격 : ${f.format(map['price'])}원 ",
                 style: TextStyle(fontSize: 25),
               ),
             ],
@@ -305,8 +309,9 @@ class PormBoardWidget extends StatelessWidget {
 }
 
 class NameCardWidget extends StatelessWidget {
-  const NameCardWidget({Key? key, required this.model}) : super(key: key);
+  NameCardWidget({Key? key, required this.model}) : super(key: key);
 
+  var f = NumberFormat('###,###,###,###');
   final NameCard model;
 
   @override
@@ -336,9 +341,11 @@ class NameCardWidget extends StatelessWidget {
                 Text("용지 : ${map['paper_type']}"),
                 Text("수량 : ${map['quantity']}"),
                 Text("양/단면 : ${map['side']}"),
-                Text("디자인페이지 : ${map['design_page']}"),
-                Text("추가금액 : ${map['addtional_price']}"),
-                if(map['reminder']!= "") Text("메모 : ${map['reminder']}"),
+                if (map['design_page'] != 0)
+                  Text("디자인페이지 : ${map['design_page']}"),
+                if (map['additional_price'] != 0)
+                  Text("추가금액 : ${map['addtional_price']}"),
+                if (map['reminder'] != "") Text("메모 : ${map['reminder']}"),
               ]),
               Container(
                 width: MediaQuery.of(context).size.width - 20,
@@ -347,7 +354,7 @@ class NameCardWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                "가격 : ${map['price']}원 ",
+                "가격 : ${f.format(map['price'])}원 ",
                 style: TextStyle(fontSize: 25),
               ),
             ],
@@ -359,8 +366,9 @@ class NameCardWidget extends StatelessWidget {
 }
 
 class LeafletWidget extends StatelessWidget {
-  const LeafletWidget({Key? key, required this.model}) : super(key: key);
+  LeafletWidget({Key? key, required this.model}) : super(key: key);
 
+  var f = NumberFormat('###,###,###,###');
   final Leaflet model;
 
   @override
@@ -390,9 +398,9 @@ class LeafletWidget extends StatelessWidget {
                 Text("사이즈 : ${map['size']}"),
                 Text("수량 : ${map['quantity']}"),
                 Text("양/단면 : ${map['side']}"),
-                Text("디자인페이지 : ${map['design_page']}"),
-                Text("추가금액 : ${map['addtional_price']}"),
-                if(map['reminder']!= "") Text("메모 : ${map['reminder']}"),
+                if (map['design_page'] != 0) Text("디자인페이지 : ${map['design_page']}"),
+                if (map['addtional_price'] != 0) Text("추가금액 : ${map['addtional_price']}"),
+                if (map['reminder'] != "") Text("메모 : ${map['reminder']}"),
               ]),
               Container(
                 width: MediaQuery.of(context).size.width - 20,
@@ -401,7 +409,7 @@ class LeafletWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                "가격 : ${map['price']}원 ",
+                "가격 : ${f.format(map['price'])}원 ",
                 style: TextStyle(fontSize: 25),
               ),
             ],
@@ -413,8 +421,9 @@ class LeafletWidget extends StatelessWidget {
 }
 
 class StickerWidget extends StatelessWidget {
-  const StickerWidget({Key? key, required this.model}) : super(key: key);
+  StickerWidget({Key? key, required this.model}) : super(key: key);
 
+  var f = NumberFormat('###,###,###,###');
   final Sticker model;
 
   @override
@@ -445,9 +454,9 @@ class StickerWidget extends StatelessWidget {
                 Text("코팅 : ${map['laminate']}"),
                 Text("수량 : ${map['quantity']}"),
                 Text("사이즈 : ${map['size']}"),
-                Text("디자인페이지 : ${map['design_page']}"),
-                Text("추가금액 : ${map['addtional_price']}"),
-                if(map['reminder']!= "") Text("메모 : ${map['reminder']}"),
+                if (map['design_page'] != 0) Text("디자인페이지 : ${map['design_page']}"),
+                if (map['addtional_price'] != 0)Text("추가금액 : ${map['addtional_price']}"),
+                if (map['reminder'] != "") Text("메모 : ${map['reminder']}"),
               ]),
               Container(
                 width: MediaQuery.of(context).size.width - 20,
@@ -456,7 +465,7 @@ class StickerWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                "가격 : ${map['price']}원 ",
+                "가격 : ${f.format(map['price'])}원 ",
                 style: TextStyle(fontSize: 25),
               ),
             ],
@@ -468,8 +477,9 @@ class StickerWidget extends StatelessWidget {
 }
 
 class EnvelopeWidget extends StatelessWidget {
-  const EnvelopeWidget({Key? key, required this.model}) : super(key: key);
+  EnvelopeWidget({Key? key, required this.model}) : super(key: key);
 
+  var f = NumberFormat('###,###,###,###');
   final Envelope model;
 
   @override
@@ -499,9 +509,9 @@ class EnvelopeWidget extends StatelessWidget {
                 Text("사이즈 : ${map['size']}"),
                 Text("종류 : ${map['paper_type']}"),
                 Text("수량 : ${map['quantity']}"),
-                Text("디자인페이지 : ${map['design_page']}"),
-                Text("추가금액 : ${map['addtional_price']}"),
-                if(map['reminder']!= "") Text("메모 : ${map['reminder']}"),
+                if (map['design_page'] != 0) Text("디자인페이지 : ${map['design_page']}"),
+                if (map['addtional_price'] != 0) Text("추가금액 : ${map['addtional_price']}"),
+                if (map['reminder'] != "") Text("메모 : ${map['reminder']}"),
               ]),
               Container(
                 width: MediaQuery.of(context).size.width - 20,
@@ -510,7 +520,7 @@ class EnvelopeWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                "가격 : ${map['price']}원 ",
+                "가격 : ${f.format(map['price'])}원 ",
                 style: TextStyle(fontSize: 25),
               ),
             ],
@@ -522,9 +532,10 @@ class EnvelopeWidget extends StatelessWidget {
 }
 
 class BannerWidget extends StatelessWidget {
-  const BannerWidget({Key? key, required this.model}) : super(key: key);
+  BannerWidget({Key? key, required this.model}) : super(key: key);
 
-  final estimate_model.Banner model;
+  var f = NumberFormat('###,###,###,###');
+  final MyBanner model;
 
   @override
   Widget build(BuildContext context) {
@@ -540,7 +551,7 @@ class BannerWidget extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                "봉투",
+                "배너",
                 style: TextStyle(fontSize: 25),
               ),
               Container(
@@ -550,12 +561,12 @@ class BannerWidget extends StatelessWidget {
                 ),
               ),
               Column(children: [
-                Text("사이즈 : ${map['size']}"),
-                Text("종류 : ${map['paper_type']}"),
+                Text("용지 종류 : ${map['paper_type']}"),
+                Text("거치대 : ${map['rests']}"),
                 Text("수량 : ${map['quantity']}"),
-                Text("디자인페이지 : ${map['design_page']}"),
-                Text("추가금액 : ${map['addtional_price']}"),
-                if(map['reminder']!= "") Text("메모 : ${map['reminder']}"),
+                if (map['design_page'] != 0) Text("디자인페이지 : ${map['design_page']}"),
+                if (map['addtional_price'] != 0) Text("추가금액 : ${map['addtional_price']}"),
+                if (map['reminder'] != "") Text("메모 : ${map['reminder']}"),
               ]),
               Container(
                 width: MediaQuery.of(context).size.width - 20,
@@ -564,7 +575,7 @@ class BannerWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                "가격 : ${map['price']}원 ",
+                "가격 : ${f.format(map['price'])}원 ",
                 style: TextStyle(fontSize: 25),
               ),
             ],
@@ -574,4 +585,3 @@ class BannerWidget extends StatelessWidget {
     );
   }
 }
-

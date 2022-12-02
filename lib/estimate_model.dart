@@ -27,7 +27,6 @@ class PrintNBook {
   final additionalPriceController = TextEditingController();
   final reminderController = TextEditingController();
 
-
   int price = 0;
 
   Map<String, dynamic> toMap() {
@@ -46,8 +45,6 @@ class PrintNBook {
     return data;
   }
 
-
-
   PrintNBook() {
     this.size = this.size_list[0];
     this.quantity = 0;
@@ -62,7 +59,7 @@ class PrintNBook {
     this.reminder = "";
   }
 
-  Reset(){
+  Reset() {
     this.size = this.size_list[0];
     this.quantity = 0;
     this.total_page = 0;
@@ -260,7 +257,7 @@ class BigPrint {
     data['size'] = size;
     data['quantity'] = quantity;
     data['color'] = color;
-    if(color == '칼라'){
+    if (color == '칼라') {
       data['paper_type'] = paper_type;
       data['percentage'] = percentage;
     }
@@ -278,7 +275,7 @@ class BigPrint {
     this.reminder = "";
   }
 
-  Reset(){
+  Reset() {
     this.size = this.size_list[0];
     this.quantity = 0;
     this.color = this.color_list[0];
@@ -290,24 +287,29 @@ class BigPrint {
     reminderController.clear();
   }
 
-  calcFee(){
-    if(quantity ==0) return;
+  calcFee() {
+    if (quantity == 0) return;
     int? fee = 0;
     String cnt = '0';
-    if(color == '흑백'){
-      if(quantity! < 11)  cnt = '1';
-      else if(quantity! < 51) cnt = '11';
-      else if(quantity! < 101) cnt = '51';
-      else if(quantity! < 201) cnt = '101';
-      else if(quantity! < 301) cnt = '201';
-      else cnt = '301';
+    if (color == '흑백') {
+      if (quantity! < 11)
+        cnt = '1';
+      else if (quantity! < 51)
+        cnt = '11';
+      else if (quantity! < 101)
+        cnt = '51';
+      else if (quantity! < 201)
+        cnt = '101';
+      else if (quantity! < 301)
+        cnt = '201';
+      else
+        cnt = '301';
 
       fee = BlackFee[size]![cnt];
-    }
-    else {
+    } else {
       fee = ColorFee[size]![paper_type]![percentage];
     }
-    price = (fee!*quantity!)!;
+    price = (fee! * quantity!)!;
   }
 
   setSize(value) {
@@ -365,7 +367,7 @@ class OtherService {
     return data;
   }
 
-  Reset(){
+  Reset() {
     this.laminate = 0;
     this.scan = 0;
     this.staple = 0;
@@ -445,7 +447,7 @@ class PormBoard {
     this.reminder = "";
   }
 
-  Reset(){
+  Reset() {
     this.size = this.size_list[0];
     this.quantity = 0;
     this.paper_type = paper_type_list[0];
@@ -483,7 +485,7 @@ class OffSet {
   Leaflet? leaflet;
   Sticker? sticker;
   Envelope? envelope;
-  Banner? banner;
+  MyBanner? banner;
   int price = 0;
 
   OffSet() {
@@ -491,15 +493,23 @@ class OffSet {
     this.leaflet = Leaflet();
     this.sticker = Sticker();
     this.envelope = Envelope();
-    this.banner = Banner();
+    this.banner = MyBanner();
   }
 
-  Reset(){
+  Reset() {
     nameCard?.Reset();
     leaflet?.Reset();
     sticker?.Reset();
     envelope?.Reset();
     banner?.Reset();
+  }
+
+  calcFee() {
+    price = nameCard!.price +
+        leaflet!.price +
+        sticker!.price +
+        envelope!.price +
+        banner!.price;
   }
 }
 
@@ -507,7 +517,7 @@ class NameCard {
   String kind = "namecard";
   String? paper_type;
   String? side;
-  int? quantity;
+  String? quantity;
   int? design_page;
   int? addtional_price;
   String? reminder;
@@ -515,8 +525,8 @@ class NameCard {
 
   List paper_type_list = ['일반지', '수입지'];
   List side_list = ['단면', '양면'];
+  List quantity_list = ['수량선택', '200장', '500장', '1,000장', '5,000장', '10,000장'];
 
-  final quantityController = TextEditingController();
   final designPageController = TextEditingController();
   final addtionalPriceController = TextEditingController();
   final reminderController = TextEditingController();
@@ -537,44 +547,90 @@ class NameCard {
   NameCard() {
     this.paper_type = paper_type_list[0];
     this.side = side_list[0];
-    this.quantity = 0;
+    this.quantity = quantity_list[0];
     this.design_page = 0;
     this.addtional_price = 0;
     this.reminder = "";
   }
 
-  Reset(){
+  Reset() {
     this.paper_type = paper_type_list[0];
     this.side = side_list[0];
-    this.quantity = 0;
+    this.quantity = quantity_list[0];
     this.design_page = 0;
     this.addtional_price = 0;
     this.reminder = "";
     this.price = 0;
-    quantityController.clear();
     designPageController.clear();
     addtionalPriceController.clear();
     reminderController.clear();
   }
 
+  Map<String, Map<String, Map<String, int>>> Fee = {
+    '일반지': {
+      '단면': {
+        '200장': 19000,
+        '500장': 29000,
+        '1,000장': 49000,
+        '5,000장': 79000,
+        '10,000장': 129000
+      },
+      '양면': {
+        '200장': 24000,
+        '500장': 34000,
+        '1,000장': 59000,
+        '5,000장': 89000,
+        '10,000장': 139000
+      }
+    },
+    '수입지': {
+      '단면': {
+        '200장': 19000,
+        '500장': 29000,
+        '1,000장': 39000,
+        '5,000장': 49000,
+        '10,000장': 59000
+      },
+      '양면': {
+        '200장': 24000,
+        '500장': 39000,
+        '1,000장': 49000,
+        '5,000장': 59000,
+        '10,000장': 69000
+      }
+    },
+  };
+
+  calcFee() {
+    if (quantity == '수량선택') return;
+    int? fee = 0;
+    fee = Fee[paper_type]![side]![quantity];
+    price = fee! + design_page! + addtional_price!;
+  }
+
   setPaperType(value) {
     paper_type = value.toString();
+    calcFee();
   }
 
   setSide(value) {
     side = value.toString();
+    calcFee();
   }
 
   setQuantity(value) {
-    quantity = value;
+    quantity = value.toString();
+    calcFee();
   }
 
   setDesignPage(value) {
     design_page = value;
+    calcFee();
   }
 
   setAdditionalPrice(value) {
     addtional_price = value;
+    calcFee();
   }
 
   setReminder(value) {
@@ -622,7 +678,7 @@ class Leaflet {
     this.reminder = "";
   }
 
-  Reset(){
+  Reset() {
     this.size = size_list[0];
     this.side = side_list[0];
     this.quantity = 0;
@@ -712,7 +768,7 @@ class Sticker {
     this.reminder = "";
   }
 
-  Reset(){
+  Reset() {
     this.paper_type = paper_type_list[0];
     this.laminate = laminate_list[0];
     this.size = size_list[0];
@@ -796,7 +852,7 @@ class Envelope {
     this.reminder = "";
   }
 
-  Reset(){
+  Reset() {
     this.size = size_list[0];
     this.paper_type = paper_type_list[0];
     this.quantity = 0;
@@ -835,7 +891,7 @@ class Envelope {
   }
 }
 
-class Banner {
+class MyBanner {
   String kind = "banner";
   String? paper_type;
   String? rests;
@@ -866,7 +922,7 @@ class Banner {
     return data;
   }
 
-  Banner() {
+  MyBanner() {
     this.paper_type = paper_type_list[0];
     this.rests = rests_list[0];
     this.quantity = 0;
@@ -875,7 +931,20 @@ class Banner {
     this.reminder = "";
   }
 
-  Reset(){
+  Map<String, int> Fee = {
+    '기본': 20000,
+    '투명': 40000,
+    '통풍': 40000,
+  };
+
+  calcFee() {
+    if (quantity == 0) return;
+    int? fee = 0;
+    fee = Fee[paper_type];
+    price = fee!*quantity! + int.parse(rests!) + design_page! + addtional_price!;
+  }
+
+  Reset() {
     this.paper_type = paper_type_list[0];
     this.rests = rests_list[0];
     this.quantity = 0;
@@ -889,25 +958,29 @@ class Banner {
     reminderController.clear();
   }
 
-
   setPaperType(value) {
     paper_type = value.toString();
+    calcFee();
   }
 
   setRests(value) {
     rests = value.toString();
+    calcFee();
   }
 
   setQuantity(value) {
     quantity = value;
+    calcFee();
   }
 
   setDesignPage(value) {
     design_page = value;
+    calcFee();
   }
 
   setAdditionalPrice(value) {
     addtional_price = value;
+    calcFee();
   }
 
   setReminder(value) {
