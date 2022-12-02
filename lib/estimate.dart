@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daebok/estimate_controller.dart';
+import 'package:daebok/estimate_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class Estimate extends StatelessWidget {
   Estimate({Key? key}) : super(key: key);
@@ -24,6 +26,13 @@ class Estimate extends StatelessWidget {
             style: TextStyle(fontSize: 25),
             textAlign: TextAlign.center,
           ),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  controller.foldAll();
+                },
+                icon: Icon(Icons.keyboard_double_arrow_up))
+          ],
         ),
         body: SingleChildScrollView(
           child: GetBuilder<EstimateController>(
@@ -94,6 +103,8 @@ class Estimate extends StatelessWidget {
                                       width: 50,
                                       height: 25,
                                       child: TextField(
+                                        controller: controller
+                                            .printNBook.quantityController,
                                         inputFormatters: [
                                           FilteringTextInputFormatter.allow(
                                               RegExp('[0-9]')),
@@ -132,6 +143,8 @@ class Estimate extends StatelessWidget {
                                       width: 50,
                                       height: 25,
                                       child: TextField(
+                                        controller: controller
+                                            .printNBook.totalPageController,
                                         inputFormatters: [
                                           FilteringTextInputFormatter.allow(
                                               RegExp('[0-9]')),
@@ -351,6 +364,8 @@ class Estimate extends StatelessWidget {
                                       width: 50,
                                       height: 25,
                                       child: TextField(
+                                        controller: controller.printNBook
+                                            .additionalPriceController,
                                         inputFormatters: [
                                           FilteringTextInputFormatter.allow(
                                               RegExp('[0-9]')),
@@ -376,6 +391,8 @@ class Estimate extends StatelessWidget {
                             padding: EdgeInsets.all(10),
                             color: Colors.white,
                             child: TextField(
+                              controller:
+                                  controller.printNBook.reminderController,
                               onChanged: (value) {
                                 controller.printNBook.setReminder(value);
                               },
@@ -393,13 +410,10 @@ class Estimate extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(
-                          height: 40,
-                          child: Container(
-                            child: Obx(() {
-                              return Text('${controller.sum.value}');
-                            }),
-                          ),
+                        EstimatePrice(
+                          controller: controller,
+                          model: controller.printNBook,
+                          modelName: '프린트/제본',
                         )
                       ],
                     ),
@@ -467,6 +481,8 @@ class Estimate extends StatelessWidget {
                                       width: 50,
                                       height: 25,
                                       child: TextField(
+                                        controller: controller
+                                            .bigprint.quantityController,
                                         inputFormatters: [
                                           FilteringTextInputFormatter.allow(
                                               RegExp('[0-9]')),
@@ -510,75 +526,83 @@ class Estimate extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Center(
-                          child: Container(
-                            color: Colors.white,
-                            padding: EdgeInsets.all(10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      '용지종류',
-                                      style: TextStyle(fontSize: 20),
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    DropdownButton(
-                                      value: controller.bigprint.paper_type,
-                                      items: controller.bigprint.paper_type_list
-                                          .map((value) {
-                                        return DropdownMenuItem(
-                                          value: value,
-                                          child: Text(value),
-                                        );
-                                      }).toList(),
-                                      onChanged: (value) {
-                                        controller.bigprint.setPaperType(value);
-                                        controller.update();
-                                      },
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      '칼라비율',
-                                      style: TextStyle(fontSize: 20),
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    DropdownButton(
-                                      value: controller.bigprint.percentage,
-                                      items: controller.bigprint.percentage_list
-                                          .map((value) {
-                                        return DropdownMenuItem(
-                                          value: value,
-                                          child: Text(value),
-                                        );
-                                      }).toList(),
-                                      onChanged: (value) {
-                                        controller.bigprint
-                                            .setPercentage(value);
-                                        controller.update();
-                                      },
-                                    ),
-                                  ],
-                                ), //Size
-                                //Quantity
-                              ],
+                        if (controller.bigprint.color ==
+                            controller.bigprint.color_list[1])
+                          Center(
+                            child: Container(
+                              color: Colors.white,
+                              padding: EdgeInsets.all(10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        '용지종류',
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      DropdownButton(
+                                        value: controller.bigprint.paper_type,
+                                        items: controller
+                                            .bigprint.paper_type_list
+                                            .map((value) {
+                                          return DropdownMenuItem(
+                                            value: value,
+                                            child: Text(value),
+                                          );
+                                        }).toList(),
+                                        onChanged: (value) {
+                                          controller.bigprint
+                                              .setPaperType(value);
+                                          controller.update();
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        '칼라비율',
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      DropdownButton(
+                                        value: controller.bigprint.percentage,
+                                        items: controller
+                                            .bigprint.percentage_list
+                                            .map((value) {
+                                          return DropdownMenuItem(
+                                            value: value,
+                                            child: Text(value),
+                                          );
+                                        }).toList(),
+                                        onChanged: (value) {
+                                          controller.bigprint
+                                              .setPercentage(value);
+                                          controller.update();
+                                        },
+                                      ),
+                                    ],
+                                  ), //Size
+                                  //Quantity
+                                ],
+                              ),
                             ),
                           ),
-                        ),
                         SizedBox(
                           height: 150,
                           child: Container(
                             padding: EdgeInsets.all(10),
                             color: Colors.white,
                             child: TextField(
+                              controller:
+                                  controller.bigprint.reminderController,
                               onChanged: (value) {
                                 controller.bigprint.setReminder(value);
                               },
@@ -596,13 +620,10 @@ class Estimate extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(
-                          height: 40,
-                          child: Container(
-                            child: Obx(() {
-                              return Text('${controller.sum.value}');
-                            }),
-                          ),
+                        EstimatePrice(
+                          controller: controller,
+                          model: controller.bigprint,
+                          modelName: '대형 프린트',
                         )
                       ],
                     ),
@@ -645,6 +666,8 @@ class Estimate extends StatelessWidget {
                                       width: 50,
                                       height: 25,
                                       child: TextField(
+                                        controller: controller
+                                            .otherService.laminateController,
                                         inputFormatters: [
                                           FilteringTextInputFormatter.allow(
                                               RegExp('[0-9]')),
@@ -673,6 +696,8 @@ class Estimate extends StatelessWidget {
                                       width: 50,
                                       height: 25,
                                       child: TextField(
+                                        controller: controller
+                                            .otherService.scanController,
                                         inputFormatters: [
                                           FilteringTextInputFormatter.allow(
                                               RegExp('[0-9]')),
@@ -701,6 +726,8 @@ class Estimate extends StatelessWidget {
                                       width: 50,
                                       height: 25,
                                       child: TextField(
+                                        controller: controller
+                                            .otherService.stapleController,
                                         inputFormatters: [
                                           FilteringTextInputFormatter.allow(
                                               RegExp('[0-9]')),
@@ -726,6 +753,8 @@ class Estimate extends StatelessWidget {
                             padding: EdgeInsets.all(10),
                             color: Colors.white,
                             child: TextField(
+                              controller:
+                                  controller.otherService.reminderController,
                               onChanged: (value) {
                                 controller.otherService.setReminder(value);
                               },
@@ -743,10 +772,10 @@ class Estimate extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(
-                          height: 40,
-                          child: Container(
-                              child: Text('${controller.otherService.price}')),
+                        EstimatePrice(
+                          controller: controller,
+                          model: controller.otherService,
+                          modelName: '코팅/스캔/스태플',
                         )
                       ],
                     ),
@@ -815,6 +844,8 @@ class Estimate extends StatelessWidget {
                                       width: 50,
                                       height: 25,
                                       child: TextField(
+                                        controller: controller
+                                            .pormBoard.quantityController,
                                         inputFormatters: [
                                           FilteringTextInputFormatter.allow(
                                               RegExp('[0-9]')),
@@ -903,6 +934,8 @@ class Estimate extends StatelessWidget {
                             padding: EdgeInsets.all(10),
                             color: Colors.white,
                             child: TextField(
+                              controller:
+                                  controller.pormBoard.reminderController,
                               onChanged: (value) {
                                 controller.pormBoard.setReminder(value);
                               },
@@ -920,13 +953,10 @@ class Estimate extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(
-                          height: 40,
-                          child: Container(
-                            child: Obx(() {
-                              return Text('${controller.sum.value}');
-                            }),
-                          ),
+                        EstimatePrice(
+                          controller: controller,
+                          model: controller.pormBoard,
+                          modelName: '폼보드',
                         )
                       ],
                     ),
@@ -1069,6 +1099,10 @@ class Estimate extends StatelessWidget {
                                                       width: 50,
                                                       height: 25,
                                                       child: TextField(
+                                                        controller: controller
+                                                            .offSet
+                                                            .nameCard
+                                                            ?.quantityController,
                                                         inputFormatters: [
                                                           FilteringTextInputFormatter
                                                               .allow(RegExp(
@@ -1105,6 +1139,10 @@ class Estimate extends StatelessWidget {
                                                       width: 50,
                                                       height: 25,
                                                       child: TextField(
+                                                        controller: controller
+                                                            .offSet
+                                                            .nameCard
+                                                            ?.designPageController,
                                                         inputFormatters: [
                                                           FilteringTextInputFormatter
                                                               .allow(RegExp(
@@ -1152,6 +1190,10 @@ class Estimate extends StatelessWidget {
                                                     width: 50,
                                                     height: 25,
                                                     child: TextField(
+                                                      controller: controller
+                                                          .offSet
+                                                          .nameCard
+                                                          ?.addtionalPriceController,
                                                       inputFormatters: [
                                                         FilteringTextInputFormatter
                                                             .allow(RegExp(
@@ -1182,6 +1224,8 @@ class Estimate extends StatelessWidget {
                                             padding: EdgeInsets.all(10),
                                             color: Colors.white,
                                             child: TextField(
+                                              controller: controller.offSet
+                                                  .nameCard?.reminderController,
                                               onChanged: (value) {
                                                 controller.offSet.nameCard
                                                     ?.setReminder(value);
@@ -1206,6 +1250,11 @@ class Estimate extends StatelessWidget {
                                             ),
                                           ),
                                         ),
+                                        EstimatePrice(
+                                          controller: controller,
+                                          model: controller.offSet.nameCard,
+                                          modelName: '명함',
+                                        )
                                       ],
                                     )), //NameCard
                                 ExpansionPanel(
@@ -1321,6 +1370,10 @@ class Estimate extends StatelessWidget {
                                                       width: 50,
                                                       height: 25,
                                                       child: TextField(
+                                                        controller: controller
+                                                            .offSet
+                                                            .leaflet
+                                                            ?.quantityController,
                                                         inputFormatters: [
                                                           FilteringTextInputFormatter
                                                               .allow(RegExp(
@@ -1357,6 +1410,10 @@ class Estimate extends StatelessWidget {
                                                       width: 50,
                                                       height: 25,
                                                       child: TextField(
+                                                        controller: controller
+                                                            .offSet
+                                                            .leaflet
+                                                            ?.designPageController,
                                                         inputFormatters: [
                                                           FilteringTextInputFormatter
                                                               .allow(RegExp(
@@ -1406,6 +1463,10 @@ class Estimate extends StatelessWidget {
                                                       width: 50,
                                                       height: 25,
                                                       child: TextField(
+                                                        controller: controller
+                                                            .offSet
+                                                            .leaflet
+                                                            ?.addtionalPriceController,
                                                         inputFormatters: [
                                                           FilteringTextInputFormatter
                                                               .allow(RegExp(
@@ -1438,6 +1499,8 @@ class Estimate extends StatelessWidget {
                                             padding: EdgeInsets.all(10),
                                             color: Colors.white,
                                             child: TextField(
+                                              controller: controller.offSet
+                                                  .leaflet?.reminderController,
                                               onChanged: (value) {
                                                 controller.offSet.leaflet
                                                     ?.setReminder(value);
@@ -1462,6 +1525,11 @@ class Estimate extends StatelessWidget {
                                             ),
                                           ),
                                         ),
+                                        EstimatePrice(
+                                          controller: controller,
+                                          model: controller.offSet.leaflet,
+                                          modelName: '리플렛',
+                                        )
                                       ],
                                     )), //Leaflet
                                 ExpansionPanel(
@@ -1583,22 +1651,26 @@ class Estimate extends StatelessWidget {
                                                       width: 50,
                                                       height: 25,
                                                       child: TextField(
+                                                        controller: controller
+                                                            .offSet
+                                                            .sticker
+                                                            ?.quantityController,
                                                         inputFormatters: [
                                                           FilteringTextInputFormatter
                                                               .allow(RegExp(
-                                                              '[0-9]')),
+                                                                  '[0-9]')),
                                                         ],
                                                         keyboardType:
-                                                        TextInputType
-                                                            .number,
+                                                            TextInputType
+                                                                .number,
                                                         onChanged: (value) {
                                                           if (value == "")
                                                             value = "0";
                                                           controller
                                                               .offSet.sticker
                                                               ?.setQuantity(
-                                                              int.parse(
-                                                                  value));
+                                                                  int.parse(
+                                                                      value));
                                                           controller.update();
                                                         },
                                                       ),
@@ -1648,7 +1720,7 @@ class Estimate extends StatelessWidget {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.spaceAround,
                                               children: [
-                                                 //Quantity
+                                                //Quantity
                                                 Row(
                                                   children: [
                                                     Text(
@@ -1663,6 +1735,10 @@ class Estimate extends StatelessWidget {
                                                       width: 50,
                                                       height: 25,
                                                       child: TextField(
+                                                        controller: controller
+                                                            .offSet
+                                                            .sticker
+                                                            ?.designPageController,
                                                         inputFormatters: [
                                                           FilteringTextInputFormatter
                                                               .allow(RegExp(
@@ -1699,6 +1775,10 @@ class Estimate extends StatelessWidget {
                                                       width: 50,
                                                       height: 25,
                                                       child: TextField(
+                                                        controller: controller
+                                                            .offSet
+                                                            .sticker
+                                                            ?.addtionalPriceController,
                                                         inputFormatters: [
                                                           FilteringTextInputFormatter
                                                               .allow(RegExp(
@@ -1731,6 +1811,8 @@ class Estimate extends StatelessWidget {
                                             padding: EdgeInsets.all(10),
                                             color: Colors.white,
                                             child: TextField(
+                                              controller: controller.offSet
+                                                  .sticker?.reminderController,
                                               onChanged: (value) {
                                                 controller.offSet.sticker
                                                     ?.setReminder(value);
@@ -1755,536 +1837,567 @@ class Estimate extends StatelessWidget {
                                             ),
                                           ),
                                         ),
+                                        EstimatePrice(
+                                          controller: controller,
+                                          model: controller.offSet.sticker,
+                                          modelName: '스티커',
+                                        )
                                       ],
                                     )), //Sticker
                                 ExpansionPanel(
-                                    backgroundColor: Colors.orangeAccent,
-                                    isExpanded: controller.offSetExpanded[3],
-                                    canTapOnHeader: true,
-                                    headerBuilder: (context, isExpanded) {
-                                      return Container(
-                                        height: 50,
-                                        color: Colors.orangeAccent,
-                                        child: Center(
-                                          child: Text(
-                                            '봉투',
-                                            style: TextStyle(fontSize: 25),
+                                  backgroundColor: Colors.orangeAccent,
+                                  isExpanded: controller.offSetExpanded[3],
+                                  canTapOnHeader: true,
+                                  headerBuilder: (context, isExpanded) {
+                                    return Container(
+                                      height: 50,
+                                      color: Colors.orangeAccent,
+                                      child: Center(
+                                        child: Text(
+                                          '봉투',
+                                          style: TextStyle(fontSize: 25),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  body: Column(
+                                    children: [
+                                      Center(
+                                        child: Container(
+                                          color: Colors.white,
+                                          padding: EdgeInsets.all(10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    '사이즈',
+                                                    style:
+                                                        TextStyle(fontSize: 20),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  DropdownButton(
+                                                    value: controller
+                                                        .offSet.envelope?.size,
+                                                    items: controller.offSet
+                                                        .envelope?.size_list
+                                                        .map((value) {
+                                                      return DropdownMenuItem(
+                                                        value: value,
+                                                        child: Text(value),
+                                                      );
+                                                    }).toList(),
+                                                    onChanged: (value) {
+                                                      controller.offSet.envelope
+                                                          ?.setSize(value);
+                                                      controller.update();
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    '종류',
+                                                    style:
+                                                        TextStyle(fontSize: 20),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  DropdownButton(
+                                                    value: controller.offSet
+                                                        .envelope?.paper_type,
+                                                    items: controller
+                                                        .offSet
+                                                        .envelope
+                                                        ?.paper_type_list
+                                                        .map((value) {
+                                                      return DropdownMenuItem(
+                                                        value: value,
+                                                        child: Text(value),
+                                                      );
+                                                    }).toList(),
+                                                    onChanged: (value) {
+                                                      controller.offSet.envelope
+                                                          ?.setPaperType(value);
+                                                      controller.update();
+                                                    },
+                                                  ),
+                                                ],
+                                              ), //Size
+                                              //Quantity
+                                            ],
                                           ),
                                         ),
-                                      );
-                                    },
-                                    body: Column(
-                                      children: [
-                                        Center(
-                                          child: Container(
-                                            color: Colors.white,
-                                            padding: EdgeInsets.all(10),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      '사이즈',
-                                                      style: TextStyle(
-                                                          fontSize: 20),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    DropdownButton(
-                                                      value: controller.offSet
-                                                          .envelope?.size,
-                                                      items: controller.offSet
-                                                          .envelope?.size_list
-                                                          .map((value) {
-                                                        return DropdownMenuItem(
-                                                          value: value,
-                                                          child: Text(value),
-                                                        );
-                                                      }).toList(),
-                                                      onChanged: (value) {
-                                                        controller
-                                                            .offSet.envelope
-                                                            ?.setSize(value);
-                                                        controller.update();
-                                                      },
-                                                    ),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      '종류',
-                                                      style: TextStyle(
-                                                          fontSize: 20),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    DropdownButton(
-                                                      value: controller.offSet
-                                                          .envelope?.paper_type,
-                                                      items: controller
+                                      ),
+                                      Center(
+                                        child: Container(
+                                          color: Colors.white,
+                                          padding: EdgeInsets.all(10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    '수량',
+                                                    style:
+                                                        TextStyle(fontSize: 20),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 50,
+                                                    height: 25,
+                                                    child: TextField(
+                                                      controller: controller
                                                           .offSet
                                                           .envelope
-                                                          ?.paper_type_list
-                                                          .map((value) {
-                                                        return DropdownMenuItem(
-                                                          value: value,
-                                                          child: Text(value),
-                                                        );
-                                                      }).toList(),
+                                                          ?.quantityController,
+                                                      inputFormatters: [
+                                                        FilteringTextInputFormatter
+                                                            .allow(RegExp(
+                                                                '[0-9]')),
+                                                      ],
+                                                      keyboardType:
+                                                          TextInputType.number,
                                                       onChanged: (value) {
+                                                        if (value == "")
+                                                          value = "0";
                                                         controller
                                                             .offSet.envelope
-                                                            ?.setPaperType(
-                                                                value);
+                                                            ?.setQuantity(
+                                                                int.parse(
+                                                                    value));
                                                         controller.update();
                                                       },
                                                     ),
-                                                  ],
-                                                ), //Size
-                                                //Quantity
-                                              ],
+                                                  )
+                                                ],
+                                              ), //Quantity
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    '디자인페이지',
+                                                    style:
+                                                        TextStyle(fontSize: 20),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 50,
+                                                    height: 25,
+                                                    child: TextField(
+                                                      controller: controller
+                                                          .offSet
+                                                          .envelope
+                                                          ?.designPageController,
+                                                      inputFormatters: [
+                                                        FilteringTextInputFormatter
+                                                            .allow(RegExp(
+                                                                '[0-9]')),
+                                                      ],
+                                                      keyboardType:
+                                                          TextInputType.number,
+                                                      onChanged: (value) {
+                                                        if (value == "")
+                                                          value = "0";
+                                                        controller
+                                                            .offSet.envelope
+                                                            ?.setDesignPage(
+                                                                int.parse(
+                                                                    value));
+                                                        controller.update();
+                                                      },
+                                                    ),
+                                                  )
+                                                ],
+                                              ), //Quantity
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Center(
+                                        child: Container(
+                                          color: Colors.white,
+                                          padding: EdgeInsets.all(10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              //Quantity
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    '추가금액',
+                                                    style:
+                                                        TextStyle(fontSize: 20),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 50,
+                                                    height: 25,
+                                                    child: TextField(
+                                                      controller: controller
+                                                          .offSet
+                                                          .envelope
+                                                          ?.addtionalPriceController,
+                                                      inputFormatters: [
+                                                        FilteringTextInputFormatter
+                                                            .allow(RegExp(
+                                                                '[0-9]')),
+                                                      ],
+                                                      keyboardType:
+                                                          TextInputType.number,
+                                                      onChanged: (value) {
+                                                        if (value == "")
+                                                          value = "0";
+                                                        controller
+                                                            .offSet.envelope
+                                                            ?.setAdditionalPrice(
+                                                                int.parse(
+                                                                    value));
+                                                        controller.update();
+                                                      },
+                                                    ),
+                                                  )
+                                                ],
+                                              ), //Quantity
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 150,
+                                        child: Container(
+                                          padding: EdgeInsets.all(10),
+                                          color: Colors.white,
+                                          child: TextField(
+                                            controller: controller.offSet
+                                                .envelope?.reminderController,
+                                            onChanged: (value) {
+                                              controller.offSet.envelope
+                                                  ?.setReminder(value);
+                                            },
+                                            expands: true,
+                                            maxLines: null,
+                                            decoration: const InputDecoration(
+                                              labelText: '메모',
+                                              enabledBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(20))),
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(20))),
                                             ),
                                           ),
                                         ),
-                                        Center(
-                                          child: Container(
-                                            color: Colors.white,
-                                            padding: EdgeInsets.all(10),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      '수량',
-                                                      style: TextStyle(
-                                                          fontSize: 20),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 50,
-                                                      height: 25,
-                                                      child: TextField(
-                                                        inputFormatters: [
-                                                          FilteringTextInputFormatter
-                                                              .allow(RegExp(
-                                                                  '[0-9]')),
-                                                        ],
-                                                        keyboardType:
-                                                            TextInputType
-                                                                .number,
-                                                        onChanged: (value) {
-                                                          if (value == "")
-                                                            value = "0";
-                                                          controller
-                                                              .offSet.envelope
-                                                              ?.setQuantity(
-                                                                  int.parse(
-                                                                      value));
-                                                          controller.update();
-                                                        },
-                                                      ),
-                                                    )
-                                                  ],
-                                                ), //Quantity
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      '디자인페이지',
-                                                      style: TextStyle(
-                                                          fontSize: 20),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 50,
-                                                      height: 25,
-                                                      child: TextField(
-                                                        inputFormatters: [
-                                                          FilteringTextInputFormatter
-                                                              .allow(RegExp(
-                                                                  '[0-9]')),
-                                                        ],
-                                                        keyboardType:
-                                                            TextInputType
-                                                                .number,
-                                                        onChanged: (value) {
-                                                          if (value == "")
-                                                            value = "0";
-                                                          controller
-                                                              .offSet.envelope
-                                                              ?.setDesignPage(
-                                                                  int.parse(
-                                                                      value));
-                                                          controller.update();
-                                                        },
-                                                      ),
-                                                    )
-                                                  ],
-                                                ), //Quantity
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        Center(
-                                          child: Container(
-                                            color: Colors.white,
-                                            padding: EdgeInsets.all(10),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: [ //Quantity
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      '추가금액',
-                                                      style: TextStyle(
-                                                          fontSize: 20),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 50,
-                                                      height: 25,
-                                                      child: TextField(
-                                                        inputFormatters: [
-                                                          FilteringTextInputFormatter
-                                                              .allow(RegExp(
-                                                                  '[0-9]')),
-                                                        ],
-                                                        keyboardType:
-                                                            TextInputType
-                                                                .number,
-                                                        onChanged: (value) {
-                                                          if (value == "")
-                                                            value = "0";
-                                                          controller
-                                                              .offSet.envelope
-                                                              ?.setAdditionalPrice(
-                                                                  int.parse(
-                                                                      value));
-                                                          controller.update();
-                                                        },
-                                                      ),
-                                                    )
-                                                  ],
-                                                ), //Quantity
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 150,
-                                          child: Container(
-                                            padding: EdgeInsets.all(10),
-                                            color: Colors.white,
-                                            child: TextField(
-                                              onChanged: (value) {
-                                                controller.offSet.envelope
-                                                    ?.setReminder(value);
-                                              },
-                                              expands: true,
-                                              maxLines: null,
-                                              decoration: const InputDecoration(
-                                                labelText: '메모',
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    20))),
-                                                focusedBorder:
-                                                    OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    20))),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    )), //Envelope
+                                      ),
+                                      EstimatePrice(
+                                        controller: controller,
+                                        model: controller.offSet.envelope,
+                                        modelName: '봉투',
+                                      ) //Envelope
+                                    ],
+                                  ),
+                                ),
                                 ExpansionPanel(
-                                    backgroundColor: Colors.orangeAccent,
-                                    isExpanded: controller.offSetExpanded[4],
-                                    canTapOnHeader: true,
-                                    headerBuilder: (context, isExpanded) {
-                                      return Container(
-                                        height: 50,
-                                        color: Colors.orangeAccent,
-                                        child: Center(
-                                          child: Text(
-                                            '배너',
-                                            style: TextStyle(fontSize: 25),
+                                  backgroundColor: Colors.orangeAccent,
+                                  isExpanded: controller.offSetExpanded[4],
+                                  canTapOnHeader: true,
+                                  headerBuilder: (context, isExpanded) {
+                                    return Container(
+                                      height: 50,
+                                      color: Colors.orangeAccent,
+                                      child: Center(
+                                        child: Text(
+                                          '배너',
+                                          style: TextStyle(fontSize: 25),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  body: Column(
+                                    children: [
+                                      Center(
+                                        child: Container(
+                                          color: Colors.white,
+                                          padding: EdgeInsets.all(10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    '용지 종류',
+                                                    style:
+                                                        TextStyle(fontSize: 20),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  DropdownButton(
+                                                    value: controller.offSet
+                                                        .banner?.paper_type,
+                                                    items: controller.offSet
+                                                        .banner?.paper_type_list
+                                                        .map((value) {
+                                                      return DropdownMenuItem(
+                                                        value: value,
+                                                        child: Text(value),
+                                                      );
+                                                    }).toList(),
+                                                    onChanged: (value) {
+                                                      controller.offSet.banner
+                                                          ?.setPaperType(value);
+                                                      controller.update();
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    '거치대',
+                                                    style:
+                                                        TextStyle(fontSize: 20),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  DropdownButton(
+                                                    value: controller
+                                                        .offSet.banner?.rests,
+                                                    items: controller.offSet
+                                                        .banner?.rests_list
+                                                        .map((value) {
+                                                      return DropdownMenuItem(
+                                                        value: value,
+                                                        child: Text(value),
+                                                      );
+                                                    }).toList(),
+                                                    onChanged: (value) {
+                                                      controller.offSet.banner
+                                                          ?.setRests(value);
+                                                      controller.update();
+                                                    },
+                                                  ),
+                                                ],
+                                              ), //Size
+                                              //Quantity
+                                            ],
                                           ),
                                         ),
-                                      );
-                                    },
-                                    body: Column(
-                                      children: [
-                                        Center(
-                                          child: Container(
-                                            color: Colors.white,
-                                            padding: EdgeInsets.all(10),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      '용지 종류',
-                                                      style: TextStyle(
-                                                          fontSize: 20),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    DropdownButton(
-                                                      value: controller.offSet
-                                                          .banner?.paper_type,
-                                                      items: controller
+                                      ),
+                                      Center(
+                                        child: Container(
+                                          color: Colors.white,
+                                          padding: EdgeInsets.all(10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    '수량',
+                                                    style:
+                                                        TextStyle(fontSize: 20),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 50,
+                                                    height: 25,
+                                                    child: TextField(
+                                                      controller: controller
                                                           .offSet
                                                           .banner
-                                                          ?.paper_type_list
-                                                          .map((value) {
-                                                        return DropdownMenuItem(
-                                                          value: value,
-                                                          child: Text(value),
-                                                        );
-                                                      }).toList(),
+                                                          ?.quantityController,
+                                                      inputFormatters: [
+                                                        FilteringTextInputFormatter
+                                                            .allow(RegExp(
+                                                                '[0-9]')),
+                                                      ],
+                                                      keyboardType:
+                                                          TextInputType.number,
                                                       onChanged: (value) {
+                                                        if (value == "")
+                                                          value = "0";
                                                         controller.offSet.banner
-                                                            ?.setPaperType(
-                                                                value);
+                                                            ?.setQuantity(
+                                                                int.parse(
+                                                                    value));
                                                         controller.update();
                                                       },
                                                     ),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      '거치대',
-                                                      style: TextStyle(
-                                                          fontSize: 20),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    DropdownButton(
-                                                      value: controller
-                                                          .offSet.banner?.rests,
-                                                      items: controller.offSet
-                                                          .banner?.rests_list
-                                                          .map((value) {
-                                                        return DropdownMenuItem(
-                                                          value: value,
-                                                          child: Text(value),
-                                                        );
-                                                      }).toList(),
+                                                  )
+                                                ],
+                                              ), //Quantity
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    '디자인페이지',
+                                                    style:
+                                                        TextStyle(fontSize: 20),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 50,
+                                                    height: 25,
+                                                    child: TextField(
+                                                      controller: controller
+                                                          .offSet
+                                                          .banner
+                                                          ?.designPageController,
+                                                      inputFormatters: [
+                                                        FilteringTextInputFormatter
+                                                            .allow(RegExp(
+                                                                '[0-9]')),
+                                                      ],
+                                                      keyboardType:
+                                                          TextInputType.number,
                                                       onChanged: (value) {
+                                                        if (value == "")
+                                                          value = "0";
                                                         controller.offSet.banner
-                                                            ?.setRests(value);
+                                                            ?.setDesignPage(
+                                                                int.parse(
+                                                                    value));
                                                         controller.update();
                                                       },
                                                     ),
-                                                  ],
-                                                ), //Size
-                                                //Quantity
-                                              ],
+                                                  )
+                                                ],
+                                              ), //Quantity
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Center(
+                                        child: Container(
+                                          color: Colors.white,
+                                          padding: EdgeInsets.all(10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              //Quantity
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    '추가금액',
+                                                    style:
+                                                        TextStyle(fontSize: 20),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 50,
+                                                    height: 25,
+                                                    child: TextField(
+                                                      controller: controller
+                                                          .offSet
+                                                          .banner
+                                                          ?.addtionalPriceController,
+                                                      inputFormatters: [
+                                                        FilteringTextInputFormatter
+                                                            .allow(RegExp(
+                                                                '[0-9]')),
+                                                      ],
+                                                      keyboardType:
+                                                          TextInputType.number,
+                                                      onChanged: (value) {
+                                                        if (value == "")
+                                                          value = "0";
+                                                        controller.offSet.banner
+                                                            ?.setAdditionalPrice(
+                                                                int.parse(
+                                                                    value));
+                                                        controller.update();
+                                                      },
+                                                    ),
+                                                  )
+                                                ],
+                                              ), //Quantity
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 150,
+                                        child: Container(
+                                          padding: EdgeInsets.all(10),
+                                          color: Colors.white,
+                                          child: TextField(
+                                            controller: controller.offSet.banner
+                                                ?.reminderController,
+                                            onChanged: (value) {
+                                              controller.offSet.banner
+                                                  ?.setReminder(value);
+                                            },
+                                            expands: true,
+                                            maxLines: null,
+                                            decoration: const InputDecoration(
+                                              labelText: '메모',
+                                              enabledBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(20))),
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(20))),
                                             ),
                                           ),
                                         ),
-                                        Center(
-                                          child: Container(
-                                            color: Colors.white,
-                                            padding: EdgeInsets.all(10),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      '수량',
-                                                      style: TextStyle(
-                                                          fontSize: 20),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 50,
-                                                      height: 25,
-                                                      child: TextField(
-                                                        inputFormatters: [
-                                                          FilteringTextInputFormatter
-                                                              .allow(RegExp(
-                                                                  '[0-9]')),
-                                                        ],
-                                                        keyboardType:
-                                                            TextInputType
-                                                                .number,
-                                                        onChanged: (value) {
-                                                          if (value == "")
-                                                            value = "0";
-                                                          controller
-                                                              .offSet.banner
-                                                              ?.setQuantity(
-                                                                  int.parse(
-                                                                      value));
-                                                          controller.update();
-                                                        },
-                                                      ),
-                                                    )
-                                                  ],
-                                                ), //Quantity
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      '디자인페이지',
-                                                      style: TextStyle(
-                                                          fontSize: 20),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 50,
-                                                      height: 25,
-                                                      child: TextField(
-                                                        inputFormatters: [
-                                                          FilteringTextInputFormatter
-                                                              .allow(RegExp(
-                                                                  '[0-9]')),
-                                                        ],
-                                                        keyboardType:
-                                                            TextInputType
-                                                                .number,
-                                                        onChanged: (value) {
-                                                          if (value == "")
-                                                            value = "0";
-                                                          controller
-                                                              .offSet.banner
-                                                              ?.setDesignPage(
-                                                                  int.parse(
-                                                                      value));
-                                                          controller.update();
-                                                        },
-                                                      ),
-                                                    )
-                                                  ],
-                                                ), //Quantity
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        Center(
-                                          child: Container(
-                                            color: Colors.white,
-                                            padding: EdgeInsets.all(10),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: [ //Quantity
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      '추가금액',
-                                                      style: TextStyle(
-                                                          fontSize: 20),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 50,
-                                                      height: 25,
-                                                      child: TextField(
-                                                        inputFormatters: [
-                                                          FilteringTextInputFormatter
-                                                              .allow(RegExp(
-                                                                  '[0-9]')),
-                                                        ],
-                                                        keyboardType:
-                                                            TextInputType
-                                                                .number,
-                                                        onChanged: (value) {
-                                                          if (value == "")
-                                                            value = "0";
-                                                          controller
-                                                              .offSet.banner
-                                                              ?.setAdditionalPrice(
-                                                                  int.parse(
-                                                                      value));
-                                                          controller.update();
-                                                        },
-                                                      ),
-                                                    )
-                                                  ],
-                                                ), //Quantity
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 150,
-                                          child: Container(
-                                            padding: EdgeInsets.all(10),
-                                            color: Colors.white,
-                                            child: TextField(
-                                              onChanged: (value) {
-                                                controller.offSet.banner
-                                                    ?.setReminder(value);
-                                              },
-                                              expands: true,
-                                              maxLines: null,
-                                              decoration: const InputDecoration(
-                                                labelText: '메모',
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    20))),
-                                                focusedBorder:
-                                                    OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    20))),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    )), //Banner
+                                      ),
+                                      EstimatePrice(
+                                        controller: controller,
+                                        model: controller.offSet.banner,
+                                        modelName: '배너',
+                                      )
+                                    ],
+                                  ),
+                                ), //Banner
                               ],
                               expandedHeaderPadding: EdgeInsets.all(0),
                               expansionCallback: (index, isExpanded) {
                                 controller.toggleOffset(index);
                               },
                             ),
-                            SizedBox(
-                              height: 40,
-                              child: Container(
-                                child: Obx(() {
-                                  return Text('${controller.sum.value}');
-                                }),
+                            Container(
+                              height: 50,
+                              color: Colors.white,
+                              child: Center(
+                                child: Text(
+                                  '인쇄 탭 총합',
+                                  style: TextStyle(fontSize: 25),
+                                ),
                               ),
                             ),
+                            EstimatePrice(
+                              controller: controller,
+                              model: controller.offSet,
+                              modelName: '인쇄',
+                            )
                           ],
                         ),
                       )), //Offset
@@ -2298,20 +2411,77 @@ class Estimate extends StatelessWidget {
           ),
         ),
         bottomNavigationBar: BottomAppBar(
-          child: Container(
-            height: 50,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('전체 가격 : ${controller.total_sum}'),
-                TextButton(
-                    onPressed: () {
-                      controller.submit();
-                    },
-                    child: Text('hi'))
-              ],
-            ),
+          shape: AutomaticNotchedShape(
+            RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(25))),
+            StadiumBorder(),
           ),
+          child: GetBuilder<EstimateController>(builder: (controller) {
+            return Container(
+              height: 50,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        '고객명',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      SizedBox(
+                        width: 50,
+                        height: 25,
+                        child: TextField(
+                          onChanged: (value) {
+                            controller.SetCustomer(value);
+                            controller.update();
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                  Text('전체 가격 : ${controller.total_sum}'),
+                  TextButton(
+                    onPressed: () {
+                      //controller.SubmitDialog(context);
+                      showModalBottomSheet(
+                          context: context,
+                          shape: const RoundedRectangleBorder(
+                            // <-- SEE HERE
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(25.0),
+                            ),
+                          ),
+                          builder: (context) {
+                            return Container(
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 10,),
+                                  Text(
+                                    "내역 확인",
+                                    style: TextStyle(fontSize: 25),
+                                  ),
+                                  SizedBox(height: 15,),
+                                  if(controller.printNBook.price != 0) PrintNBookWidget(),
+                                  if(controller.bigprint.price != 0) BigPrintWidget(model: controller.bigprint)
+                                ],
+                              ),
+                            );
+                          });
+                    },
+                    child: Text(
+                      '제출',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    style: TextButton.styleFrom(backgroundColor: Colors.green),
+                  ),
+                ],
+              ),
+            );
+          }),
         ),
       ),
     );
