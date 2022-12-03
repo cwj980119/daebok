@@ -88,6 +88,28 @@ class EstimatePrice extends StatelessWidget {
   }
 }
 
+class OrderListText extends StatelessWidget {
+  OrderListText({Key? key, required this.tag, required this.value})
+      : super(key: key);
+
+  String tag;
+  dynamic value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("${tag}"),
+            Text(" : "),
+            Flexible(child: Text("${value}",overflow: TextOverflow.ellipsis,maxLines: 5,)),
+          ]),
+    );
+  }
+}
+
 class PrintNBookWidget extends StatelessWidget {
   PrintNBookWidget({Key? key, required this.model}) : super(key: key);
 
@@ -117,14 +139,14 @@ class PrintNBookWidget extends StatelessWidget {
                 ),
               ),
               Column(children: [
-                Text("사이즈 : ${map['size']}"),
-                Text("수량 : ${map['quantity']}"),
-                Text("흑백/칼라 : ${map['color']}"),
+                OrderListText(tag: '사이즈', value: map['size']),
+                OrderListText(tag: '수량', value: map['quantity']),
+                OrderListText(tag: '흑백/칼라', value: map['color']),
                 if (map['color'] == model.color_list[1])
-                  Text("용지종류 : ${map['paper_type']}"),
+                  OrderListText(tag: '용지종류', value: map['paper_type']),
                 if (map['color'] == model.color_list[1])
-                  Text("칼라비율 : ${map['percentage']}"),
-                if (map['reminder'] != "") Text("메모 : ${map['reminder']}"),
+                  OrderListText(tag: '칼라비율', value: map['percentage']),
+                if (map['reminder'] != "") OrderListText(tag: '메모', value: map['reminder']),
               ]),
               Container(
                 width: MediaQuery.of(context).size.width - 20,
@@ -174,14 +196,15 @@ class BigPrintWidget extends StatelessWidget {
                 ),
               ),
               Column(children: [
-                Text("사이즈 : ${map['size']}"),
-                Text("수량 : ${map['quantity']}"),
-                Text("흑백/칼라 : ${map['color']}"),
+                OrderListText(tag: '사이즈', value: map['size']),
+                OrderListText(tag: '수량', value: map['quantity']),
+                OrderListText(tag: '흑백/칼라', value: map['color']),
                 if (map['color'] == model.color_list[1])
-                  Text("용지종류 : ${map['paper_type']}"),
+                  OrderListText(tag: '용지종류', value: map['paper_type']),
                 if (map['color'] == model.color_list[1])
-                  Text("칼라비율 : ${map['percentage']}"),
-                if (map['reminder'] != "") Text("메모 : ${map['reminder']}"),
+                  OrderListText(tag: '칼라비율', value: map['percentage']),
+                if (map['reminder'] != "")
+                  OrderListText(tag: '메모', value: map['reminder']),
               ]),
               Container(
                 width: MediaQuery.of(context).size.width - 20,
@@ -231,10 +254,11 @@ class OtherServiceWidget extends StatelessWidget {
                 ),
               ),
               Column(children: [
-                if (map['laminate'] != 0) Text("코팅 : ${map['laminate']}"),
-                if (map['scan'] != 0) Text("스캔 : ${map['scan']}"),
-                if (map['staple'] != 0) Text("스태플 : ${map['staple']}"),
-                if (map['reminder'] != "") Text("메모 : ${map['reminder']}"),
+                if (map['laminate'] != 0) OrderListText(tag: '코팅', value: map['laminate']),
+                if (map['scan'] != 0) OrderListText(tag: '스캔', value: map['scan']),
+                if (map['staple'] != 0) OrderListText(tag: '스태플', value: map['staple']),
+                if (map['reminder'] != "")
+                  OrderListText(tag: '메모', value: map['reminder']),
               ]),
               Container(
                 width: MediaQuery.of(context).size.width - 20,
@@ -284,11 +308,12 @@ class PormBoardWidget extends StatelessWidget {
                 ),
               ),
               Column(children: [
-                Text("사이즈 : ${map['size']}"),
-                Text("수량 : ${map['quantity']}"),
-                Text("종이 종류 : ${map['paper_type']}"),
-                Text("코팅 : ${map['laminate']}"),
-                if (map['reminder'] != "") Text("메모 : ${map['reminder']}"),
+                OrderListText(tag: '사이즈', value: map['size']),
+                OrderListText(tag: '수량', value: map['quantity']),
+                OrderListText(tag: '종이 종류', value: map['paper_type']),
+                OrderListText(tag: '코팅', value: map['laminate']),
+                if (map['reminder'] != "")
+                  OrderListText(tag: '메모', value: map['reminder']),
               ]),
               Container(
                 width: MediaQuery.of(context).size.width - 20,
@@ -338,14 +363,15 @@ class NameCardWidget extends StatelessWidget {
                 ),
               ),
               Column(children: [
-                Text("용지 : ${map['paper_type']}"),
-                Text("수량 : ${map['quantity']}"),
-                Text("양/단면 : ${map['side']}"),
+                OrderListText(tag: '용지', value: map['paper_type']),
+                OrderListText(tag: '수량', value: map['quantity']),
+                OrderListText(tag: '양/단면', value: map['side']),
                 if (map['design_page'] != 0)
-                  Text("디자인페이지 : ${map['design_page']}"),
+                  OrderListText(tag: '디자인페이지', value: map['design_page']),
                 if (map['additional_price'] != 0)
-                  Text("추가금액 : ${map['addtional_price']}"),
-                if (map['reminder'] != "") Text("메모 : ${map['reminder']}"),
+                  OrderListText(tag: '추가금액', value: map['addtional_price']),
+                if (map['reminder'] != "")
+                  OrderListText(tag: '메모', value: map['reminder']),
               ]),
               Container(
                 width: MediaQuery.of(context).size.width - 20,
@@ -395,12 +421,15 @@ class LeafletWidget extends StatelessWidget {
                 ),
               ),
               Column(children: [
-                Text("사이즈 : ${map['size']}"),
-                Text("수량 : ${map['quantity']}"),
-                Text("양/단면 : ${map['side']}"),
-                if (map['design_page'] != 0) Text("디자인페이지 : ${map['design_page']}"),
-                if (map['addtional_price'] != 0) Text("추가금액 : ${map['addtional_price']}"),
-                if (map['reminder'] != "") Text("메모 : ${map['reminder']}"),
+                OrderListText(tag: '사이즈', value: map['size']),
+                OrderListText(tag: '수량', value: map['quantity']),
+                OrderListText(tag: '양/단면', value: map['side']),
+                if (map['design_page'] != 0)
+                  OrderListText(tag: '디자인페이지', value: map['design_page']),
+                if (map['addtional_price'] != 0)
+                  OrderListText(tag: '추가금액', value: map['addtional_price']),
+                if (map['reminder'] != "")
+                  OrderListText(tag: '메모', value: map['reminder']),
               ]),
               Container(
                 width: MediaQuery.of(context).size.width - 20,
@@ -430,49 +459,52 @@ class StickerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     Map<String, dynamic> map = model.toMap();
 
-    return Column(
-      children: [
-        Container(
-          width: MediaQuery.of(context).size.width - 20,
-          decoration: BoxDecoration(
-            border: Border.all(),
-          ),
-          child: Column(
-            children: [
-              Text(
-                "스티커",
-                style: TextStyle(fontSize: 25),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width - 20,
-                child: Divider(
-                  thickness: 2.0,
-                ),
-              ),
-              Column(children: [
-                Text("종류 : ${map['paper_type']}"),
-                Text("코팅 : ${map['laminate']}"),
-                Text("수량 : ${map['quantity']}"),
-                Text("사이즈 : ${map['size']}"),
-                if (map['design_page'] != 0) Text("디자인페이지 : ${map['design_page']}"),
-                if (map['addtional_price'] != 0)Text("추가금액 : ${map['addtional_price']}"),
-                if (map['reminder'] != "") Text("메모 : ${map['reminder']}"),
-              ]),
-              Container(
-                width: MediaQuery.of(context).size.width - 20,
-                child: Divider(
-                  thickness: 2.0,
-                ),
-              ),
-              Text(
-                "가격 : ${f.format(map['price'])}원 ",
-                style: TextStyle(fontSize: 25),
-              ),
-            ],
-          ),
+    return Column(children: [
+      Container(
+        width: MediaQuery.of(context).size.width - 20,
+        decoration: BoxDecoration(
+          border: Border.all(),
         ),
-      ],
-    );
+        child: Column(
+          children: [
+            Text(
+              "스티커",
+              style: TextStyle(fontSize: 25),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width - 20,
+              child: Divider(
+                thickness: 2.0,
+              ),
+            ),
+            Column(
+              children: [
+                OrderListText(tag: '종류', value: map['paper_type']),
+                OrderListText(tag: '코팅', value: map['laminate']),
+                OrderListText(tag: '수량', value: map['quantity']),
+                OrderListText(tag: '사이즈', value: map['size']),
+                if (map['design_page'] != 0)
+                  OrderListText(tag: '디자인페이지', value: map['design_page']),
+                if (map['addtional_price'] != 0)
+                  OrderListText(tag: '추가금액', value: map['addtional_price']),
+                if (map['reminder'] != "")
+                  OrderListText(tag: '메모', value: map['reminder']),
+                Container(
+                  width: MediaQuery.of(context).size.width - 20,
+                  child: Divider(
+                    thickness: 2.0,
+                  ),
+                ),
+                Text(
+                  "가격 : ${f.format(map['price'])}원 ",
+                  style: TextStyle(fontSize: 25),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    ]);
   }
 }
 
@@ -506,12 +538,15 @@ class EnvelopeWidget extends StatelessWidget {
                 ),
               ),
               Column(children: [
-                Text("사이즈 : ${map['size']}"),
-                Text("종류 : ${map['paper_type']}"),
-                Text("수량 : ${map['quantity']}"),
-                if (map['design_page'] != 0) Text("디자인페이지 : ${map['design_page']}"),
-                if (map['addtional_price'] != 0) Text("추가금액 : ${map['addtional_price']}"),
-                if (map['reminder'] != "") Text("메모 : ${map['reminder']}"),
+                OrderListText(tag: '사이즈', value: map['size']),
+                OrderListText(tag: '종류', value: map['paper_type']),
+                OrderListText(tag: '수량', value: map['quantity']),
+                if (map['design_page'] != 0)
+                  OrderListText(tag: '디자인페이지', value: map['design_page']),
+                if (map['addtional_price'] != 0)
+                  OrderListText(tag: '추가금액', value: map['addtional_price']),
+                if (map['reminder'] != "")
+                  OrderListText(tag: '메모', value: map['reminder']),
               ]),
               Container(
                 width: MediaQuery.of(context).size.width - 20,
@@ -561,12 +596,15 @@ class BannerWidget extends StatelessWidget {
                 ),
               ),
               Column(children: [
-                Text("용지 종류 : ${map['paper_type']}"),
-                Text("거치대 : ${map['rests']}"),
-                Text("수량 : ${map['quantity']}"),
-                if (map['design_page'] != 0) Text("디자인페이지 : ${map['design_page']}"),
-                if (map['addtional_price'] != 0) Text("추가금액 : ${map['addtional_price']}"),
-                if (map['reminder'] != "") Text("메모 : ${map['reminder']}"),
+                OrderListText(tag: '용지 종류', value: map['paper_type']),
+                OrderListText(tag: '거치대', value: map['rests']),
+                OrderListText(tag: '수량', value: map['quantity']),
+                if (map['design_page'] != 0)
+                  OrderListText(tag: '디자인페이지', value: map['design_page']),
+                if (map['addtional_price'] != 0)
+                  OrderListText(tag: '추가금액', value: map['addtional_price']),
+                if (map['reminder'] != "")
+                  OrderListText(tag: '메모', value: map['reminder']),
               ]),
               Container(
                 width: MediaQuery.of(context).size.width - 20,

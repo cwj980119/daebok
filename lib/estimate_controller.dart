@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:daebok/estimate_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'estimate_model.dart';
 
 class EstimateController extends GetxController {
@@ -12,6 +14,8 @@ class EstimateController extends GetxController {
 
   String? customer = "";
   int total_sum = 0;
+
+  var f = NumberFormat('###,###,###,###');
 
   @override
   void onInit() {
@@ -81,6 +85,7 @@ class EstimateController extends GetxController {
     customer = value.toString();
   }
 
+  //파이어 스토어 저장
   submit() async {
     try {
       if (total_sum == 0) return;
@@ -200,12 +205,88 @@ class EstimateController extends GetxController {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      TextButton(onPressed: () {}, child: Text("예")),
-                      TextButton(onPressed: () {}, child: Text("아니오"))
+                      TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            checkOrder(context);
+                          },
+                          child: Text("예")),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text("아니오"))
                     ],
                   ),
                 )
               ]);
+        });
+  }
+
+  void checkOrder(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        shape: const RoundedRectangleBorder(
+          // <-- SEE HERE
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(25.0),
+          ),
+        ),
+        builder: (context) {
+          return SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Opacity(opacity: 0, child: IconButton(icon: Icon(Icons.close),onPressed: (){},),),
+                      Text(
+                        "내역 확인",
+                        style: TextStyle(fontSize: 25),
+                      ),
+                      IconButton(icon: Icon(Icons.close),onPressed: (){Navigator.of(context).pop();},),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  if (printNBook.price != 0)
+                    PrintNBookWidget(model: printNBook),
+                  if (bigprint.price != 0) BigPrintWidget(model: bigprint),
+                  if (otherService.price != 0)
+                    OtherServiceWidget(model: otherService),
+                  if (pormBoard.price != 0) PormBoardWidget(model: pormBoard),
+                  if (offSet.nameCard?.price != 0)
+                    NameCardWidget(model: offSet.nameCard!),
+                  if (offSet.leaflet?.price != 0)
+                    LeafletWidget(model: offSet!.leaflet!),
+                  if (offSet.sticker?.price != 0)
+                    StickerWidget(model: offSet.sticker!),
+                  if (offSet.envelope?.price != 0)
+                    EnvelopeWidget(model: offSet.envelope!),
+                  if (offSet.banner?.price != 0)
+                    BannerWidget(model: offSet.banner!),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "총 금액 : ${f.format(total_sum)}원",
+                    style: TextStyle(fontSize: 25),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  ElevatedButton(onPressed: (){}, child: Text("확인"))
+                ],
+              ),
+            ),
+          );
         });
   }
 

@@ -493,6 +493,7 @@ class Estimate extends StatelessWidget {
                                           if (value == "") return;
                                           controller.bigprint
                                               .setQuantity(int.parse(value));
+                                          controller.CalcTotal();
                                         },
                                       ),
                                     )
@@ -856,6 +857,7 @@ class Estimate extends StatelessWidget {
                                           if (value == "") return;
                                           controller.pormBoard
                                               .setQuantity(int.parse(value));
+                                          controller.CalcTotal();
                                         },
                                       ),
                                     )
@@ -2338,6 +2340,7 @@ class Estimate extends StatelessWidget {
                                           padding: EdgeInsets.all(10),
                                           color: Colors.white,
                                           child: TextField(
+                                            keyboardType: TextInputType.multiline,
                                             controller: controller.offSet.banner
                                                 ?.reminderController,
                                             onChanged: (value) {
@@ -2438,47 +2441,48 @@ class Estimate extends StatelessWidget {
                   TextButton(
                     onPressed: () {
                       controller.CalcTotal();
-                      if(controller.total_sum!=0) {
-                        showModalBottomSheet(
-                          context: context,
-                          shape: const RoundedRectangleBorder(
-                            // <-- SEE HERE
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(25.0),
-                            ),
-                          ),
-                          builder: (context) {
-                            return SingleChildScrollView(
-                              child: Container(
-                                child: Column(
-                                  children: [
-                                    SizedBox(height: 10,),
-                                    Text(
-                                      "내역 확인",
-                                      style: TextStyle(fontSize: 25),
-                                    ),
-                                    SizedBox(height: 15,),
-                                    if(controller.printNBook.price != 0) PrintNBookWidget(model: controller.printNBook),
-                                    if(controller.bigprint.price != 0) BigPrintWidget(model: controller.bigprint),
-                                    if(controller.otherService.price != 0) OtherServiceWidget(model: controller.otherService),
-                                    if(controller.pormBoard.price != 0) PormBoardWidget(model: controller.pormBoard),
-                                    if(controller.offSet.nameCard?.price != 0) NameCardWidget(model: controller.offSet.nameCard!),
-                                    if(controller.offSet.leaflet?.price != 0) LeafletWidget(model: controller.offSet!.leaflet!),
-                                    if(controller.offSet.sticker?.price != 0) StickerWidget(model: controller.offSet.sticker!),
-                                    if(controller.offSet.envelope?.price != 0) EnvelopeWidget(model: controller.offSet.envelope!),
-                                    if(controller.offSet.banner?.price != 0) BannerWidget(model: controller.offSet.banner!),
-                                    SizedBox(height: 10,),
-                                    Text(
-                                      "총 금액 : ${f.format(controller.total_sum)}원",
-                                      style: TextStyle(fontSize: 25),
-                                    ),
-                                    SizedBox(height: 15,),
-                                  ],
-                                ),
-                              ),
-                            );
-                          });
-                      }
+                      // if(controller.total_sum!=0) {
+                      //   showModalBottomSheet(
+                      //     context: context,
+                      //     shape: const RoundedRectangleBorder(
+                      //       // <-- SEE HERE
+                      //       borderRadius: BorderRadius.vertical(
+                      //         top: Radius.circular(25.0),
+                      //       ),
+                      //     ),
+                      //     builder: (context) {
+                      //       return SingleChildScrollView(
+                      //         child: Container(
+                      //           child: Column(
+                      //             children: [
+                      //               SizedBox(height: 10,),
+                      //               Text(
+                      //                 "내역 확인",
+                      //                 style: TextStyle(fontSize: 25),
+                      //               ),
+                      //               SizedBox(height: 15,),
+                      //               if(controller.printNBook.price != 0) PrintNBookWidget(model: controller.printNBook),
+                      //               if(controller.bigprint.price != 0) BigPrintWidget(model: controller.bigprint),
+                      //               if(controller.otherService.price != 0) OtherServiceWidget(model: controller.otherService),
+                      //               if(controller.pormBoard.price != 0) PormBoardWidget(model: controller.pormBoard),
+                      //               if(controller.offSet.nameCard?.price != 0) NameCardWidget(model: controller.offSet.nameCard!),
+                      //               if(controller.offSet.leaflet?.price != 0) LeafletWidget(model: controller.offSet!.leaflet!),
+                      //               if(controller.offSet.sticker?.price != 0) StickerWidget(model: controller.offSet.sticker!),
+                      //               if(controller.offSet.envelope?.price != 0) EnvelopeWidget(model: controller.offSet.envelope!),
+                      //               if(controller.offSet.banner?.price != 0) BannerWidget(model: controller.offSet.banner!),
+                      //               SizedBox(height: 10,),
+                      //               Text(
+                      //                 "총 금액 : ${f.format(controller.total_sum)}원",
+                      //                 style: TextStyle(fontSize: 25),
+                      //               ),
+                      //               SizedBox(height: 15,),
+                      //             ],
+                      //           ),
+                      //         ),
+                      //       );
+                      //     });
+                      // }
+                      controller.SubmitDialog(context);
                     },
                     child: Text(
                       '제출',
