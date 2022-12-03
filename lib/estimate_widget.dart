@@ -98,14 +98,96 @@ class OrderListText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
+        children: [
+          SizedBox(
+            height: 5,
+          ),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "${tag}",
+                  style: TextStyle(fontSize: 20),
+                ),
+                Text(
+                  " : ",
+                  style: TextStyle(fontSize: 20),
+                ),
+                Flexible(
+                    child: Text(
+                  "${value}",
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 5,
+                  style: TextStyle(fontSize: 20),
+                )),
+              ]),
+        ],
+      ),
+    );
+  }
+}
+
+class OrderListTitle extends StatelessWidget {
+  const OrderListTitle({Key? key, required this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width - 20,
+      decoration: BoxDecoration(
+          color: Colors.green,
+          border:
+              Border(bottom: BorderSide(width: 1.0, style: BorderStyle.solid))),
+      child: Center(
+        child: Column(
           children: [
-            Text("${tag}"),
-            Text(" : "),
-            Flexible(child: Text("${value}",overflow: TextOverflow.ellipsis,maxLines: 5,)),
-          ]),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "${title}",
+              style: TextStyle(fontSize: 25, color: Colors.white),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class OrderListPrice extends StatelessWidget {
+  OrderListPrice({Key? key, required this.price}) : super(key: key);
+
+  int price;
+  var f = NumberFormat('###,###,###,###');
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width - 20,
+      decoration: BoxDecoration(
+          border: Border(top: BorderSide()), color: Colors.green[200]),
+      child: Column(
+        children: [
+          SizedBox(
+            height: 4,
+          ),
+          Text(
+            "가격 : ${f.format(price)}원 ",
+            style: TextStyle(fontSize: 25),
+          ),
+          SizedBox(
+            height: 4,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -124,43 +206,32 @@ class PrintNBookWidget extends StatelessWidget {
         Container(
           width: MediaQuery.of(context).size.width - 20,
           decoration: BoxDecoration(
-            border: Border.all(),
-          ),
+              border: Border.all(width: 3.0),
+              borderRadius: BorderRadius.circular(20)),
+          foregroundDecoration: BoxDecoration(
+              border: Border.all(width: 3.0),
+              borderRadius: BorderRadius.circular(12)),
           child: Column(
             children: [
-              Text(
-                "프린트 / 제본",
-                style: TextStyle(fontSize: 25),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width - 20,
-                child: Divider(
-                  thickness: 2.0,
-                ),
-              ),
+              OrderListTitle(title: '프린트/제본'),
               Column(children: [
-                OrderListText(tag: '사이즈', value: map['size']),
-                OrderListText(tag: '수량', value: map['quantity']),
-                OrderListText(tag: '흑백/칼라', value: map['color']),
-                if (map['color'] == model.color_list[1])
-                  OrderListText(tag: '용지종류', value: map['paper_type']),
-                if (map['color'] == model.color_list[1])
-                  OrderListText(tag: '칼라비율', value: map['percentage']),
-                if (map['reminder'] != "") OrderListText(tag: '메모', value: map['reminder']),
+                // OrderListText(tag: '사이즈', value: map['size']),
+                // OrderListText(tag: '수량', value: map['quantity']),
+                // OrderListText(tag: '흑백/칼라', value: map['color']),
+                // if (map['color'] == model.color_list[1])
+                //   OrderListText(tag: '용지종류', value: map['paper_type']),
+                // if (map['color'] == model.color_list[1])
+                //   OrderListText(tag: '칼라비율', value: map['percentage']),
+                // if (map['reminder'] != "")
+                //   OrderListText(tag: '메모', value: map['reminder']),
               ]),
-              Container(
-                width: MediaQuery.of(context).size.width - 20,
-                child: Divider(
-                  thickness: 2.0,
-                ),
-              ),
-              Text(
-                "가격 : ${f.format(map['price'])}원 ",
-                style: TextStyle(fontSize: 25),
-              ),
+              OrderListPrice(price: map['price'])
             ],
           ),
         ),
+        SizedBox(
+          height: 10,
+        )
       ],
     );
   }
@@ -181,20 +252,14 @@ class BigPrintWidget extends StatelessWidget {
         Container(
           width: MediaQuery.of(context).size.width - 20,
           decoration: BoxDecoration(
-            border: Border.all(),
-          ),
+              border: Border.all(width: 3.0),
+              borderRadius: BorderRadius.circular(20)),
+          foregroundDecoration: BoxDecoration(
+              border: Border.all(width: 3.0),
+              borderRadius: BorderRadius.circular(12)),
           child: Column(
             children: [
-              Text(
-                "대형 프린트",
-                style: TextStyle(fontSize: 25),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width - 20,
-                child: Divider(
-                  thickness: 2.0,
-                ),
-              ),
+              OrderListTitle(title: '대형 프린트'),
               Column(children: [
                 OrderListText(tag: '사이즈', value: map['size']),
                 OrderListText(tag: '수량', value: map['quantity']),
@@ -206,19 +271,13 @@ class BigPrintWidget extends StatelessWidget {
                 if (map['reminder'] != "")
                   OrderListText(tag: '메모', value: map['reminder']),
               ]),
-              Container(
-                width: MediaQuery.of(context).size.width - 20,
-                child: Divider(
-                  thickness: 2.0,
-                ),
-              ),
-              Text(
-                "가격 : ${f.format(map['price'])}원 ",
-                style: TextStyle(fontSize: 25),
-              ),
+              OrderListPrice(price: map['price'])
             ],
           ),
         ),
+        SizedBox(
+          height: 10,
+        )
       ],
     );
   }
@@ -239,40 +298,31 @@ class OtherServiceWidget extends StatelessWidget {
         Container(
           width: MediaQuery.of(context).size.width - 20,
           decoration: BoxDecoration(
-            border: Border.all(),
-          ),
+              border: Border.all(width: 3.0),
+              borderRadius: BorderRadius.circular(20)),
+          foregroundDecoration: BoxDecoration(
+              border: Border.all(width: 3.0),
+              borderRadius: BorderRadius.circular(12)),
           child: Column(
             children: [
-              Text(
-                "코팅/스캔/스태플",
-                style: TextStyle(fontSize: 25),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width - 20,
-                child: Divider(
-                  thickness: 2.0,
-                ),
-              ),
+              OrderListTitle(title: '코팅/스캔/스태플'),
               Column(children: [
-                if (map['laminate'] != 0) OrderListText(tag: '코팅', value: map['laminate']),
-                if (map['scan'] != 0) OrderListText(tag: '스캔', value: map['scan']),
-                if (map['staple'] != 0) OrderListText(tag: '스태플', value: map['staple']),
+                if (map['laminate'] != 0)
+                  OrderListText(tag: '코팅', value: '${map['laminate']}원'),
+                if (map['scan'] != 0)
+                  OrderListText(tag: '스캔', value: '${map['scan']}원'),
+                if (map['staple'] != 0)
+                  OrderListText(tag: '스태플', value: '${map['staple']}원'),
                 if (map['reminder'] != "")
                   OrderListText(tag: '메모', value: map['reminder']),
               ]),
-              Container(
-                width: MediaQuery.of(context).size.width - 20,
-                child: Divider(
-                  thickness: 2.0,
-                ),
-              ),
-              Text(
-                "가격 : ${f.format(map['price'])}원 ",
-                style: TextStyle(fontSize: 25),
-              ),
+              OrderListPrice(price: map['price'])
             ],
           ),
         ),
+        SizedBox(
+          height: 10,
+        )
       ],
     );
   }
@@ -293,20 +343,14 @@ class PormBoardWidget extends StatelessWidget {
         Container(
           width: MediaQuery.of(context).size.width - 20,
           decoration: BoxDecoration(
-            border: Border.all(),
-          ),
+              border: Border.all(width: 3.0),
+              borderRadius: BorderRadius.circular(20)),
+          foregroundDecoration: BoxDecoration(
+              border: Border.all(width: 3.0),
+              borderRadius: BorderRadius.circular(12)),
           child: Column(
             children: [
-              Text(
-                "폼보드",
-                style: TextStyle(fontSize: 25),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width - 20,
-                child: Divider(
-                  thickness: 2.0,
-                ),
-              ),
+              OrderListTitle(title: '폼보드'),
               Column(children: [
                 OrderListText(tag: '사이즈', value: map['size']),
                 OrderListText(tag: '수량', value: map['quantity']),
@@ -315,19 +359,13 @@ class PormBoardWidget extends StatelessWidget {
                 if (map['reminder'] != "")
                   OrderListText(tag: '메모', value: map['reminder']),
               ]),
-              Container(
-                width: MediaQuery.of(context).size.width - 20,
-                child: Divider(
-                  thickness: 2.0,
-                ),
-              ),
-              Text(
-                "가격 : ${f.format(map['price'])}원 ",
-                style: TextStyle(fontSize: 25),
-              ),
+              OrderListPrice(price: map['price'])
             ],
           ),
         ),
+        SizedBox(
+          height: 10,
+        )
       ],
     );
   }
@@ -348,44 +386,32 @@ class NameCardWidget extends StatelessWidget {
         Container(
           width: MediaQuery.of(context).size.width - 20,
           decoration: BoxDecoration(
-            border: Border.all(),
-          ),
+              border: Border.all(width: 3.0),
+              borderRadius: BorderRadius.circular(20)),
+          foregroundDecoration: BoxDecoration(
+              border: Border.all(width: 3.0),
+              borderRadius: BorderRadius.circular(12)),
           child: Column(
             children: [
-              Text(
-                "명함",
-                style: TextStyle(fontSize: 25),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width - 20,
-                child: Divider(
-                  thickness: 2.0,
-                ),
-              ),
+              OrderListTitle(title: '명함'),
               Column(children: [
                 OrderListText(tag: '용지', value: map['paper_type']),
                 OrderListText(tag: '수량', value: map['quantity']),
                 OrderListText(tag: '양/단면', value: map['side']),
                 if (map['design_page'] != 0)
-                  OrderListText(tag: '디자인페이지', value: map['design_page']),
-                if (map['additional_price'] != 0)
-                  OrderListText(tag: '추가금액', value: map['addtional_price']),
+                  OrderListText(tag: '디자인페이지', value: '${map['design_page']}원'),
+                if (map['addtional_price'] != 0)
+                  OrderListText(tag: '추가금액', value: '${map['addtional_price']}원'),
                 if (map['reminder'] != "")
                   OrderListText(tag: '메모', value: map['reminder']),
               ]),
-              Container(
-                width: MediaQuery.of(context).size.width - 20,
-                child: Divider(
-                  thickness: 2.0,
-                ),
-              ),
-              Text(
-                "가격 : ${f.format(map['price'])}원 ",
-                style: TextStyle(fontSize: 25),
-              ),
+              OrderListPrice(price: map['price'])
             ],
           ),
         ),
+        SizedBox(
+          height: 10,
+        )
       ],
     );
   }
@@ -406,44 +432,32 @@ class LeafletWidget extends StatelessWidget {
         Container(
           width: MediaQuery.of(context).size.width - 20,
           decoration: BoxDecoration(
-            border: Border.all(),
-          ),
+              border: Border.all(width: 3.0),
+              borderRadius: BorderRadius.circular(20)),
+          foregroundDecoration: BoxDecoration(
+              border: Border.all(width: 3.0),
+              borderRadius: BorderRadius.circular(12)),
           child: Column(
             children: [
-              Text(
-                "리플렛",
-                style: TextStyle(fontSize: 25),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width - 20,
-                child: Divider(
-                  thickness: 2.0,
-                ),
-              ),
+              OrderListTitle(title: '리플렛'),
               Column(children: [
                 OrderListText(tag: '사이즈', value: map['size']),
                 OrderListText(tag: '수량', value: map['quantity']),
                 OrderListText(tag: '양/단면', value: map['side']),
                 if (map['design_page'] != 0)
-                  OrderListText(tag: '디자인페이지', value: map['design_page']),
+                  OrderListText(tag: '디자인페이지', value: '${map['design_page']}원'),
                 if (map['addtional_price'] != 0)
-                  OrderListText(tag: '추가금액', value: map['addtional_price']),
+                  OrderListText(tag: '추가금액', value: '${map['addtional_price']}원'),
                 if (map['reminder'] != "")
                   OrderListText(tag: '메모', value: map['reminder']),
               ]),
-              Container(
-                width: MediaQuery.of(context).size.width - 20,
-                child: Divider(
-                  thickness: 2.0,
-                ),
-              ),
-              Text(
-                "가격 : ${f.format(map['price'])}원 ",
-                style: TextStyle(fontSize: 25),
-              ),
+              OrderListPrice(price: map['price'])
             ],
           ),
         ),
+        SizedBox(
+          height: 10,
+        )
       ],
     );
   }
@@ -463,20 +477,14 @@ class StickerWidget extends StatelessWidget {
       Container(
         width: MediaQuery.of(context).size.width - 20,
         decoration: BoxDecoration(
-          border: Border.all(),
-        ),
+            border: Border.all(width: 3.0),
+            borderRadius: BorderRadius.circular(20)),
+        foregroundDecoration: BoxDecoration(
+            border: Border.all(width: 3.0),
+            borderRadius: BorderRadius.circular(12)),
         child: Column(
           children: [
-            Text(
-              "스티커",
-              style: TextStyle(fontSize: 25),
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width - 20,
-              child: Divider(
-                thickness: 2.0,
-              ),
-            ),
+            OrderListTitle(title: '스티커'),
             Column(
               children: [
                 OrderListText(tag: '종류', value: map['paper_type']),
@@ -484,26 +492,20 @@ class StickerWidget extends StatelessWidget {
                 OrderListText(tag: '수량', value: map['quantity']),
                 OrderListText(tag: '사이즈', value: map['size']),
                 if (map['design_page'] != 0)
-                  OrderListText(tag: '디자인페이지', value: map['design_page']),
+                  OrderListText(tag: '디자인페이지', value: '${map['design_page']}원'),
                 if (map['addtional_price'] != 0)
-                  OrderListText(tag: '추가금액', value: map['addtional_price']),
+                  OrderListText(tag: '추가금액', value: '${map['addtional_price']}원'),
                 if (map['reminder'] != "")
                   OrderListText(tag: '메모', value: map['reminder']),
-                Container(
-                  width: MediaQuery.of(context).size.width - 20,
-                  child: Divider(
-                    thickness: 2.0,
-                  ),
-                ),
-                Text(
-                  "가격 : ${f.format(map['price'])}원 ",
-                  style: TextStyle(fontSize: 25),
-                ),
+                OrderListPrice(price: map['price'])
               ],
             ),
           ],
         ),
       ),
+      SizedBox(
+        height: 10,
+      )
     ]);
   }
 }
@@ -523,44 +525,32 @@ class EnvelopeWidget extends StatelessWidget {
         Container(
           width: MediaQuery.of(context).size.width - 20,
           decoration: BoxDecoration(
-            border: Border.all(),
-          ),
+              border: Border.all(width: 3.0),
+              borderRadius: BorderRadius.circular(20)),
+          foregroundDecoration: BoxDecoration(
+              border: Border.all(width: 3.0),
+              borderRadius: BorderRadius.circular(12)),
           child: Column(
             children: [
-              Text(
-                "봉투",
-                style: TextStyle(fontSize: 25),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width - 20,
-                child: Divider(
-                  thickness: 2.0,
-                ),
-              ),
+              OrderListTitle(title: '봉투'),
               Column(children: [
                 OrderListText(tag: '사이즈', value: map['size']),
                 OrderListText(tag: '종류', value: map['paper_type']),
                 OrderListText(tag: '수량', value: map['quantity']),
                 if (map['design_page'] != 0)
-                  OrderListText(tag: '디자인페이지', value: map['design_page']),
+                  OrderListText(tag: '디자인페이지', value: '${map['design_page']}원'),
                 if (map['addtional_price'] != 0)
-                  OrderListText(tag: '추가금액', value: map['addtional_price']),
+                  OrderListText(tag: '추가금액', value: '${map['addtional_price']}원'),
                 if (map['reminder'] != "")
                   OrderListText(tag: '메모', value: map['reminder']),
               ]),
-              Container(
-                width: MediaQuery.of(context).size.width - 20,
-                child: Divider(
-                  thickness: 2.0,
-                ),
-              ),
-              Text(
-                "가격 : ${f.format(map['price'])}원 ",
-                style: TextStyle(fontSize: 25),
-              ),
+              OrderListPrice(price: map['price'])
             ],
           ),
         ),
+        SizedBox(
+          height: 10,
+        )
       ],
     );
   }
@@ -581,44 +571,32 @@ class BannerWidget extends StatelessWidget {
         Container(
           width: MediaQuery.of(context).size.width - 20,
           decoration: BoxDecoration(
-            border: Border.all(),
-          ),
+              border: Border.all(width: 3.0),
+              borderRadius: BorderRadius.circular(20)),
+          foregroundDecoration: BoxDecoration(
+              border: Border.all(width: 3.0),
+              borderRadius: BorderRadius.circular(12)),
           child: Column(
             children: [
-              Text(
-                "배너",
-                style: TextStyle(fontSize: 25),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width - 20,
-                child: Divider(
-                  thickness: 2.0,
-                ),
-              ),
+              OrderListTitle(title: '배너'),
               Column(children: [
                 OrderListText(tag: '용지 종류', value: map['paper_type']),
-                OrderListText(tag: '거치대', value: map['rests']),
+                OrderListText(tag: '거치대', value: '${map['rests']}원'),
                 OrderListText(tag: '수량', value: map['quantity']),
                 if (map['design_page'] != 0)
-                  OrderListText(tag: '디자인페이지', value: map['design_page']),
+                  OrderListText(tag: '디자인페이지', value: '${map['design_page']}원'),
                 if (map['addtional_price'] != 0)
-                  OrderListText(tag: '추가금액', value: map['addtional_price']),
+                  OrderListText(tag: '추가금액', value: '${map['addtional_price']}원'),
                 if (map['reminder'] != "")
                   OrderListText(tag: '메모', value: map['reminder']),
               ]),
-              Container(
-                width: MediaQuery.of(context).size.width - 20,
-                child: Divider(
-                  thickness: 2.0,
-                ),
-              ),
-              Text(
-                "가격 : ${f.format(map['price'])}원 ",
-                style: TextStyle(fontSize: 25),
-              ),
+              OrderListPrice(price: map['price'])
             ],
           ),
         ),
+        SizedBox(
+          height: 10,
+        )
       ],
     );
   }

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:daebok/Home.dart';
 import 'package:daebok/estimate_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -76,7 +77,7 @@ class EstimateController extends GetxController {
   Map<String, dynamic> toMap() {
     Map<String, dynamic> data = {};
     data['customer'] = customer;
-    data['total_sum'] = total_sum;
+    data['price'] = total_sum;
     data['timestamp'] = new DateTime.now();
     return data;
   }
@@ -86,7 +87,7 @@ class EstimateController extends GetxController {
   }
 
   //파이어 스토어 저장
-  submit() async {
+  Future submit() async {
     try {
       if (total_sum == 0) return;
       FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -149,20 +150,98 @@ class EstimateController extends GetxController {
             .collection('new')
             .doc('banner')
             .set(offSet.banner!.toMap());
+      return true;
 
       //firestore.collection('Estimate').add(value);
       //firestore.collection('Estimate').doc().collection('new').add(value);
-    } catch (ex) {}
+    } catch (ex) {
+      return false;
+    }
+  }
+
+  void SubmitCheck(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext ctx) {
+        return Container(
+          child: FutureBuilder(
+            future: submit(),
+            builder: (BuildContext ctx, AsyncSnapshot snapshot) {
+              if (snapshot.hasData == false) {
+                return AlertDialog(
+                  content: Text(
+                    "주문을 저장중입니다.",
+                    textAlign: TextAlign.center,
+                  ),
+                  actions: [
+                    Center(child: CircularProgressIndicator()),
+                    SizedBox(
+                      height: 10,
+                    )
+                  ],
+                );
+              } else if (snapshot.hasError) {
+                return AlertDialog(
+                  content: Text(
+                    "오류가 발생했습니다.",
+                    textAlign: TextAlign.center,
+                  ),
+                  actions: [
+                    Center(
+                        child: ElevatedButton(
+                          child: Text('확인'),
+                          style:
+                          ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ))
+                  ],
+                );
+              }
+              return AlertDialog(
+                content: Text(
+                  "주문이 저장되었습니다.",
+                  textAlign: TextAlign.center,
+                ),
+                actions: [
+                  Center(
+                      child: ElevatedButton(
+                    child: Text('확인'),
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                    onPressed: () {
+                      Get.offAll(Home());
+                    },
+                  ))
+                ],
+              );
+              // return AlertDialog(
+              //   content: Text("주문이 저장되었습니다."),
+              //   actions: [
+              //     Center(
+              //         child: TextButton(
+              //             onPressed: () {
+              //               Navigator.of(context).pop();
+              //             },
+              //             child: Text("확인")),
+              //     )
+              //   ],
+              // );
+            },
+          ),
+        );
+      },
+    );
   }
 
   void SubmitDialog(BuildContext context) {
-    print("${customer}, ${total_sum}");
     showDialog(
         context: context,
         builder: (BuildContext ctx) {
-          if (customer == "") {
+          if (total_sum <= 0) {
             return AlertDialog(
-              content: Text("고객명을 입력해주세요"),
+              content: Text("상품이 담겨있지 않습니다"),
               actions: [
                 Center(
                   child: TextButton(
@@ -173,9 +252,9 @@ class EstimateController extends GetxController {
                 )
               ],
             );
-          } else if (total_sum <= 0) {
+          } else if (customer == "") {
             return AlertDialog(
-              content: Text("상품이 담겨있지 않습니다"),
+              content: Text("고객명을 입력해주세요"),
               actions: [
                 Center(
                   child: TextButton(
@@ -194,9 +273,18 @@ class EstimateController extends GetxController {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("주문을 접수 하시겠습니까?"),
+                    Text(
+                      "주문을 접수 하시겠습니까?",
+                      style: TextStyle(fontSize: 23),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Text("주문자 : ${customer}"),
-                    Text("비용 : ${total_sum}"),
+                    SizedBox(
+                      height: 3,
+                    ),
+                    Text("비용 : ${f.format(total_sum)}원"),
                   ],
                 ),
               ),
@@ -245,16 +333,34 @@ class EstimateController extends GetxController {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Opacity(opacity: 0, child: IconButton(icon: Icon(Icons.close),onPressed: (){},),),
+                      Opacity(
+                        opacity: 0,
+                        child: IconButton(
+                          icon: Icon(Icons.close),
+                          onPressed: () {},
+                        ),
+                      ),
                       Text(
                         "내역 확인",
-                        style: TextStyle(fontSize: 25),
+                        style: TextStyle(fontSize: 30),
                       ),
-                      IconButton(icon: Icon(Icons.close),onPressed: (){Navigator.of(context).pop();},),
+                      IconButton(
+                        icon: Icon(Icons.close),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
                     ],
                   ),
                   SizedBox(
-                    height: 15,
+                    height: 5,
+                  ),
+                  Text(
+                    '- ${customer} 님 -',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  SizedBox(
+                    height: 10,
                   ),
                   if (printNBook.price != 0)
                     PrintNBookWidget(model: printNBook),
@@ -277,12 +383,17 @@ class EstimateController extends GetxController {
                   ),
                   Text(
                     "총 금액 : ${f.format(total_sum)}원",
-                    style: TextStyle(fontSize: 25),
+                    style: TextStyle(fontSize: 25, color: Colors.red),
                   ),
                   SizedBox(
                     height: 15,
                   ),
-                  ElevatedButton(onPressed: (){}, child: Text("확인"))
+                  ElevatedButton(
+                      onPressed: () {
+                        SubmitCheck(context);
+                      },
+                      child: Text("확인"),
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.green),)
                 ],
               ),
             ),

@@ -24,15 +24,16 @@ class Estimate extends StatelessWidget {
           centerTitle: true,
           title: Text(
             '견적서',
-            style: TextStyle(fontSize: 25),
+            style: TextStyle(fontSize: 25, fontFamily: 'Hanna11'),
             textAlign: TextAlign.center,
           ),
           actions: [
+            IconButton(onPressed: (){}, icon: Icon(Icons.refresh), color: Colors.yellow,),
             IconButton(
                 onPressed: () {
                   controller.foldAll();
                 },
-                icon: Icon(Icons.keyboard_double_arrow_up))
+                icon: Icon(Icons.keyboard_double_arrow_up)),
           ],
         ),
         body: SingleChildScrollView(
