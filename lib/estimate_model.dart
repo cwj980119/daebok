@@ -15,8 +15,8 @@ class PrintNBook {
   String? reminder;
 
   List size_list = ['A5', 'B5', 'A4', 'B4', 'A3'];
-  List binding_style_list = ['일반', '책', '링', '3공', '스테플'];
-  List color_list = ['흑백', '칼라'];
+  List binding_style_list = ['없음', '책', '링', '3공', '스테플'];
+  List color_list = ['흑백', '칼라 레이져','칼라 잉크젯'];
   List filetype_list = ['PDF', 'JPEG', 'AUTOCAD', 'AI'];
   List paper_type_list = ['일반지', '칼라지', '특수지'];
   List side_list = ['단면', '양면'];
@@ -412,6 +412,7 @@ class OtherService {
 
 class PormBoard {
   String kind = "pormboard";
+  String? board_type;
   String? size;
   int? quantity;
   String? paper_type;
@@ -420,6 +421,7 @@ class PormBoard {
 
   int price = 0;
 
+  List board_type_list = ['폼보드', '포맥스3T', '포맥스5T', '포맥스10T', '하드보드'];
   List size_list = ['A4', 'A3', 'A2', 'A1', 'A0'];
   List paper_type_list = ['유포지', '인화지', '켈지'];
   List laminate_list = ['안함', '유광', '무광'];
@@ -430,6 +432,7 @@ class PormBoard {
   Map<String, dynamic> toMap() {
     Map<String, dynamic> data = {};
     data['kind'] = kind;
+    data['board_type'] = board_type;
     data['size'] = size;
     data['quantity'] = quantity;
     data['paper_type'] = paper_type;
@@ -440,6 +443,7 @@ class PormBoard {
   }
 
   PormBoard() {
+    this.board_type = this.board_type_list[0];
     this.size = this.size_list[0];
     this.quantity = 0;
     this.paper_type = paper_type_list[0];
@@ -448,6 +452,7 @@ class PormBoard {
   }
 
   Reset() {
+    this.board_type = this.board_type_list[0];
     this.size = this.size_list[0];
     this.quantity = 0;
     this.paper_type = paper_type_list[0];
@@ -460,6 +465,9 @@ class PormBoard {
 
   setSize(value) {
     size = value.toString();
+  }
+  setBoardType(value) {
+    board_type= value.toString();
   }
 
   setQuantity(value) {
@@ -728,7 +736,7 @@ class Sticker {
   String? reminder;
   int price = 0;
 
-  List paper_type_list = ['일반지', '도무송'];
+  List paper_type_list = ['일반', '도무송','주차'];
   List laminate_list = ['없음', '있음'];
   List size_list = [
     '6cm 미만',

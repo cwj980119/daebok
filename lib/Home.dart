@@ -93,15 +93,21 @@ Widget _builditem(DocumentSnapshot docu) {
         padding: EdgeInsets.all(20),
         width: 20,
         height: 200,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('${snapshot.data.docs[0]['kind']}'),
-            Text('가격 : ${docu['price']}'),
-            Text('고객명 : ${docu['customer']}'),
-            Text(
-                '접수일자 : ${DateFormat('yy년 MM월 dd일').format(docu['timestamp'].toDate())}')
-          ],
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all()
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('${snapshot.data.docs[0]['kind']}'),
+              Text('가격 : ${docu['price']}'),
+              Text('고객명 : ${docu['customer']}'),
+              Text(
+                  '접수일자 : ${DateFormat('yy년 MM월 dd일').format(docu['timestamp'].toDate())}'),
+              Text('메모 : ${snapshot.data.docs[0]['reminder']}'),
+            ],
+          ),
         ),
       );
     },

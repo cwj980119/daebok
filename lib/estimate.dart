@@ -262,6 +262,7 @@ class Estimate extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
+                                if(controller.printNBook.color == '칼라 레이져')
                                 Row(
                                   children: [
                                     Text(
@@ -802,6 +803,50 @@ class Estimate extends StatelessWidget {
                     },
                     body: Column(
                       children: [
+                        Center(
+                          child: Container(
+                            color: Colors.white,
+                            padding: EdgeInsets.all(10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      '보드 종류',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    DropdownButton(
+                                      value: controller.pormBoard.board_type,
+                                      items: controller.pormBoard.board_type_list
+                                          .map((value) {
+                                        return DropdownMenuItem(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList(),
+                                      onChanged: (value) {
+                                        controller.pormBoard.setBoardType(value);
+                                        controller.CalcTotal();
+                                      },
+                                    ),
+                                  ],
+                                ), //Size
+                                Row(
+                                  children: [
+                                    Text(
+                                      '*하드보드는 A3까지',
+                                      style: TextStyle(fontSize: 20, color: Colors.grey),
+                                    ),
+                                  ],
+                                ), //Quantity
+                              ],
+                            ),
+                          ),
+                        ),
                         Center(
                           child: Container(
                             color: Colors.white,
