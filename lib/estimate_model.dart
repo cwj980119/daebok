@@ -128,15 +128,21 @@ class BigPrint {
   String? size;
   int? quantity;
   String? color;
+  String? black_picture;
   String? paper_type;
   String? percentage;
   String? reminder;
+  String? staple;
+  String? thickness;
   int price = 0;
 
   List size_list = ['A2', 'A1', 'A0'];
   List color_list = ['흑백', '칼라'];
+  List black_picture_list = ['50% 미만', '50% 이상'];
   List paper_type_list = ['일반지', '칼라지', '유포지', '인화지', '캔버스지'];
   List percentage_list = ['20이하', '20~50', '50이상'];
+  List staple_list = ['없음','스태플'];
+  List thickness_list = ['~10mm','~20mm','~30mm'];
 
   final quantityController = TextEditingController();
   final reminderController = TextEditingController();
@@ -167,6 +173,7 @@ class BigPrint {
       '301': 2000
     },
   };
+
   Map<String, Map<String, Map<String, int>>> ColorFee = {
     'A2': {
       '일반지': {
@@ -250,6 +257,18 @@ class BigPrint {
       },
     },
   };
+  Map<String, Map<String, int>> StapleFee = {
+    'A2': {
+      '~10mm': 30000,
+      '~20mm': 35000,
+      '~30mm': 40000,
+    },
+    'A1': {
+      '~10mm': 40000,
+      '~20mm': 45000,
+      '~30mm': 50000,
+    },
+  };
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> data = {};
@@ -257,9 +276,16 @@ class BigPrint {
     data['size'] = size;
     data['quantity'] = quantity;
     data['color'] = color;
+    if (color == '흑백'){
+      data['black_picture'] = black_picture;
+    }
     if (color == '칼라') {
       data['paper_type'] = paper_type;
       data['percentage'] = percentage;
+    }
+    data['staple'] = staple;
+    if(staple != '없음'){
+      data['thickness'] = thickness;
     }
     data['reminder'] = reminder;
     data['price'] = price;
@@ -270,8 +296,11 @@ class BigPrint {
     this.size = this.size_list[0];
     this.quantity = 0;
     this.color = this.color_list[0];
+    this.black_picture = this.black_picture_list[0];
     this.paper_type = paper_type_list[0];
     this.percentage = percentage_list[0];
+    this.staple = staple_list[0];
+    this.thickness = thickness_list[0];
     this.reminder = "";
   }
 
@@ -279,8 +308,11 @@ class BigPrint {
     this.size = this.size_list[0];
     this.quantity = 0;
     this.color = this.color_list[0];
+    this.black_picture = this.black_picture_list[0];
     this.paper_type = paper_type_list[0];
     this.percentage = percentage_list[0];
+    this.staple = staple_list[0];
+    this.thickness = thickness_list[0];
     this.reminder = "";
     this.price = 0;
     quantityController.clear();
@@ -290,6 +322,7 @@ class BigPrint {
   calcFee() {
     if (quantity == 0) return;
     int? fee = 0;
+    int stapleFee = 0;
     String cnt = '0';
     if (color == '흑백') {
       if (quantity! < 11)
@@ -306,14 +339,21 @@ class BigPrint {
         cnt = '301';
 
       fee = BlackFee[size]![cnt];
+      if(black_picture == '50% 이상') fee = (fee! * 2)!;
     } else {
       fee = ColorFee[size]![paper_type]![percentage];
     }
-    price = (fee! * quantity!)!;
+
+    if(staple != '없음'){
+      stapleFee = StapleFee[size]![thickness]!;
+    }
+
+    price = (fee! * quantity!)! + stapleFee;
   }
 
   setSize(value) {
     size = value.toString();
+    if(size == 'A0') staple = staple_list[0];
     calcFee();
   }
 
@@ -327,6 +367,11 @@ class BigPrint {
     calcFee();
   }
 
+  setBlackPicture(value){
+    black_picture = value.toString();
+    calcFee();
+  }
+
   setPaperType(value) {
     paper_type = value.toString();
     calcFee();
@@ -334,6 +379,17 @@ class BigPrint {
 
   setPercentage(value) {
     percentage = value.toString();
+    calcFee();
+  }
+
+  setStaple(value) {
+    if(size == 'A0') return;
+    staple = value.toString();
+    calcFee();
+  }
+
+  setThickness(value) {
+    thickness = value.toString();
     calcFee();
   }
 
@@ -417,17 +473,98 @@ class PormBoard {
   int? quantity;
   String? paper_type;
   String? laminate;
+  String? book;
   String? reminder;
 
   int price = 0;
 
   List board_type_list = ['폼보드', '포맥스3T', '포맥스5T', '포맥스10T', '하드보드'];
   List size_list = ['A4', 'A3', 'A2', 'A1', 'A0'];
-  List paper_type_list = ['유포지', '인화지', '켈지'];
-  List laminate_list = ['안함', '유광', '무광'];
+  List paper_type_list = ['유포지', '인화지', '켈지(코팅)'];
+  List laminate_list = ['안함', '유광'];
+  List book_list = ['안함', '책자폼보드'];
 
   final quantityController = TextEditingController();
   final reminderController = TextEditingController();
+
+  Map<String, Map<String, int>> PaperFee = {
+    'A4': {
+      '유포지': 10000,
+      '인화지': 13000,
+      '켈지(코팅)': 10000,
+    },
+    'A3': {
+      '유포지': 15000,
+      '인화지': 19000,
+      '켈지(코팅)': 20000,
+    },
+    'A2': {
+      '유포지': 27000,
+      '인화지': 35000,
+      '켈지(코팅)': 35000,
+    },
+    'A1': {
+      '유포지': 39000,
+      '인화지': 45000,
+      '켈지(코팅)': 45000,
+    },
+    'A0': {
+      '유포지': 69000,
+      '인화지': 75000,
+      '켈지(코팅)': 75000,
+    },
+  };
+  Map<String, Map<String, int>> BoardFee = {
+    'A4': {
+      '폼보드': 0,
+      '포맥스3T': 2000,
+      '포맥스5T': 4000,
+      '포맥스10T': 6000,
+      '하드보드': 0,
+    },
+    'A3': {
+      '폼보드': 0,
+      '포맥스3T': 2000,
+      '포맥스5T': 4000,
+      '포맥스10T': 6000,
+      '하드보드': 0,
+    },
+    'A2': {
+      '폼보드': 0,
+      '포맥스3T': 3000,
+      '포맥스5T': 5000,
+      '포맥스10T': 7000,
+      '하드보드': 0,
+    },
+    'A1': {
+      '폼보드': 0,
+      '포맥스3T': 4000,
+      '포맥스5T': 7000,
+      '포맥스10T': 9000,
+      '하드보드': 0,
+    },
+    'A0': {
+      '폼보드': 0,
+      '포맥스3T': 6000,
+      '포맥스5T': 9000,
+      '포맥스10T': 11000,
+      '하드보드': 0,
+    },
+  };
+  Map<String, int> LaminateFee = {
+    'A4': 1000,
+    'A3': 2000,
+    'A2': 5000,
+    'A1': 8000,
+    'A0': 10000,
+  };
+  Map<String, int> BookFee = {
+    'A4': 5000,
+    'A3': 5000,
+    'A2': 7000,
+    'A1': 7000,
+    'A0': 9000,
+  };
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> data = {};
@@ -437,6 +574,7 @@ class PormBoard {
     data['quantity'] = quantity;
     data['paper_type'] = paper_type;
     data['laminate'] = laminate;
+    data['book'] = book;
     data['reminder'] = reminder;
     data['price'] = price;
     return data;
@@ -448,6 +586,7 @@ class PormBoard {
     this.quantity = 0;
     this.paper_type = paper_type_list[0];
     this.laminate = laminate_list[0];
+    this.book = book_list[0];
     this.reminder = "";
   }
 
@@ -457,29 +596,54 @@ class PormBoard {
     this.quantity = 0;
     this.paper_type = paper_type_list[0];
     this.laminate = laminate_list[0];
+    this.book = book_list[0];
     this.reminder = "";
     this.price = 0;
     quantityController.clear();
     reminderController.clear();
   }
 
+  calcFee(){
+    if (quantity == 0) return;
+    int? fee = 0;
+    int? boardFee = 0;
+    int? laminateFee = 0;
+    int? bookFee = 0;
+    fee = PaperFee[size]![paper_type];
+    boardFee = BoardFee[size]![board_type];
+    if(paper_type != '켈지(코팅)' && laminate == '유광') laminateFee = LaminateFee[size];
+    if(book != '안함') bookFee = BookFee[size];
+
+    price = (fee! + boardFee! + laminateFee! + bookFee!) * quantity!;
+  }
+
   setSize(value) {
     size = value.toString();
+    calcFee();
   }
   setBoardType(value) {
     board_type= value.toString();
+    calcFee();
   }
 
   setQuantity(value) {
     quantity = value;
+    calcFee();
   }
 
   setLaminate(value) {
     laminate = value.toString();
+    calcFee();
   }
 
   setPaperType(value) {
     paper_type = value.toString();
+    calcFee();
+  }
+
+  setBook(value){
+    book = value.toString();
+    calcFee();
   }
 
   setReminder(value) {
@@ -526,6 +690,7 @@ class NameCard {
   String? paper_type;
   String? side;
   String? quantity;
+  String? si_quantity;
   int? design_page;
   int? addtional_price;
   String? reminder;
@@ -534,6 +699,7 @@ class NameCard {
   List paper_type_list = ['일반지', '수입지'];
   List side_list = ['단면', '양면'];
   List quantity_list = ['수량선택', '200장', '500장', '1,000장', '5,000장', '10,000장'];
+  List si_quantity_list = ['수량선택', '200장', '400장', '600장', '800장', '1,000장'];
 
   final designPageController = TextEditingController();
   final addtionalPriceController = TextEditingController();
@@ -545,6 +711,7 @@ class NameCard {
     data['paper_type'] = paper_type;
     data['side'] = side;
     data['quantity'] = quantity;
+    data['si_quantity'] = si_quantity;
     data['design_page'] = design_page;
     data['addtional_price'] = addtional_price;
     data['reminder'] = reminder;
@@ -556,6 +723,7 @@ class NameCard {
     this.paper_type = paper_type_list[0];
     this.side = side_list[0];
     this.quantity = quantity_list[0];
+    this.si_quantity = si_quantity_list[0];
     this.design_page = 0;
     this.addtional_price = 0;
     this.reminder = "";
@@ -565,6 +733,7 @@ class NameCard {
     this.paper_type = paper_type_list[0];
     this.side = side_list[0];
     this.quantity = quantity_list[0];
+    this.si_quantity = si_quantity_list[0];
     this.design_page = 0;
     this.addtional_price = 0;
     this.reminder = "";
@@ -594,29 +763,32 @@ class NameCard {
     '수입지': {
       '단면': {
         '200장': 19000,
-        '500장': 29000,
-        '1,000장': 39000,
-        '5,000장': 49000,
-        '10,000장': 59000
+        '400장': 29000,
+        '600장': 39000,
+        '800장': 49000,
+        '1,000장': 59000
       },
       '양면': {
         '200장': 24000,
-        '500장': 39000,
-        '1,000장': 49000,
-        '5,000장': 59000,
-        '10,000장': 69000
+        '400장': 39000,
+        '600장': 49000,
+        '800장': 59000,
+        '1,000장': 69000
       }
     },
   };
 
   calcFee() {
-    if (quantity == '수량선택') return;
+    if (quantity == '수량선택' && si_quantity =='수량선택') {price = 0; return;}
     int? fee = 0;
-    fee = Fee[paper_type]![side]![quantity];
+    if(paper_type == '일반지') fee = Fee[paper_type]![side]![quantity];
+    else fee = Fee[paper_type]![side]![si_quantity];
     price = fee! + design_page! + addtional_price!;
   }
 
   setPaperType(value) {
+    quantity = '수량선택';
+    si_quantity = '수량선택';
     paper_type = value.toString();
     calcFee();
   }
@@ -628,6 +800,10 @@ class NameCard {
 
   setQuantity(value) {
     quantity = value.toString();
+    calcFee();
+  }
+  setSiQuantity(value) {
+    si_quantity = value.toString();
     calcFee();
   }
 

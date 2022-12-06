@@ -264,10 +264,15 @@ class BigPrintWidget extends StatelessWidget {
                 OrderListText(tag: '사이즈', value: map['size']),
                 OrderListText(tag: '수량', value: map['quantity']),
                 OrderListText(tag: '흑백/칼라', value: map['color']),
+                if(map['color'] == model.color_list[0])
+                  OrderListText(tag: '그림 비율', value: map['black_picture']),
                 if (map['color'] == model.color_list[1])
                   OrderListText(tag: '용지종류', value: map['paper_type']),
                 if (map['color'] == model.color_list[1])
                   OrderListText(tag: '칼라비율', value: map['percentage']),
+                OrderListText(tag: '제본', value: map['staple']),
+                if(map['staple']!= '없음')
+                  OrderListText(tag: '스태플 두께', value: map['thickness']),
                 if (map['reminder'] != "")
                   OrderListText(tag: '메모', value: map['reminder']),
               ]),
@@ -355,7 +360,10 @@ class PormBoardWidget extends StatelessWidget {
                 OrderListText(tag: '사이즈', value: map['size']),
                 OrderListText(tag: '수량', value: map['quantity']),
                 OrderListText(tag: '종이 종류', value: map['paper_type']),
+                if(map['paper_type'] != '켈지(코팅)')
                 OrderListText(tag: '코팅', value: map['laminate']),
+                if(map['book'] != '안함')
+                OrderListText(tag: '책자폼보드', value: map['book']),
                 if (map['reminder'] != "")
                   OrderListText(tag: '메모', value: map['reminder']),
               ]),
@@ -396,7 +404,10 @@ class NameCardWidget extends StatelessWidget {
               OrderListTitle(title: '명함'),
               Column(children: [
                 OrderListText(tag: '용지', value: map['paper_type']),
+                if(map['paper_type'] == '일반지')
                 OrderListText(tag: '수량', value: map['quantity']),
+                if(map['paper_type'] == '수입지')
+                OrderListText(tag: '수량', value: map['si_quantity']),
                 OrderListText(tag: '양/단면', value: map['side']),
                 if (map['design_page'] != 0)
                   OrderListText(tag: '디자인페이지', value: '${map['design_page']}원'),

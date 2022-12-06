@@ -550,6 +550,39 @@ class Estimate extends StatelessWidget {
                             ),
                           ),
                           if (controller.bigprint.color ==
+                              controller.bigprint.color_list[0])
+                          UnconstrainedBox(
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              height: 70,
+                              child: Row(
+                                children: [
+                                  Text(
+                                    '그림비율',
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  DropdownButton(
+                                    value: controller.bigprint.black_picture,
+                                    items: controller.bigprint.black_picture_list
+                                        .map((value) {
+                                      return DropdownMenuItem(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                    onChanged: (value) {
+                                      controller.bigprint.setBlackPicture(value);
+                                      controller.CalcTotal();
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          if (controller.bigprint.color ==
                               controller.bigprint.color_list[1])
                             UnconstrainedBox(
                               child: Container(
@@ -616,6 +649,71 @@ class Estimate extends StatelessWidget {
                                 ),
                               ),
                             ), //Size
+                            UnconstrainedBox(
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                height: 70,
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      '제본',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    DropdownButton(
+                                      value: controller.bigprint.staple,
+                                      items: controller.bigprint.staple_list
+                                          .map((value) {
+                                        return DropdownMenuItem(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList(),
+                                      onChanged: (value) {
+                                        controller.bigprint
+                                            .setStaple(value);
+                                        controller.CalcTotal();
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          if (controller.bigprint.staple != controller.bigprint.staple_list[0])
+                            UnconstrainedBox(
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                height: 70,
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      '제본',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    DropdownButton(
+                                      value: controller.bigprint.thickness,
+                                      items: controller.bigprint.thickness_list
+                                          .map((value) {
+                                        return DropdownMenuItem(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList(),
+                                      onChanged: (value) {
+                                        controller.bigprint
+                                            .setThickness(value);
+                                        controller.CalcTotal();
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),//Size
                           //Quantity
                           SizedBox(
                             height: 150,
@@ -969,6 +1067,7 @@ class Estimate extends StatelessWidget {
                               ),
                             ),
                           ),
+                          if(controller.pormBoard.paper_type != '켈지(코팅)')
                           UnconstrainedBox(
                             child: Container(
                               padding: EdgeInsets.all(10),
@@ -993,6 +1092,37 @@ class Estimate extends StatelessWidget {
                                     }).toList(),
                                     onChanged: (value) {
                                       controller.pormBoard.setLaminate(value);
+                                      controller.CalcTotal();
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          UnconstrainedBox(
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              height: 70,
+                              child: Row(
+                                children: [
+                                  Text(
+                                    '책자폼보드',
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  DropdownButton(
+                                    value: controller.pormBoard.book,
+                                    items: controller.pormBoard.book_list
+                                        .map((value) {
+                                      return DropdownMenuItem(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                    onChanged: (value) {
+                                      controller.pormBoard.setBook(value);
                                       controller.CalcTotal();
                                     },
                                   ),
@@ -1150,6 +1280,7 @@ class Estimate extends StatelessWidget {
                                               ),
                                             ),
                                           ),
+                                          if(controller.offSet.nameCard!.paper_type == '일반지')
                                           UnconstrainedBox(
                                             child: Container(
                                               padding: EdgeInsets.all(10),
@@ -1178,6 +1309,42 @@ class Estimate extends StatelessWidget {
                                                     onChanged: (value) {
                                                       controller.offSet.nameCard
                                                           ?.setQuantity(value);
+                                                      controller.CalcTotal();
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ), //Quantity
+                                          if(controller.offSet.nameCard!.paper_type == '수입지')
+                                          UnconstrainedBox(
+                                            child: Container(
+                                              padding: EdgeInsets.all(10),
+                                              height: 70,
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    '수량',
+                                                    style:
+                                                        TextStyle(fontSize: 20),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  DropdownButton(
+                                                    value: controller.offSet
+                                                        .nameCard?.si_quantity,
+                                                    items: controller.offSet
+                                                        .nameCard?.si_quantity_list
+                                                        .map((value) {
+                                                      return DropdownMenuItem(
+                                                        value: value,
+                                                        child: Text(value),
+                                                      );
+                                                    }).toList(),
+                                                    onChanged: (value) {
+                                                      controller.offSet.nameCard
+                                                          ?.setSiQuantity(value);
                                                       controller.CalcTotal();
                                                     },
                                                   ),
