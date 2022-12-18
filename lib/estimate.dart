@@ -551,37 +551,39 @@ class Estimate extends StatelessWidget {
                           ),
                           if (controller.bigprint.color ==
                               controller.bigprint.color_list[0])
-                          UnconstrainedBox(
-                            child: Container(
-                              padding: EdgeInsets.all(10),
-                              height: 70,
-                              child: Row(
-                                children: [
-                                  Text(
-                                    '그림비율',
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  DropdownButton(
-                                    value: controller.bigprint.black_picture,
-                                    items: controller.bigprint.black_picture_list
-                                        .map((value) {
-                                      return DropdownMenuItem(
-                                        value: value,
-                                        child: Text(value),
-                                      );
-                                    }).toList(),
-                                    onChanged: (value) {
-                                      controller.bigprint.setBlackPicture(value);
-                                      controller.CalcTotal();
-                                    },
-                                  ),
-                                ],
+                            UnconstrainedBox(
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                height: 70,
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      '그림비율',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    DropdownButton(
+                                      value: controller.bigprint.black_picture,
+                                      items: controller
+                                          .bigprint.black_picture_list
+                                          .map((value) {
+                                        return DropdownMenuItem(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList(),
+                                      onChanged: (value) {
+                                        controller.bigprint
+                                            .setBlackPicture(value);
+                                        controller.CalcTotal();
+                                      },
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
                           if (controller.bigprint.color ==
                               controller.bigprint.color_list[1])
                             UnconstrainedBox(
@@ -649,39 +651,39 @@ class Estimate extends StatelessWidget {
                                 ),
                               ),
                             ), //Size
-                            UnconstrainedBox(
-                              child: Container(
-                                padding: EdgeInsets.all(10),
-                                height: 70,
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      '제본',
-                                      style: TextStyle(fontSize: 20),
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    DropdownButton(
-                                      value: controller.bigprint.staple,
-                                      items: controller.bigprint.staple_list
-                                          .map((value) {
-                                        return DropdownMenuItem(
-                                          value: value,
-                                          child: Text(value),
-                                        );
-                                      }).toList(),
-                                      onChanged: (value) {
-                                        controller.bigprint
-                                            .setStaple(value);
-                                        controller.CalcTotal();
-                                      },
-                                    ),
-                                  ],
-                                ),
+                          UnconstrainedBox(
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              height: 70,
+                              child: Row(
+                                children: [
+                                  Text(
+                                    '제본',
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  DropdownButton(
+                                    value: controller.bigprint.staple,
+                                    items: controller.bigprint.staple_list
+                                        .map((value) {
+                                      return DropdownMenuItem(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                    onChanged: (value) {
+                                      controller.bigprint.setStaple(value);
+                                      controller.CalcTotal();
+                                    },
+                                  ),
+                                ],
                               ),
                             ),
-                          if (controller.bigprint.staple != controller.bigprint.staple_list[0])
+                          ),
+                          if (controller.bigprint.staple !=
+                              controller.bigprint.staple_list[0])
                             UnconstrainedBox(
                               child: Container(
                                 padding: EdgeInsets.all(10),
@@ -705,15 +707,14 @@ class Estimate extends StatelessWidget {
                                         );
                                       }).toList(),
                                       onChanged: (value) {
-                                        controller.bigprint
-                                            .setThickness(value);
+                                        controller.bigprint.setThickness(value);
                                         controller.CalcTotal();
                                       },
                                     ),
                                   ],
                                 ),
                               ),
-                            ),//Size
+                            ), //Size
                           //Quantity
                           SizedBox(
                             height: 150,
@@ -1067,38 +1068,38 @@ class Estimate extends StatelessWidget {
                               ),
                             ),
                           ),
-                          if(controller.pormBoard.paper_type != '켈지(코팅)')
-                          UnconstrainedBox(
-                            child: Container(
-                              padding: EdgeInsets.all(10),
-                              height: 70,
-                              child: Row(
-                                children: [
-                                  Text(
-                                    '코팅',
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  DropdownButton(
-                                    value: controller.pormBoard.laminate,
-                                    items: controller.pormBoard.laminate_list
-                                        .map((value) {
-                                      return DropdownMenuItem(
-                                        value: value,
-                                        child: Text(value),
-                                      );
-                                    }).toList(),
-                                    onChanged: (value) {
-                                      controller.pormBoard.setLaminate(value);
-                                      controller.CalcTotal();
-                                    },
-                                  ),
-                                ],
+                          if (controller.pormBoard.paper_type != '켈지(코팅)')
+                            UnconstrainedBox(
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                height: 70,
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      '코팅',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    DropdownButton(
+                                      value: controller.pormBoard.laminate,
+                                      items: controller.pormBoard.laminate_list
+                                          .map((value) {
+                                        return DropdownMenuItem(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList(),
+                                      onChanged: (value) {
+                                        controller.pormBoard.setLaminate(value);
+                                        controller.CalcTotal();
+                                      },
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
                           UnconstrainedBox(
                             child: Container(
                               padding: EdgeInsets.all(10),
@@ -1280,78 +1281,92 @@ class Estimate extends StatelessWidget {
                                               ),
                                             ),
                                           ),
-                                          if(controller.offSet.nameCard!.paper_type == '일반지')
-                                          UnconstrainedBox(
-                                            child: Container(
-                                              padding: EdgeInsets.all(10),
-                                              height: 70,
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    '수량',
-                                                    style:
-                                                        TextStyle(fontSize: 20),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  DropdownButton(
-                                                    value: controller.offSet
-                                                        .nameCard?.quantity,
-                                                    items: controller.offSet
-                                                        .nameCard?.quantity_list
-                                                        .map((value) {
-                                                      return DropdownMenuItem(
-                                                        value: value,
-                                                        child: Text(value),
-                                                      );
-                                                    }).toList(),
-                                                    onChanged: (value) {
-                                                      controller.offSet.nameCard
-                                                          ?.setQuantity(value);
-                                                      controller.CalcTotal();
-                                                    },
-                                                  ),
-                                                ],
+                                          if (controller.offSet.nameCard!
+                                                  .paper_type ==
+                                              '일반지')
+                                            UnconstrainedBox(
+                                              child: Container(
+                                                padding: EdgeInsets.all(10),
+                                                height: 70,
+                                                child: Row(
+                                                  children: [
+                                                    Text(
+                                                      '수량',
+                                                      style: TextStyle(
+                                                          fontSize: 20),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    DropdownButton(
+                                                      value: controller.offSet
+                                                          .nameCard?.quantity,
+                                                      items: controller
+                                                          .offSet
+                                                          .nameCard
+                                                          ?.quantity_list
+                                                          .map((value) {
+                                                        return DropdownMenuItem(
+                                                          value: value,
+                                                          child: Text(value),
+                                                        );
+                                                      }).toList(),
+                                                      onChanged: (value) {
+                                                        controller
+                                                            .offSet.nameCard
+                                                            ?.setQuantity(
+                                                                value);
+                                                        controller.CalcTotal();
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                          ), //Quantity
-                                          if(controller.offSet.nameCard!.paper_type == '수입지')
-                                          UnconstrainedBox(
-                                            child: Container(
-                                              padding: EdgeInsets.all(10),
-                                              height: 70,
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    '수량',
-                                                    style:
-                                                        TextStyle(fontSize: 20),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  DropdownButton(
-                                                    value: controller.offSet
-                                                        .nameCard?.si_quantity,
-                                                    items: controller.offSet
-                                                        .nameCard?.si_quantity_list
-                                                        .map((value) {
-                                                      return DropdownMenuItem(
-                                                        value: value,
-                                                        child: Text(value),
-                                                      );
-                                                    }).toList(),
-                                                    onChanged: (value) {
-                                                      controller.offSet.nameCard
-                                                          ?.setSiQuantity(value);
-                                                      controller.CalcTotal();
-                                                    },
-                                                  ),
-                                                ],
+                                            ), //Quantity
+                                          if (controller.offSet.nameCard!
+                                                  .paper_type ==
+                                              '수입지')
+                                            UnconstrainedBox(
+                                              child: Container(
+                                                padding: EdgeInsets.all(10),
+                                                height: 70,
+                                                child: Row(
+                                                  children: [
+                                                    Text(
+                                                      '수량',
+                                                      style: TextStyle(
+                                                          fontSize: 20),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    DropdownButton(
+                                                      value: controller
+                                                          .offSet
+                                                          .nameCard
+                                                          ?.si_quantity,
+                                                      items: controller
+                                                          .offSet
+                                                          .nameCard
+                                                          ?.si_quantity_list
+                                                          .map((value) {
+                                                        return DropdownMenuItem(
+                                                          value: value,
+                                                          child: Text(value),
+                                                        );
+                                                      }).toList(),
+                                                      onChanged: (value) {
+                                                        controller
+                                                            .offSet.nameCard
+                                                            ?.setSiQuantity(
+                                                                value);
+                                                        controller.CalcTotal();
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                          ), //Quantity
+                                            ), //Quantity
                                           UnconstrainedBox(
                                             child: Container(
                                               padding: EdgeInsets.all(10),
@@ -2347,7 +2362,7 @@ class Estimate extends StatelessWidget {
                                     color: Colors.white,
                                     child: Wrap(
                                       alignment: WrapAlignment.spaceAround,
-                                       children: [
+                                      children: [
                                         UnconstrainedBox(
                                           child: Container(
                                             padding: EdgeInsets.all(10),
@@ -2614,6 +2629,115 @@ class Estimate extends StatelessWidget {
                           ],
                         ),
                       )), //Offset
+                  ExpansionPanel(
+                    backgroundColor: Colors.green,
+                    isExpanded: controller.isExpanded[5],
+                    canTapOnHeader: true,
+                    headerBuilder: (context, isExpanded) {
+                      return Container(
+                        height: 50,
+                        color: Colors.green,
+                        child: Center(
+                          child: Text(
+                            '고객정보',
+                            style: TextStyle(fontSize: 25, color: Colors.white),
+                          ),
+                        ),
+                      );
+                    },
+                    body: Container(
+                      color: Colors.white,
+                      child: Wrap(
+                        alignment: WrapAlignment.spaceAround,
+                        children: [
+                          UnconstrainedBox(
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              height: 70,
+                              child: Row(
+                                children: [
+                                  Text(
+                                    '고객명',
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  SizedBox(
+                                    width: 50,
+                                    height: 25,
+                                    child: TextField(
+                                      onChanged: (value) {
+                                        controller.SetCustomer(value);
+                                        controller.CalcTotal();
+                                      },
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          UnconstrainedBox(
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              height: 70,
+                              child: Row(
+                                children: [
+                                  Text(
+                                    '납기일',
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  SizedBox(
+                                      height: 25,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          showDatePicker(
+                                                  context: context,
+                                                  initialDate: DateTime.now(),
+                                                  firstDate: DateTime.now(),
+                                                  lastDate: DateTime(2030))
+                                              .then((value) =>
+                                                  print(value.toString()));
+                                        },
+                                        child: Center(child: Icon(Icons.date_range)),
+                                        style: TextButton.styleFrom(backgroundColor: Colors.green),
+                                      ))
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 150,
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              color: Colors.white,
+                              child: TextField(
+                                controller:
+                                    controller.bigprint.reminderController,
+                                onChanged: (value) {
+                                  controller.bigprint.setReminder(value);
+                                },
+                                expands: true,
+                                maxLines: null,
+                                decoration: const InputDecoration(
+                                  labelText: '메모',
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
                 expandedHeaderPadding: EdgeInsets.all(0),
                 expansionCallback: (index, isExpanded) {

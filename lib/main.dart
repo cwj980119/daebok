@@ -1,5 +1,6 @@
 import 'package:daebok/Home.dart';
 import 'package:daebok/estimate.dart';
+import 'package:daebok/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: "Hanna11",
       ),
-      home: Home(),
+      home: HomePage(),
 
     );
   }

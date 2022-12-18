@@ -32,7 +32,7 @@ class EstimateController extends GetxController {
   RxBool isBook = false.obs;
   RxInt sum = 0.obs;
 
-  List isExpanded = [false, false, false, false, false];
+  List isExpanded = [false, false, false, false, false, false];
   List offSetExpanded = [false, false, false, false, false];
 
   toggleExpand(index) {

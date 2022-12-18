@@ -17,15 +17,6 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green,
-        centerTitle: true,
-        title: Text(
-          '대영복사',
-          style: TextStyle(fontSize: 25, fontFamily: 'Hanna11'),
-          textAlign: TextAlign.center,
-        ),
-      ),
       body: FutureBuilder(
           future: connection.checkConnection(),
           builder: (context, snapshot) {
@@ -69,13 +60,6 @@ class Home extends StatelessWidget {
               ],
             ));
           }),
-      floatingActionButton: FloatingActionButton.extended(
-        icon: Icon(Icons.add),
-        label: Text('새로운 견적'),
-        onPressed: () {
-          Get.to(() => Estimate());
-        },
-      ),
     );
   }
 }
@@ -100,7 +84,6 @@ Widget _builditem(DocumentSnapshot docu) {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('${snapshot.data.docs[0]['kind']}'),
               Text('가격 : ${docu['price']}'),
               Text('고객명 : ${docu['customer']}'),
               Text(
