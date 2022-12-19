@@ -2678,33 +2678,116 @@ class Estimate extends StatelessWidget {
                             ),
                           ),
                           UnconstrainedBox(
+                            child: GetBuilder<EstimateController>(
+                                builder: (controller) {
+                              return Container(
+                                padding: EdgeInsets.all(10),
+                                height: 70,
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      '납기일',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(DateFormat('yyyy/MM/dd')
+                                        .format(controller.endDate!)
+                                        .toString()),
+                                    SizedBox(width: 10,),
+                                    SizedBox(
+                                        height: 25,
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            showDatePicker(
+                                                    context: context,
+                                                    initialDate: DateTime.now(),
+                                                    firstDate: DateTime.now(),
+                                                    lastDate: DateTime(2030))
+                                                .then((value) =>
+                                                    controller.endDate = value)
+                                                .then((value) =>
+                                                    controller.update());
+                                          },
+                                          child: Center(
+                                              child: Icon(Icons.date_range)),
+                                          style: TextButton.styleFrom(
+                                              backgroundColor: Colors.green),
+                                        ))
+                                  ],
+                                ),
+                              );
+                            }),
+                          ),
+                          UnconstrainedBox(
                             child: Container(
                               padding: EdgeInsets.all(10),
                               height: 70,
                               child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    '납기일',
+                                    '전화번호',
                                     style: TextStyle(fontSize: 20),
                                   ),
                                   SizedBox(
                                     width: 10,
                                   ),
                                   SizedBox(
-                                      height: 25,
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          showDatePicker(
-                                                  context: context,
-                                                  initialDate: DateTime.now(),
-                                                  firstDate: DateTime.now(),
-                                                  lastDate: DateTime(2030))
-                                              .then((value) =>
-                                                  print(value.toString()));
-                                        },
-                                        child: Center(child: Icon(Icons.date_range)),
-                                        style: TextButton.styleFrom(backgroundColor: Colors.green),
-                                      ))
+                                    width: 120,
+                                    height: 25,
+                                    child: TextField(
+                                      controller: controller
+                                          .phoneNumberController,
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.allow(
+                                            RegExp('[0-9]')),
+                                      ],
+                                      keyboardType: TextInputType.number,
+                                      onChanged: (value) {
+                                        if (value == "") return;
+                                        controller
+                                            .setPhoneNumber(value);
+                                      },
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          UnconstrainedBox(
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              height: 70,
+                              child: Row(
+                                children: [
+                                  Text(
+                                    '선금',
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  SizedBox(
+                                    width: 50,
+                                    height: 25,
+                                    child: TextField(
+                                      controller: controller
+                                          .prePaidController,
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.allow(
+                                            RegExp('[0-9]')),
+                                      ],
+                                      keyboardType: TextInputType.number,
+                                      onChanged: (value) {
+                                        if (value == "") return;
+                                        controller
+                                            .setPrePaidPrice(
+                                            int.parse(value));
+                                      },
+                                    ),
+                                  )
                                 ],
                               ),
                             ),
@@ -2716,9 +2799,9 @@ class Estimate extends StatelessWidget {
                               color: Colors.white,
                               child: TextField(
                                 controller:
-                                    controller.bigprint.reminderController,
+                                    controller.reminderController,
                                 onChanged: (value) {
-                                  controller.bigprint.setReminder(value);
+                                  controller.setReminder(value);
                                 },
                                 expands: true,
                                 maxLines: null,
@@ -2759,27 +2842,6 @@ class Estimate extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Row(
-                    children: [
-                      Text(
-                        '고객명',
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      SizedBox(
-                        width: 50,
-                        height: 25,
-                        child: TextField(
-                          onChanged: (value) {
-                            controller.SetCustomer(value);
-                            controller.CalcTotal();
-                          },
-                        ),
-                      )
-                    ],
-                  ),
                   Text(
                     '전체 가격 : ${f.format(controller.total_sum)}원',
                     style: TextStyle(fontSize: 18),

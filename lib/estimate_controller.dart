@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daebok/Home.dart';
 import 'package:daebok/estimate_widget.dart';
+import 'package:daebok/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -14,6 +15,27 @@ class EstimateController extends GetxController {
   late OffSet offSet;
 
   String? customer = "";
+  DateTime? endDate;
+  String? phoneNumber;
+  int? prePaid = 0;
+  String? reminder;
+
+  final phoneNumberController = TextEditingController();
+  final prePaidController = TextEditingController();
+  final reminderController = TextEditingController();
+
+  setPhoneNumber(value) {
+    phoneNumber = value.toString();
+  }
+
+  setPrePaidPrice(value) {
+    prePaid = value;
+  }
+
+  setReminder(value) {
+    reminder = value.toString();
+  }
+
   int total_sum = 0;
 
   var f = NumberFormat('###,###,###,###');
@@ -21,6 +43,8 @@ class EstimateController extends GetxController {
   @override
   void onInit() {
     // TODO: implement onInit
+    endDate = DateTime.now();
+
     printNBook = PrintNBook();
     bigprint = BigPrint();
     otherService = OtherService();
@@ -32,7 +56,7 @@ class EstimateController extends GetxController {
   RxBool isBook = false.obs;
   RxInt sum = 0.obs;
 
-  List isExpanded = [false, false, false, false, false, false];
+  List isExpanded = [false, false, false, false, false, true];
   List offSetExpanded = [false, false, false, false, false];
 
   toggleExpand(index) {
@@ -77,7 +101,11 @@ class EstimateController extends GetxController {
   Map<String, dynamic> toMap() {
     Map<String, dynamic> data = {};
     data['customer'] = customer;
+    data['endDate'] = endDate;
+    data['phoneNumber'] = phoneNumber;
+    data['prePaid'] = prePaid;
     data['price'] = total_sum;
+    data['leftPrice'] = total_sum - prePaid!;
     data['timestamp'] = new DateTime.now();
     return data;
   }
@@ -211,7 +239,7 @@ class EstimateController extends GetxController {
                     style:
                         ElevatedButton.styleFrom(backgroundColor: Colors.green),
                     onPressed: () {
-                      Get.offAll(Home());
+                      Get.offAll(HomePage());
                     },
                   ))
                 ],
@@ -383,6 +411,14 @@ class EstimateController extends GetxController {
                   ),
                   Text(
                     "총 금액 : ${f.format(total_sum)}원",
+                    style: TextStyle(fontSize: 20, color: Colors.black),
+                  ),
+                  Text(
+                    "선금 : ${f.format(prePaid)}원",
+                    style: TextStyle(fontSize: 20, color: Colors.black),
+                  ),
+                  Text(
+                    "잔액 : ${f.format(total_sum - prePaid!)}원",
                     style: TextStyle(fontSize: 25, color: Colors.red),
                   ),
                   SizedBox(
