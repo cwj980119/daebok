@@ -100,6 +100,7 @@ class EstimateController extends GetxController {
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> data = {};
+    data['status'] = 'Estimate';
     data['customer'] = customer;
     data['endDate'] = endDate;
     data['phoneNumber'] = phoneNumber;

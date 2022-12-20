@@ -9,9 +9,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:intl/intl.dart';
 
-class Home extends StatelessWidget {
-  Home({Key? key}) : super(key: key);
-  static const routeName = '/';
+class Complete extends StatelessWidget {
+  Complete({Key? key}) : super(key: key);
+  static const routeName = '/complete';
 
   Connect connection = Connect();
 
@@ -25,7 +25,6 @@ class Home extends StatelessWidget {
             if (snapshot.hasData == false) return Center(child: Text('hi'));
             if (snapshot.data == Connect.NO_CONNECTION)
               connection.setToast('인터넷이 없습니다.');
-
             return Container(
                 child: Column(
               children: [
@@ -35,7 +34,7 @@ class Home extends StatelessWidget {
                   color: Colors.green[200],
                   child: Center(
                     child: Text(
-                      '견적',
+                      '완료',
                       style: TextStyle(fontSize: 30),
                     ),
                   ),
@@ -43,7 +42,8 @@ class Home extends StatelessWidget {
                 StreamBuilder(
                   stream: FirebaseFirestore.instance
                       .collection('Estimate')
-                      .orderBy('endDate', descending: false).where('status',isEqualTo: 'Estimate')
+                      .orderBy('endDate', descending: false)
+                      .where('status', isEqualTo: 'Complete')
                       .snapshots(),
                   builder: (context, snapshot) {
                     final documents = snapshot.data;
@@ -72,7 +72,6 @@ class Home extends StatelessWidget {
                             .toList(),
                       ),
                     );
-                    return Text('hi');
                   },
                 ),
               ],
@@ -83,39 +82,8 @@ class Home extends StatelessWidget {
 }
 
 Widget _builditem(DocumentSnapshot docu) {
-  return orderCard(item: docu,level: 'Estimate',);
-}
-
-/*
-return StreamBuilder(
-    stream: FirebaseFirestore.instance
-        .collection('Estimate')
-        .doc(docu.id)
-        .collection('new')
-        .snapshots(),
-    builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-      if (!snapshot.hasData) return CircularProgressIndicator();
-      return Container(
-        padding: EdgeInsets.all(20),
-        width: 20,
-        height: 200,
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border.all()
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('가격 : ${docu['price']}'),
-              Text('고객명 : ${docu['customer']}'),
-              Text(
-                  '접수일자 : ${DateFormat('yy년 MM월 dd일').format(docu['timestamp'].toDate())}'),
-              Text('메모 : ${snapshot.data.docs[0]['reminder']}'),
-              Text('메모 : ${(snapshot.data.docs).length}'),
-            ],
-          ),
-        ),
-      );
-    },
+  return orderCard(
+    item: docu,
+    level: 'Complete',
   );
-* */
+}

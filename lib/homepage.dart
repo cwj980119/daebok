@@ -1,8 +1,10 @@
+import 'package:daebok/printing.dart';
 import 'package:daebok/progressing.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'Home.dart';
+import 'complete.dart';
 import 'estimate.dart';
 
 class HomePage extends StatelessWidget {
@@ -53,9 +55,9 @@ class NavController extends GetxController{
 
   List<Widget> pages = [
     Home(),
-    Home(),
-    Home(),
     Progressing(),
+    Printing(),
+    Complete(),
   ];
 
   Widget get currentPage => pages[currentIndex.value];

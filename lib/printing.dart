@@ -9,9 +9,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:intl/intl.dart';
 
-class Progressing extends StatelessWidget {
-  Progressing({Key? key}) : super(key: key);
-  static const routeName = '/progressing';
+class Printing extends StatelessWidget {
+  Printing({Key? key}) : super(key: key);
+  static const routeName = '/printing';
 
   Connect connection = Connect();
 
@@ -34,7 +34,7 @@ class Progressing extends StatelessWidget {
                       color: Colors.green[200],
                       child: Center(
                         child: Text(
-                          '진행중',
+                          '인쇄중',
                           style: TextStyle(fontSize: 30),
                         ),
                       ),
@@ -42,7 +42,7 @@ class Progressing extends StatelessWidget {
                     StreamBuilder(
                       stream: FirebaseFirestore.instance
                           .collection('Estimate')
-                          .orderBy('endDate', descending: false).where('status',isEqualTo: 'Progressing')
+                          .orderBy('endDate', descending: false).where('status',isEqualTo: 'Printing')
                           .snapshots(),
                       builder: (context, snapshot) {
                         final documents = snapshot.data;
@@ -82,5 +82,5 @@ class Progressing extends StatelessWidget {
 }
 
 Widget _builditem(DocumentSnapshot docu) {
-  return orderCard(item: docu,level: 'Progressing',);
+  return orderCard(item: docu,level: 'Printing',);
 }

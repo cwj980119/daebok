@@ -137,8 +137,18 @@ class orderCard extends StatelessWidget {
                     ),
                   if (level == 'Progressing')
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {MoveDialog(context);},
                       child: Text('인쇄하기'),
+                    ),
+                  if (level == 'Printing')
+                    ElevatedButton(
+                      onPressed: () {MoveDialog(context);},
+                      child: Text('작업완료'),
+                    ),
+                  if (level == 'Complete')
+                    ElevatedButton(
+                      onPressed: () {MoveDialog(context);},
+                      child: Text('납품완료'),
                     ),
                   ElevatedButton(
                       onPressed: () {
@@ -316,7 +326,7 @@ class orderCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "주문을 취소할경우 되돌릴 수 없습니다. 삭제하시겠습니까?",
+                      "다음 단계로 진행하나요?",
                       style: TextStyle(fontSize: 23),
                     ),
                   ],
@@ -337,7 +347,7 @@ class orderCard extends StatelessWidget {
                           style: TextStyle(color: Colors.white),
                         ),
                         style:
-                            TextButton.styleFrom(backgroundColor: Colors.red),
+                            TextButton.styleFrom(backgroundColor: Colors.green),
                       ),
                       TextButton(
                         onPressed: () {
@@ -348,7 +358,7 @@ class orderCard extends StatelessWidget {
                           style: TextStyle(color: Colors.white),
                         ),
                         style:
-                            TextButton.styleFrom(backgroundColor: Colors.green),
+                            TextButton.styleFrom(backgroundColor: Colors.grey),
                       ),
                     ],
                   ),
@@ -368,7 +378,7 @@ class orderCard extends StatelessWidget {
               if (snapshot.hasData == false) {
                 return AlertDialog(
                   content: Text(
-                    "주문 취소에 실패했습니다.",
+                    "실패했습니다.",
                     textAlign: TextAlign.center,
                   ),
                   actions: [
@@ -399,7 +409,7 @@ class orderCard extends StatelessWidget {
               }
               return AlertDialog(
                 content: Text(
-                  "주문이 취소되었습니다",
+                  "다음단계로 이동되었습니다",
                   textAlign: TextAlign.center,
                 ),
                 actions: [
@@ -439,19 +449,12 @@ class orderCard extends StatelessWidget {
       if(level == 'Estimate') next_level = 'Progressing';
       if(level == 'Progressing') next_level = 'Printing';
       if(level == 'Printing') next_level = 'Complete';
+      if(level == 'Complete') next_level = 'History';
 
       FirebaseFirestore firestore = FirebaseFirestore.instance;
       DocumentReference<Map<String, dynamic>> fromPath =
-          await firestore.collection(level).doc(item.id);
-      DocumentReference<Map<String, dynamic>> toPath =
-          await firestore.collection(next_level).doc();
-      print(fromPath);
-      print(FirebaseFirestore.instance
-          .collection('Estimate')
-          .doc(item.id)
-          .collection('new')
-          .snapshots(),);
-      print(item.reference);
+          await firestore.collection('Estimate').doc(item.id);
+      fromPath.update({'status' : next_level});
       //toPath.set(item.data() as Map<String, dynamic>);
       //fromPath.delete();
 
