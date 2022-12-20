@@ -113,7 +113,7 @@ class Estimate extends StatelessWidget {
                                     width: 10,
                                   ),
                                   SizedBox(
-                                    width: 50,
+                                    width: 70,
                                     height: 25,
                                     child: TextField(
                                       controller: controller
@@ -148,7 +148,7 @@ class Estimate extends StatelessWidget {
                                     width: 10,
                                   ),
                                   SizedBox(
-                                    width: 50,
+                                    width: 70,
                                     height: 25,
                                     child: TextField(
                                       controller: controller
@@ -374,7 +374,7 @@ class Estimate extends StatelessWidget {
                                     width: 10,
                                   ),
                                   SizedBox(
-                                    width: 50,
+                                    width: 70,
                                     height: 25,
                                     child: TextField(
                                       controller: controller
@@ -496,7 +496,7 @@ class Estimate extends StatelessWidget {
                                     width: 10,
                                   ),
                                   SizedBox(
-                                    width: 50,
+                                    width: 70,
                                     height: 25,
                                     child: TextField(
                                       controller: controller
@@ -785,7 +785,7 @@ class Estimate extends StatelessWidget {
                                       width: 10,
                                     ),
                                     SizedBox(
-                                      width: 50,
+                                      width: 70,
                                       height: 25,
                                       child: TextField(
                                         controller: controller
@@ -815,7 +815,7 @@ class Estimate extends StatelessWidget {
                                       width: 10,
                                     ),
                                     SizedBox(
-                                      width: 50,
+                                      width: 70,
                                       height: 25,
                                       child: TextField(
                                         controller: controller
@@ -845,7 +845,7 @@ class Estimate extends StatelessWidget {
                                       width: 10,
                                     ),
                                     SizedBox(
-                                      width: 50,
+                                      width: 70,
                                       height: 25,
                                       child: TextField(
                                         controller: controller
@@ -1015,7 +1015,7 @@ class Estimate extends StatelessWidget {
                                     width: 10,
                                   ),
                                   SizedBox(
-                                    width: 50,
+                                    width: 70,
                                     height: 25,
                                     child: TextField(
                                       controller: controller
@@ -1382,7 +1382,7 @@ class Estimate extends StatelessWidget {
                                                     width: 10,
                                                   ),
                                                   SizedBox(
-                                                    width: 50,
+                                                    width: 70,
                                                     height: 25,
                                                     child: TextField(
                                                       controller: controller
@@ -1427,7 +1427,7 @@ class Estimate extends StatelessWidget {
                                                     width: 10,
                                                   ),
                                                   SizedBox(
-                                                    width: 50,
+                                                    width: 70,
                                                     height: 25,
                                                     child: TextField(
                                                       controller: controller
@@ -1608,7 +1608,7 @@ class Estimate extends StatelessWidget {
                                                     width: 10,
                                                   ),
                                                   SizedBox(
-                                                    width: 50,
+                                                    width: 70,
                                                     height: 25,
                                                     child: TextField(
                                                       controller: controller
@@ -1653,7 +1653,7 @@ class Estimate extends StatelessWidget {
                                                     width: 10,
                                                   ),
                                                   SizedBox(
-                                                    width: 50,
+                                                    width: 70,
                                                     height: 25,
                                                     child: TextField(
                                                       controller: controller
@@ -1698,7 +1698,7 @@ class Estimate extends StatelessWidget {
                                                     width: 10,
                                                   ),
                                                   SizedBox(
-                                                    width: 50,
+                                                    width: 70,
                                                     height: 25,
                                                     child: TextField(
                                                       controller: controller
@@ -1881,7 +1881,7 @@ class Estimate extends StatelessWidget {
                                                     width: 10,
                                                   ),
                                                   SizedBox(
-                                                    width: 50,
+                                                    width: 70,
                                                     height: 25,
                                                     child: TextField(
                                                       controller: controller
@@ -1961,7 +1961,7 @@ class Estimate extends StatelessWidget {
                                                     width: 10,
                                                   ),
                                                   SizedBox(
-                                                    width: 50,
+                                                    width: 70,
                                                     height: 25,
                                                     child: TextField(
                                                       controller: controller
@@ -2006,7 +2006,7 @@ class Estimate extends StatelessWidget {
                                                     width: 10,
                                                   ),
                                                   SizedBox(
-                                                    width: 50,
+                                                    width: 70,
                                                     height: 25,
                                                     child: TextField(
                                                       controller: controller
@@ -2187,7 +2187,7 @@ class Estimate extends StatelessWidget {
                                                   width: 10,
                                                 ),
                                                 SizedBox(
-                                                  width: 50,
+                                                  width: 70,
                                                   height: 25,
                                                   child: TextField(
                                                     controller: controller
@@ -2230,7 +2230,7 @@ class Estimate extends StatelessWidget {
                                                   width: 10,
                                                 ),
                                                 SizedBox(
-                                                  width: 50,
+                                                  width: 70,
                                                   height: 25,
                                                   child: TextField(
                                                     controller: controller
@@ -2273,7 +2273,7 @@ class Estimate extends StatelessWidget {
                                                   width: 10,
                                                 ),
                                                 SizedBox(
-                                                  width: 50,
+                                                  width: 70,
                                                   height: 25,
                                                   child: TextField(
                                                     controller: controller
@@ -2448,7 +2448,7 @@ class Estimate extends StatelessWidget {
                                                   width: 10,
                                                 ),
                                                 SizedBox(
-                                                  width: 50,
+                                                  width: 70,
                                                   height: 25,
                                                   child: TextField(
                                                     controller: controller
@@ -2491,7 +2491,7 @@ class Estimate extends StatelessWidget {
                                                   width: 10,
                                                 ),
                                                 SizedBox(
-                                                  width: 50,
+                                                  width: 70,
                                                   height: 25,
                                                   child: TextField(
                                                     controller: controller
@@ -2534,7 +2534,7 @@ class Estimate extends StatelessWidget {
                                                   width: 10,
                                                 ),
                                                 SizedBox(
-                                                  width: 50,
+                                                  width: 70,
                                                   height: 25,
                                                   child: TextField(
                                                     controller: controller
@@ -2640,7 +2640,7 @@ class Estimate extends StatelessWidget {
                         child: Center(
                           child: Text(
                             '고객정보',
-                            style: TextStyle(fontSize: 25, color: Colors.white),
+                            style: TextStyle(fontSize: 25, color: Colors.yellow),
                           ),
                         ),
                       );
@@ -2664,7 +2664,7 @@ class Estimate extends StatelessWidget {
                                     width: 10,
                                   ),
                                   SizedBox(
-                                    width: 50,
+                                    width: 70,
                                     height: 25,
                                     child: TextField(
                                       onChanged: (value) {
@@ -2770,7 +2770,7 @@ class Estimate extends StatelessWidget {
                                     width: 10,
                                   ),
                                   SizedBox(
-                                    width: 50,
+                                    width: 70,
                                     height: 25,
                                     child: TextField(
                                       controller: controller

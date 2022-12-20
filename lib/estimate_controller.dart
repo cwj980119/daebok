@@ -16,9 +16,9 @@ class EstimateController extends GetxController {
 
   String? customer = "";
   DateTime? endDate;
-  String? phoneNumber;
+  String? phoneNumber = "";
   int? prePaid = 0;
-  String? reminder;
+  String? reminder = "";
 
   final phoneNumberController = TextEditingController();
   final prePaidController = TextEditingController();
@@ -106,6 +106,7 @@ class EstimateController extends GetxController {
     data['prePaid'] = prePaid;
     data['price'] = total_sum;
     data['leftPrice'] = total_sum - prePaid!;
+    data['reminder'] = reminder;
     data['timestamp'] = new DateTime.now();
     return data;
   }
@@ -283,6 +284,20 @@ class EstimateController extends GetxController {
           } else if (customer == "") {
             return AlertDialog(
               content: Text("고객명을 입력해주세요"),
+              actions: [
+                Center(
+                  child: TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text("확인")),
+                )
+              ],
+            );
+          }
+          else if (phoneNumber == "") {
+            return AlertDialog(
+              content: Text("전화번호을 입력해주세요"),
               actions: [
                 Center(
                   child: TextButton(

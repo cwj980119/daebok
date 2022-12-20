@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:daebok/connection.dart';
 import 'package:daebok/estimate.dart';
+import 'package:daebok/ordercard_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,7 +21,7 @@ class Home extends StatelessWidget {
       body: FutureBuilder(
           future: connection.checkConnection(),
           builder: (context, snapshot) {
-            if (snapshot.hasData == false) return CircularProgressIndicator();
+            if (snapshot.hasData == false) return Center(child: CircularProgressIndicator());
             if (snapshot.data == Connect.NO_CONNECTION)
               connection.setToast('인터넷이 없습니다.');
             return Container(
@@ -31,18 +32,19 @@ class Home extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   color: Colors.green[200],
                   child: Center(
-                      child: Text(
-                    '진행중',
-                    style: TextStyle(fontSize: 30),
-                  )),
+                    child: Text(
+                      '견적',
+                      style: TextStyle(fontSize: 30),
+                    ),
+                  ),
                 ),
                 StreamBuilder(
                   stream: FirebaseFirestore.instance
-                      .collection('Estimate').orderBy('timestamp', descending: true)
+                      .collection('Estimate')
+                      .orderBy('endDate', descending: false)
                       .snapshots(),
                   builder: (context, snapshot) {
                     final documents = snapshot.data;
-                    print(snapshot.data);
                     if (!snapshot.hasData)
                       return Center(
                         child: CircularProgressIndicator(),
@@ -65,7 +67,11 @@ class Home extends StatelessWidget {
 }
 
 Widget _builditem(DocumentSnapshot docu) {
-  return StreamBuilder(
+  return orderCard(item: docu,level: 'Estimate',);
+}
+
+/*
+return StreamBuilder(
     stream: FirebaseFirestore.instance
         .collection('Estimate')
         .doc(docu.id)
@@ -89,15 +95,11 @@ Widget _builditem(DocumentSnapshot docu) {
               Text(
                   '접수일자 : ${DateFormat('yy년 MM월 dd일').format(docu['timestamp'].toDate())}'),
               Text('메모 : ${snapshot.data.docs[0]['reminder']}'),
+              Text('메모 : ${(snapshot.data.docs).length}'),
             ],
           ),
         ),
       );
     },
   );
-  return Container(
-    width: 20,
-    height: 200,
-    child: Text('hi'),
-  );
-}
+* */
