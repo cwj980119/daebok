@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daebok/Home.dart';
 import 'package:daebok/estimate_widget.dart';
@@ -197,6 +199,7 @@ class EstimateController extends GetxController {
           child: FutureBuilder(
             future: submit(),
             builder: (BuildContext ctx, AsyncSnapshot snapshot) {
+              print(snapshot.hasData);
               if (snapshot.hasData == false) {
                 return AlertDialog(
                   content: Text(
@@ -219,33 +222,26 @@ class EstimateController extends GetxController {
                   actions: [
                     Center(
                         child: ElevatedButton(
-                          child: Text('확인'),
-                          style:
-                          ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ))
+                      child: Text('확인'),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ))
                   ],
                 );
+              } else {
+                Timer(Duration(seconds: 1), () {
+                  Get.offAll(HomePage());
+                });
+                return AlertDialog(
+                  content: Text(
+                    "주문이 저장되었습니다.",
+                    textAlign: TextAlign.center,
+                  ),
+                );
               }
-              return AlertDialog(
-                content: Text(
-                  "주문이 저장되었습니다.",
-                  textAlign: TextAlign.center,
-                ),
-                actions: [
-                  Center(
-                      child: ElevatedButton(
-                    child: Text('확인'),
-                    style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                    onPressed: () {
-                      Get.offAll(HomePage());
-                    },
-                  ))
-                ],
-              );
               // return AlertDialog(
               //   content: Text("주문이 저장되었습니다."),
               //   actions: [
@@ -289,20 +285,21 @@ class EstimateController extends GetxController {
                 Center(
                   child: TextButton(
                       onPressed: () {
+                        isExpanded[5] = true;
                         Navigator.of(context).pop();
                       },
                       child: Text("확인")),
                 )
               ],
             );
-          }
-          else if (phoneNumber == "") {
+          } else if (phoneNumber == "") {
             return AlertDialog(
               content: Text("전화번호을 입력해주세요"),
               actions: [
                 Center(
                   child: TextButton(
                       onPressed: () {
+                        isExpanded[5] = true;
                         Navigator.of(context).pop();
                       },
                       child: Text("확인")),
@@ -441,11 +438,13 @@ class EstimateController extends GetxController {
                     height: 15,
                   ),
                   ElevatedButton(
-                      onPressed: () {
-                        SubmitCheck(context);
-                      },
-                      child: Text("확인"),
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.green),)
+                    onPressed: () {
+                      SubmitCheck(context);
+                    },
+                    child: Text("확인"),
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                  )
                 ],
               ),
             ),

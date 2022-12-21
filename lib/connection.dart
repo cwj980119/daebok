@@ -13,7 +13,7 @@ class Connect{
   }
 
   void setToast(message){
-    Toast.show(message);
+    Toast.show(message,duration: 1);
   }
 
 }

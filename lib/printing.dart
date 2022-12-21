@@ -4,6 +4,7 @@ import 'package:daebok/connection.dart';
 import 'package:daebok/estimate.dart';
 import 'package:daebok/ordercard_model.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
@@ -22,9 +23,11 @@ class Printing extends StatelessWidget {
           future: connection.checkConnection(),
           builder: (context, snapshot) {
             print(snapshot);
-            if (snapshot.hasData == false) return Center(child: Text('hi'));
-            if (snapshot.data == Connect.NO_CONNECTION)
-              connection.setToast('인터넷이 없습니다.');
+            if (snapshot.hasData == false) return Center(child: CircularProgressIndicator(),);
+            if (snapshot.data == Connect.NO_CONNECTION){
+              Fluttertoast.showToast(msg: "인터넷이 없습니다.");
+              return Center(child: CircularProgressIndicator(),);
+            }
             return Container(
                 child: Column(
                   children: [

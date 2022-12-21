@@ -2137,6 +2137,9 @@ class Estimate extends StatelessWidget {
                                             ),
                                           ),
                                         ),
+                                        if (controller.offSet.envelope!
+                                            .size ==
+                                            '소')
                                         UnconstrainedBox(
                                           child: Container(
                                             padding: EdgeInsets.all(10),
@@ -2165,6 +2168,79 @@ class Estimate extends StatelessWidget {
                                                   onChanged: (value) {
                                                     controller.offSet.envelope
                                                         ?.setPaperType(value);
+                                                    controller.CalcTotal();
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        if (controller.offSet.envelope!
+                                            .size ==
+                                            '대')
+                                        UnconstrainedBox(
+                                          child: Container(
+                                            padding: EdgeInsets.all(10),
+                                            height: 70,
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  '종류',
+                                                  style:
+                                                      TextStyle(fontSize: 20),
+                                                ),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                DropdownButton(
+                                                  value: controller.offSet
+                                                      .envelope?.big_paper_type,
+                                                  items: controller.offSet
+                                                      .envelope?.big_paper_type_list
+                                                      .map((value) {
+                                                    return DropdownMenuItem(
+                                                      value: value,
+                                                      child: Text(value),
+                                                    );
+                                                  }).toList(),
+                                                  onChanged: (value) {
+                                                    controller.offSet.envelope
+                                                        ?.setBigPaperType(value);
+                                                    controller.CalcTotal();
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        UnconstrainedBox(
+                                          child: Container(
+                                            padding: EdgeInsets.all(10),
+                                            height: 70,
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  '흑백/칼라',
+                                                  style:
+                                                      TextStyle(fontSize: 20),
+                                                ),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                DropdownButton(
+                                                  value: controller.offSet
+                                                      .envelope?.color,
+                                                  items: controller.offSet
+                                                      .envelope?.color_list
+                                                      .map((value) {
+                                                    return DropdownMenuItem(
+                                                      value: value,
+                                                      child: Text(value),
+                                                    );
+                                                  }).toList(),
+                                                  onChanged: (value) {
+                                                    controller.offSet.envelope
+                                                        ?.setColor(value);
                                                     controller.CalcTotal();
                                                   },
                                                 ),
@@ -2214,7 +2290,8 @@ class Estimate extends StatelessWidget {
                                               ],
                                             ),
                                           ),
-                                        ), //Quantity
+                                        ),
+                                        UnconstrainedBox(child: Text('수량 단위 소봉투 1000장, 대봉투 흑백 1000장, 칼라 500장', style: TextStyle(color: Colors.grey),),),//Quantity
                                         UnconstrainedBox(
                                           child: Container(
                                             padding: EdgeInsets.all(10),
@@ -2301,6 +2378,9 @@ class Estimate extends StatelessWidget {
                                             ),
                                           ),
                                         ),
+                                        UnconstrainedBox(child: Text('자켓소봉투 +20,000원', style: TextStyle(color: Colors.grey),),),//Quantity
+                                        UnconstrainedBox(child: Text('양면테이프 +30,000원', style: TextStyle(color: Colors.grey),),),//Quantity
+
                                         SizedBox(
                                           height: 150,
                                           child: Container(

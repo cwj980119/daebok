@@ -1,32 +1,39 @@
-import 'dart:async';
-
-import 'package:daebok/connection.dart';
-import 'package:daebok/estimate.dart';
-import 'package:daebok/ordercard_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connectivity/connectivity.dart';
-import 'package:intl/intl.dart';
 
-class Complete extends StatelessWidget {
-  Complete({Key? key}) : super(key: key);
-  static const routeName = '/complete';
+import 'connection.dart';
 
-  Connect connection = Connect();
+class OrderDetail extends StatelessWidget {
+  OrderDetail({Key? key, required this.item}) : super(key: key);
+
+  late DocumentSnapshot item;
 
   @override
   Widget build(BuildContext context) {
+    Connect connection = Connect();
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.green,
+        centerTitle: true,
+        title: Text(
+          '주문상세',
+          style: TextStyle(fontSize: 25, fontFamily: 'Hanna11'),
+          textAlign: TextAlign.center,
+        ),
+      ),
       body: FutureBuilder(
           future: connection.checkConnection(),
           builder: (context, snapshot) {
-            print(snapshot);
-            if (snapshot.hasData == false) return Center(child: CircularProgressIndicator(),);
-            if (snapshot.data == Connect.NO_CONNECTION){
+            if (snapshot.hasData == false)
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            if (snapshot.data == Connect.NO_CONNECTION) {
               Fluttertoast.showToast(msg: "인터넷이 없습니다.");
-              return Center(child: CircularProgressIndicator(),);
+              return Center(
+                child: CircularProgressIndicator(),
+              );
             }
             return Container(
                 child: Column(
@@ -37,7 +44,7 @@ class Complete extends StatelessWidget {
                   color: Colors.green[200],
                   child: Center(
                     child: Text(
-                      '완료',
+                      '${item['customer']} 님',
                       style: TextStyle(fontSize: 30),
                     ),
                   ),
@@ -45,10 +52,11 @@ class Complete extends StatelessWidget {
                 StreamBuilder(
                   stream: FirebaseFirestore.instance
                       .collection('Estimate')
-                      .orderBy('endDate', descending: false)
-                      .where('status', isEqualTo: 'Complete')
+                      .doc(item.id)
+                      .collection('new')
                       .snapshots(),
                   builder: (context, snapshot) {
+                    print(snapshot.error);
                     final documents = snapshot.data;
                     if (!snapshot.hasData)
                       return Center(
@@ -75,6 +83,7 @@ class Complete extends StatelessWidget {
                             .toList(),
                       ),
                     );
+                    return Text('hi');
                   },
                 ),
               ],
@@ -85,8 +94,26 @@ class Complete extends StatelessWidget {
 }
 
 Widget _builditem(DocumentSnapshot docu) {
-  return orderCard(
-    item: docu,
-    level: 'Complete',
+  if (docu['kind'] == 'printnbook') return _printNBook(docu);
+  if (docu['kind'] == 'bigprint') return _printNBook(docu);
+  if (docu['kind'] == 'otherservice') return _printNBook(docu);
+  if (docu['kind'] == 'pormboard') return _printNBook(docu);
+  if (docu['kind'] == 'namecard') return _printNBook(docu);
+  if (docu['kind'] == 'leaflet') return _printNBook(docu);
+  if (docu['kind'] == 'sticker') return _printNBook(docu);
+  if (docu['kind'] == 'envelope') return _printNBook(docu);
+  ;
+  if (docu['kind'] == 'banner') return _printNBook(docu);
+  return Card(
+    child: Container(height: 20, child: Text('1')),
+  );
+}
+
+Card _printNBook(DocumentSnapshot doc) {
+  return Card(
+    child: Container(
+      height: 20,
+      child: Text('1'),
+    ),
   );
 }

@@ -16,7 +16,7 @@ class PrintNBook {
 
   List size_list = ['A5', 'B5', 'A4', 'B4', 'A3'];
   List binding_style_list = ['없음', '책', '링', '3공', '스테플'];
-  List color_list = ['흑백', '칼라 레이져','칼라 잉크젯'];
+  List color_list = ['흑백', '칼라 레이져', '칼라 잉크젯'];
   List filetype_list = ['PDF', 'JPEG', 'AUTOCAD', 'AI'];
   List paper_type_list = ['일반지', '칼라지', '특수지'];
   List side_list = ['단면', '양면'];
@@ -141,8 +141,8 @@ class BigPrint {
   List black_picture_list = ['50% 미만', '50% 이상'];
   List paper_type_list = ['일반지', '칼라지', '유포지', '인화지', '캔버스지'];
   List percentage_list = ['20이하', '20~50', '50이상'];
-  List staple_list = ['없음','스태플'];
-  List thickness_list = ['~10mm','~20mm','~30mm'];
+  List staple_list = ['없음', '스태플'];
+  List thickness_list = ['~10mm', '~20mm', '~30mm'];
 
   final quantityController = TextEditingController();
   final reminderController = TextEditingController();
@@ -276,7 +276,7 @@ class BigPrint {
     data['size'] = size;
     data['quantity'] = quantity;
     data['color'] = color;
-    if (color == '흑백'){
+    if (color == '흑백') {
       data['black_picture'] = black_picture;
     }
     if (color == '칼라') {
@@ -284,7 +284,7 @@ class BigPrint {
       data['percentage'] = percentage;
     }
     data['staple'] = staple;
-    if(staple != '없음'){
+    if (staple != '없음') {
       data['thickness'] = thickness;
     }
     data['reminder'] = reminder;
@@ -339,12 +339,12 @@ class BigPrint {
         cnt = '301';
 
       fee = BlackFee[size]![cnt];
-      if(black_picture == '50% 이상') fee = (fee! * 2)!;
+      if (black_picture == '50% 이상') fee = (fee! * 2)!;
     } else {
       fee = ColorFee[size]![paper_type]![percentage];
     }
 
-    if(staple != '없음'){
+    if (staple != '없음') {
       stapleFee = StapleFee[size]![thickness]!;
     }
 
@@ -353,7 +353,7 @@ class BigPrint {
 
   setSize(value) {
     size = value.toString();
-    if(size == 'A0') staple = staple_list[0];
+    if (size == 'A0') staple = staple_list[0];
     calcFee();
   }
 
@@ -367,7 +367,7 @@ class BigPrint {
     calcFee();
   }
 
-  setBlackPicture(value){
+  setBlackPicture(value) {
     black_picture = value.toString();
     calcFee();
   }
@@ -383,7 +383,7 @@ class BigPrint {
   }
 
   setStaple(value) {
-    if(size == 'A0') return;
+    if (size == 'A0') return;
     staple = value.toString();
     calcFee();
   }
@@ -603,7 +603,7 @@ class PormBoard {
     reminderController.clear();
   }
 
-  calcFee(){
+  calcFee() {
     if (quantity == 0) return;
     int? fee = 0;
     int? boardFee = 0;
@@ -611,8 +611,9 @@ class PormBoard {
     int? bookFee = 0;
     fee = PaperFee[size]![paper_type];
     boardFee = BoardFee[size]![board_type];
-    if(paper_type != '켈지(코팅)' && laminate == '유광') laminateFee = LaminateFee[size];
-    if(book != '안함') bookFee = BookFee[size];
+    if (paper_type != '켈지(코팅)' && laminate == '유광')
+      laminateFee = LaminateFee[size];
+    if (book != '안함') bookFee = BookFee[size];
 
     price = (fee! + boardFee! + laminateFee! + bookFee!) * quantity!;
   }
@@ -621,8 +622,9 @@ class PormBoard {
     size = value.toString();
     calcFee();
   }
+
   setBoardType(value) {
-    board_type= value.toString();
+    board_type = value.toString();
     calcFee();
   }
 
@@ -641,7 +643,7 @@ class PormBoard {
     calcFee();
   }
 
-  setBook(value){
+  setBook(value) {
     book = value.toString();
     calcFee();
   }
@@ -779,10 +781,15 @@ class NameCard {
   };
 
   calcFee() {
-    if (quantity == '수량선택' && si_quantity =='수량선택') {price = 0; return;}
+    if (quantity == '수량선택' && si_quantity == '수량선택') {
+      price = 0;
+      return;
+    }
     int? fee = 0;
-    if(paper_type == '일반지') fee = Fee[paper_type]![side]![quantity];
-    else fee = Fee[paper_type]![side]![si_quantity];
+    if (paper_type == '일반지')
+      fee = Fee[paper_type]![side]![quantity];
+    else
+      fee = Fee[paper_type]![side]![si_quantity];
     price = fee! + design_page! + addtional_price!;
   }
 
@@ -802,6 +809,7 @@ class NameCard {
     quantity = value.toString();
     calcFee();
   }
+
   setSiQuantity(value) {
     si_quantity = value.toString();
     calcFee();
@@ -912,7 +920,7 @@ class Sticker {
   String? reminder;
   int price = 0;
 
-  List paper_type_list = ['일반', '도무송','주차'];
+  List paper_type_list = ['일반', '도무송', '주차'];
   List laminate_list = ['없음', '있음'];
   List size_list = [
     '6cm 미만',
@@ -1000,6 +1008,8 @@ class Envelope {
   String kind = "envelope";
   String? size;
   String? paper_type;
+  String? big_paper_type;
+  String? color;
   int? quantity;
   int? design_page;
   int? addtional_price;
@@ -1007,7 +1017,9 @@ class Envelope {
   int price = 0;
 
   List size_list = ['소', '대'];
-  List paper_type_list = ['모조 100', '모조 120', '줄 레자크', '체크 레자크', '크라프트'];
+  List paper_type_list = ['모조 100', '줄 레자크', '체크 레자크'];
+  List big_paper_type_list = ['모조 120', '줄 레자크', '체크 레자크', '크라프트'];
+  List color_list = ['흑백', '칼라'];
 
   final quantityController = TextEditingController();
   final designPageController = TextEditingController();
@@ -1019,6 +1031,8 @@ class Envelope {
     data['kind'] = kind;
     data['size'] = size;
     data['paper_type'] = paper_type;
+    data['big_paper_type'] = big_paper_type;
+    data['color'] = color;
     data['quantity'] = quantity;
     data['design_page'] = design_page;
     data['addtional_price'] = addtional_price;
@@ -1030,6 +1044,8 @@ class Envelope {
   Envelope() {
     this.size = size_list[0];
     this.paper_type = paper_type_list[0];
+    this.big_paper_type = big_paper_type_list[0];
+    this.color = color_list[0];
     this.quantity = 0;
     this.design_page = 0;
     this.addtional_price = 0;
@@ -1039,6 +1055,8 @@ class Envelope {
   Reset() {
     this.size = size_list[0];
     this.paper_type = paper_type_list[0];
+    this.big_paper_type = big_paper_type_list[0];
+    this.color = color_list[0];
     this.quantity = 0;
     this.design_page = 0;
     this.addtional_price = 0;
@@ -1050,28 +1068,146 @@ class Envelope {
     reminderController.clear();
   }
 
+  Map<String, Map<String, Map<String, int>>> Fee = {
+    '소': {
+      '흑백': {
+        '모조 100': 70,
+        '줄 레자크': 80,
+        '체크 레자크': 80,
+      },
+      '칼라': {
+        '모조 100': 70,
+        '줄 레자크': 80,
+        '체크 레자크': 80,
+      }
+    },
+    '대': {
+      '흑백': {
+        '모조 120': 110,
+        '줄 레자크': 140,
+        '체크 레자크': 140,
+        '크라프트': 110,
+      },
+      '칼라': {
+        '모조 120': 220,
+        '줄 레자크': 240,
+        '체크 레자크': 240,
+        '크라프트': 230,
+      }
+    },
+  };
+  Map<String, Map<String, Map<String, int>>> ExtraFee = {
+    '소': {
+      '흑백': {
+        '모조 100': 70,
+        '줄 레자크': 80,
+        '체크 레자크': 80,
+      },
+      '칼라': {
+        '모조 100': 70,
+        '줄 레자크': 80,
+        '체크 레자크': 80,
+      }
+    },
+    '대': {
+      '흑백': {
+        '모조 120': 70,
+        '줄 레자크': 80,
+        '체크 레자크': 80,
+        '크라프트': 70,
+      },
+      '칼라': {
+        '모조 120': 140,
+        '줄 레자크': 160,
+        '체크 레자크': 160,
+        '크라프트': 130,
+      }
+    },
+  };
+
+  calcFee() {
+    if (quantity! <= 0) {
+      price = 0;
+      return;
+    }
+    int? f = 0;
+    int extrafee = 0;
+    int fee = 0;
+    if (size == '대' && big_paper_type != '크라프트') {
+      if (quantity! > 500) {
+        f = (Fee[size]![color]![big_paper_type]! * 500)!;
+        extrafee = (ExtraFee[size]![color]![big_paper_type]! * (quantity! - 500))!;
+        fee = (f! + extrafee)!;
+      }
+      else{
+        fee = (Fee[size]![color]![paper_type]! * quantity!)!;
+      }
+    }
+    else{
+      if(size == '소'){
+        if (quantity! > 1000) {
+          f = (Fee[size]![color]![paper_type]! * 1000)!;
+          extrafee =
+              (ExtraFee[size]![color]![paper_type]! * (quantity! - 1000))!;
+          fee = (f! + extrafee)!;
+        } else {
+          fee = (Fee[size]![color]![paper_type]! * quantity!)!;
+        }
+      }
+      else{
+        if (quantity! > 1000) {
+          f = (Fee[size]![color]![big_paper_type]! * 1000)!;
+          extrafee =
+          (ExtraFee[size]![color]![big_paper_type]! * (quantity! - 1000))!;
+          fee = (f! + extrafee)!;
+        } else {
+          fee = (Fee[size]![color]![big_paper_type]! * quantity!)!;
+        }
+      }
+    }
+
+    price = fee! + design_page! + addtional_price!;
+  }
+
   setPaperType(value) {
     paper_type = value.toString();
+    calcFee();
+
+  }
+
+  setBigPaperType(value) {
+    big_paper_type = value.toString();
+    calcFee();
+  }
+
+  setColor(value) {
+    color = value.toString();
+    calcFee();
   }
 
   setSize(value) {
     size = value.toString();
+    calcFee();
   }
 
   setQuantity(value) {
     quantity = value;
+    calcFee();
   }
 
   setDesignPage(value) {
     design_page = value;
+    calcFee();
   }
 
   setAdditionalPrice(value) {
     addtional_price = value;
+    calcFee();
   }
 
   setReminder(value) {
     reminder = value.toString();
+    calcFee();
   }
 }
 
@@ -1125,7 +1261,8 @@ class MyBanner {
     if (quantity == 0) return;
     int? fee = 0;
     fee = Fee[paper_type];
-    price = fee!*quantity! + int.parse(rests!) + design_page! + addtional_price!;
+    price =
+        fee! * quantity! + int.parse(rests!) + design_page! + addtional_price!;
   }
 
   Reset() {
