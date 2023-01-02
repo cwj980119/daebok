@@ -276,21 +276,28 @@ class BigPrint {
     data['size'] = size;
     data['quantity'] = quantity;
     data['color'] = color;
-    if (color == '흑백') {
-      data['black_picture'] = black_picture;
-    }
-    if (color == '칼라') {
-      data['paper_type'] = paper_type;
-      data['percentage'] = percentage;
-    }
+    data['black_picture'] = black_picture;
+    data['paper_type'] = paper_type;
+    data['percentage'] = percentage;
     data['staple'] = staple;
-    if (staple != '없음') {
-      data['thickness'] = thickness;
-    }
+    data['thickness'] = thickness;
     data['reminder'] = reminder;
     data['price'] = price;
     return data;
   }
+
+  BigPrint.fromJson(dynamic json)
+      : kind = json['kind'],
+        size = json['size'],
+        quantity = json['quantity'],
+        color = json['color'],
+        black_picture = json['black_picture'],
+        paper_type = json['paper_type'],
+        percentage = json['percentage'],
+        staple = json['staple'],
+        thickness = json['thickness'],
+        reminder = json['reminder'],
+        price = json['price'];
 
   BigPrint() {
     this.size = this.size_list[0];
@@ -422,6 +429,14 @@ class OtherService {
     data['price'] = price;
     return data;
   }
+
+  OtherService.fromJson(dynamic json)
+      : kind = json['kind'],
+        laminate = json['laminate'],
+        scan = json['scan'],
+        staple = json['staple'],
+        reminder = json['reminder'],
+        price = json['price'];
 
   Reset() {
     this.laminate = 0;
@@ -580,6 +595,17 @@ class PormBoard {
     return data;
   }
 
+  PormBoard.fromJson(dynamic json)
+      : kind = json['kind'],
+        board_type = json['board_type'],
+        size = json['size'],
+        quantity = json['quantity'],
+        paper_type = json['paper_type'],
+        laminate = json['laminate'],
+        book = json['book'],
+        reminder = json['reminder'],
+        price = json['price'];
+
   PormBoard() {
     this.board_type = this.board_type_list[0];
     this.size = this.size_list[0];
@@ -721,6 +747,17 @@ class NameCard {
     return data;
   }
 
+  NameCard.fromJson(dynamic json)
+      : kind = json['kind'],
+        paper_type = json['paper_type'],
+        side = json['side'],
+        quantity = json['quantity'],
+        si_quantity = json['si_quantity'],
+        design_page = json['design_page'],
+        addtional_price = json['addtional_price'],
+        reminder = json['reminder'],
+        price = json['price'];
+
   NameCard() {
     this.paper_type = paper_type_list[0];
     this.side = side_list[0];
@@ -861,6 +898,16 @@ class Leaflet {
     return data;
   }
 
+  Leaflet.fromJson(dynamic json)
+      : kind = json['kind'],
+        size = json['size'],
+        side = json['side'],
+        quantity = json['quantity'],
+        design_page = json['design_page'],
+        addtional_price = json['addtional_price'],
+        reminder = json['reminder'],
+        price = json['price'];
+
   Leaflet() {
     this.size = size_list[0];
     this.side = side_list[0];
@@ -949,6 +996,17 @@ class Sticker {
     data['price'] = price;
     return data;
   }
+
+  Sticker.fromJson(dynamic json)
+      : kind = json['kind'],
+        paper_type = json['paper_type'],
+        laminate = json['laminate'],
+        size = json['size'],
+        quantity = json['quantity'],
+        design_page = json['design_page'],
+        addtional_price = json['addtional_price'],
+        reminder = json['reminder'],
+        price = json['price'];
 
   Sticker() {
     this.paper_type = paper_type_list[0];
@@ -1040,6 +1098,18 @@ class Envelope {
     data['price'] = price;
     return data;
   }
+
+  Envelope.fromJson(dynamic json)
+      : kind = json['kind'],
+        size = json['size'],
+        paper_type = json['paper_type'],
+        big_paper_type = json['big_paper_type'],
+        color = json['color'],
+        quantity = json['quantity'],
+        design_page = json['design_page'],
+        addtional_price = json['addtional_price'],
+        reminder = json['reminder'],
+        price = json['price'];
 
   Envelope() {
     this.size = size_list[0];
@@ -1136,15 +1206,14 @@ class Envelope {
     if (size == '대' && big_paper_type != '크라프트') {
       if (quantity! > 500) {
         f = (Fee[size]![color]![big_paper_type]! * 500)!;
-        extrafee = (ExtraFee[size]![color]![big_paper_type]! * (quantity! - 500))!;
+        extrafee =
+            (ExtraFee[size]![color]![big_paper_type]! * (quantity! - 500))!;
         fee = (f! + extrafee)!;
-      }
-      else{
+      } else {
         fee = (Fee[size]![color]![paper_type]! * quantity!)!;
       }
-    }
-    else{
-      if(size == '소'){
+    } else {
+      if (size == '소') {
         if (quantity! > 1000) {
           f = (Fee[size]![color]![paper_type]! * 1000)!;
           extrafee =
@@ -1153,12 +1222,11 @@ class Envelope {
         } else {
           fee = (Fee[size]![color]![paper_type]! * quantity!)!;
         }
-      }
-      else{
+      } else {
         if (quantity! > 1000) {
           f = (Fee[size]![color]![big_paper_type]! * 1000)!;
           extrafee =
-          (ExtraFee[size]![color]![big_paper_type]! * (quantity! - 1000))!;
+              (ExtraFee[size]![color]![big_paper_type]! * (quantity! - 1000))!;
           fee = (f! + extrafee)!;
         } else {
           fee = (Fee[size]![color]![big_paper_type]! * quantity!)!;
@@ -1172,7 +1240,6 @@ class Envelope {
   setPaperType(value) {
     paper_type = value.toString();
     calcFee();
-
   }
 
   setBigPaperType(value) {
@@ -1241,6 +1308,16 @@ class MyBanner {
     data['price'] = price;
     return data;
   }
+
+  MyBanner.fromJson(dynamic json)
+      : kind = json['kind'],
+        paper_type = json['paper_type'],
+        rests = json['rests'],
+        quantity = json['quantity'],
+        design_page = json['design_page'],
+        addtional_price = json['addtional_price'],
+        reminder = json['reminder'],
+        price = json['price'];
 
   MyBanner() {
     this.paper_type = paper_type_list[0];

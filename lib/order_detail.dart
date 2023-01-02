@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:daebok/estimate_model.dart';
+import 'package:daebok/estimate_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -95,17 +97,16 @@ class OrderDetail extends StatelessWidget {
 
 Widget _builditem(DocumentSnapshot docu) {
   if (docu['kind'] == 'printnbook') return _printNBook(docu);
-  if (docu['kind'] == 'bigprint') return _printNBook(docu);
-  if (docu['kind'] == 'otherservice') return _printNBook(docu);
-  if (docu['kind'] == 'pormboard') return _printNBook(docu);
-  if (docu['kind'] == 'namecard') return _printNBook(docu);
-  if (docu['kind'] == 'leaflet') return _printNBook(docu);
-  if (docu['kind'] == 'sticker') return _printNBook(docu);
-  if (docu['kind'] == 'envelope') return _printNBook(docu);
-  ;
-  if (docu['kind'] == 'banner') return _printNBook(docu);
+  if (docu['kind'] == 'bigprint') return _bigPrint(docu);
+  if (docu['kind'] == 'otherservice') return _otherService(docu);
+  if (docu['kind'] == 'pormboard') return _pormBoard(docu);
+  if (docu['kind'] == 'namecard') return _namecard(docu);
+  if (docu['kind'] == 'leaflet') return _leaflet(docu);
+  if (docu['kind'] == 'sticker') return _sticker(docu);
+  if (docu['kind'] == 'envelope') return _envelope(docu);
+  if (docu['kind'] == 'banner') return _banner(docu);
   return Card(
-    child: Container(height: 20, child: Text('1')),
+    child: Container(height: 20, child: Text('이거뜨면 오류임')),
   );
 }
 
@@ -115,5 +116,53 @@ Card _printNBook(DocumentSnapshot doc) {
       height: 20,
       child: Text('1'),
     ),
+  );
+}
+
+Card _bigPrint(DocumentSnapshot doc) {
+  return Card(
+    child: BigPrintWidget(model: BigPrint.fromJson(doc.data())),
+  );
+}
+
+Card _otherService(DocumentSnapshot doc) {
+  return Card(
+    child: OtherServiceWidget(model: OtherService.fromJson(doc.data())),
+  );
+}
+
+Card _pormBoard(DocumentSnapshot doc) {
+  return Card(
+    child: PormBoardWidget(model: PormBoard.fromJson(doc.data())),
+  );
+}
+
+Card _namecard(DocumentSnapshot doc) {
+  return Card(
+    child: NameCardWidget(model: NameCard.fromJson(doc.data())),
+  );
+}
+
+Card _leaflet(DocumentSnapshot doc) {
+  return Card(
+    child: LeafletWidget(model: Leaflet.fromJson(doc.data())),
+  );
+}
+
+Card _sticker(DocumentSnapshot doc) {
+  return Card(
+    child: StickerWidget(model: Sticker.fromJson(doc.data())),
+  );
+}
+
+Card _envelope(DocumentSnapshot doc) {
+  return Card(
+    child: EnvelopeWidget(model: Envelope.fromJson(doc.data())),
+  );
+}
+
+Card _banner(DocumentSnapshot doc) {
+  return Card(
+    child: BannerWidget(model: MyBanner.fromJson(doc.data())),
   );
 }

@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
   ));
 
     return GetMaterialApp(
-      title: 'Flutter Demo',
+      title: '대영복사',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         fontFamily: "Hanna11",

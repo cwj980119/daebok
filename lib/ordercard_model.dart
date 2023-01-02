@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daebok/Home.dart';
 import 'package:daebok/homepage.dart';
 import 'package:daebok/order_detail.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -26,85 +27,14 @@ class orderCard extends StatelessWidget {
         child: Container(
           constraints: BoxConstraints(minHeight: 240),
           padding: EdgeInsets.all(20),
-          height: 240,
+          height: 260,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                height: 140,
+                height: 160,
                 child: Stack(
                   children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              '접수일자: ${DateFormat('yy/MM/dd').format(item['timestamp'].toDate())}',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Text(
-                              '납기: ${DateFormat('yy/MM/dd').format(item['endDate'].toDate())}',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              '이름: ${item['customer']}',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Text(
-                              '전화번호: ${item['phoneNumber']}',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              '금액: ${f.format(item['price'])}원',
-                              style: TextStyle(fontSize: 17),
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Text(
-                              '선금: ${f.format(item['prePaid'])}원',
-                              style: TextStyle(fontSize: 17),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              '잔액 ${f.format(item['leftPrice'])}원',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Flexible(
-                              child: Text(
-                                "메모: ${item['reminder']}",
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                                style: TextStyle(fontSize: 20),
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
                     if (item['leftPrice'] == 0)
                       Positioned(
                         top: 0,
@@ -117,6 +47,197 @@ class orderCard extends StatelessWidget {
                           ),
                         ),
                       ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Wrap(
+                            runSpacing: 10.0,
+                            alignment: WrapAlignment.start,
+                            children: [
+                              UnconstrainedBox(
+                                child: Container(
+                                  padding: EdgeInsets.only(left: 10, right: 10),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        '접수일자: ${DateFormat('yy/MM/dd').format(item['timestamp'].toDate())}',
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              UnconstrainedBox(
+                                child: Container(
+                                  padding: EdgeInsets.only(left: 10, right: 10),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        '납기: ${DateFormat('yy/MM/dd').format(item['endDate'].toDate())}',
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              UnconstrainedBox(
+                                child: Container(
+                                  padding: EdgeInsets.only(left: 10, right: 10),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        '이름: ${item['customer']}',
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              UnconstrainedBox(
+                                child: Container(
+                                  padding: EdgeInsets.only(left: 10, right: 10),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        '전화번호: ${item['phoneNumber']}',
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              UnconstrainedBox(
+                                child: Container(
+                                  padding: EdgeInsets.only(left: 10, right: 10),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        '금액: ${f.format(item['price'])}원',
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              UnconstrainedBox(
+                                child: Container(
+                                  padding: EdgeInsets.only(left: 10, right: 10),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        '선금: ${f.format(item['prePaid'])}원',
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ]),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        UnconstrainedBox(
+                          child: Container(
+                            padding: EdgeInsets.only(left: 10, right: 10),
+                            child: Row(
+                              children: [
+                                Text(
+                                  '잔액 ${f.format(item['leftPrice'])}원',
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  "메모: ${item['reminder']}",
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    // Column(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //   crossAxisAlignment: CrossAxisAlignment.start,
+                    //   children: [
+                    //     Row(
+                    //       children: [
+                    //         Text(
+                    //           '접수일자: ${DateFormat('yy/MM/dd').format(item['timestamp'].toDate())}',
+                    //           style: TextStyle(fontSize: 20),
+                    //         ),
+                    //         SizedBox(
+                    //           width: 20,
+                    //         ),
+                    //         Text(
+                    //           '납기: ${DateFormat('yy/MM/dd').format(item['endDate'].toDate())}',
+                    //           style: TextStyle(fontSize: 20),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //     Row(
+                    //       children: [
+                    //         Text(
+                    //           '이름: ${item['customer']}',
+                    //           style: TextStyle(fontSize: 20),
+                    //         ),
+                    //         SizedBox(
+                    //           width: 20,
+                    //         ),
+                    //         Text(
+                    //           '전화번호: ${item['phoneNumber']}',
+                    //           style: TextStyle(fontSize: 20),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //     Row(
+                    //       children: [
+                    //         Text(
+                    //           '금액: ${f.format(item['price'])}원',
+                    //           style: TextStyle(fontSize: 17),
+                    //         ),
+                    //         SizedBox(
+                    //           width: 20,
+                    //         ),
+                    //         Text(
+                    //           '선금: ${f.format(item['prePaid'])}원',
+                    //           style: TextStyle(fontSize: 17),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //     Row(
+                    //       children: [
+                    //         Text(
+                    //           '잔액 ${f.format(item['leftPrice'])}원',
+                    //           style: TextStyle(fontSize: 20),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //     Row(
+                    //       children: [
+                    //         Flexible(
+                    //           child: Text(
+                    //             "메모: ${item['reminder']}",
+                    //             overflow: TextOverflow.ellipsis,
+                    //             maxLines: 2,
+                    //             style: TextStyle(fontSize: 20),
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     )
+                    //   ],
+                    // ),
                   ],
                 ),
               ),
@@ -277,7 +398,7 @@ class orderCard extends StatelessWidget {
     try {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
       DocumentReference<Map<String, dynamic>> path =
-          await firestore.collection(level).doc(item.id);
+          await firestore.collection('Estimate').doc(item.id);
       print(path);
       path.delete();
 
@@ -641,7 +762,6 @@ class orderCard extends StatelessWidget {
                   SizedBox(
                     height: 10,
                   ),
-
                   if (level == 'Estimate')
                     Column(
                       children: [
