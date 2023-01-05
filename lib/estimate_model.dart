@@ -5,7 +5,7 @@ class PrintNBook {
   String? size;
   int? quantity;
   int? total_page;
-  int? additional_price;
+  int? addtional_price;
   String? binding_style;
   String? color;
   String? filetype;
@@ -35,7 +35,7 @@ class PrintNBook {
     data['size'] = size;
     data['quantity'] = quantity;
     data['total_page'] = total_page;
-    data['additional_price'] = additional_price;
+    data['addtional_price'] = addtional_price;
     data['binding_style'] = binding_style;
     data['color'] = color;
     data['filetype'] = filetype;
@@ -55,7 +55,7 @@ class PrintNBook {
     this.paper_type = this.paper_type_list[0];
     this.side = this.side_list[0];
     this.book_thickness = this.book_thickness_list[0];
-    this.additional_price = 0;
+    this.addtional_price = 0;
     this.reminder = "";
   }
 
@@ -69,7 +69,7 @@ class PrintNBook {
     this.paper_type = this.paper_type_list[0];
     this.side = this.side_list[0];
     this.book_thickness = this.book_thickness_list[0];
-    this.additional_price = 0;
+    this.addtional_price = 0;
     this.reminder = "";
     this.price = 0;
     quantityController.clear();
@@ -115,7 +115,7 @@ class PrintNBook {
   }
 
   setAdditionalPrice(value) {
-    additional_price = value;
+    addtional_price = value;
   }
 
   setReminder(value) {
@@ -871,16 +871,23 @@ class Leaflet {
   String kind = "leaflet";
   String? size;
   String? side;
-  int? quantity;
+  String? fold;
+  String? paper_type;
+  String? quantity;
+  String? a3_quantity;
   int? design_page;
   int? addtional_price;
   String? reminder;
   int price = 0;
 
-  List size_list = ['A5', 'B5', 'A4', 'B4', 'A3'];
-  List side_list = ['단면', '양면'];
+  List size_list = ['A3', 'A4', 'B4'];
+  List side_list = ['양면'];
+  List fold_list = ['없음', '1단', '2단', '3단', '4단이상'];
+  List paper_type_list = ['일반지', '수입지'];
+  List quantity_list = ['수량선택','400장', '800장', '1200장','1600장', '2000장'];
+  List a3_quantity_list = ['수량선택' , '200장', '400장', '600장','800장','1000장'];
 
-  final quantityController = TextEditingController();
+  //final quantityController = TextEditingController();
   final designPageController = TextEditingController();
   final addtionalPriceController = TextEditingController();
   final reminderController = TextEditingController();
@@ -890,7 +897,10 @@ class Leaflet {
     data['kind'] = kind;
     data['size'] = size;
     data['side'] = side;
+    data['fold'] = fold;
+    data['paper_type'] = paper_type;
     data['quantity'] = quantity;
+    data['a3_quantity'] = a3_quantity;
     data['design_page'] = design_page;
     data['addtional_price'] = addtional_price;
     data['reminder'] = reminder;
@@ -902,7 +912,10 @@ class Leaflet {
       : kind = json['kind'],
         size = json['size'],
         side = json['side'],
+        fold = json['fold'],
+        paper_type = json['paper_type'],
         quantity = json['quantity'],
+        a3_quantity = json['a3_quantity'],
         design_page = json['design_page'],
         addtional_price = json['addtional_price'],
         reminder = json['reminder'],
@@ -911,7 +924,10 @@ class Leaflet {
   Leaflet() {
     this.size = size_list[0];
     this.side = side_list[0];
-    this.quantity = 0;
+    this.fold = fold_list[0];
+    this.paper_type = paper_type_list[0];
+    this.quantity = quantity_list[0];
+    this.a3_quantity = a3_quantity_list[0];
     this.design_page = 0;
     this.addtional_price = 0;
     this.reminder = "";
@@ -920,35 +936,147 @@ class Leaflet {
   Reset() {
     this.size = size_list[0];
     this.side = side_list[0];
-    this.quantity = 0;
+    this.fold = fold_list[0];
+    this.paper_type = paper_type_list[0];
+    this.quantity = quantity_list[0];
+    this.a3_quantity = a3_quantity_list[0];
     this.design_page = 0;
     this.addtional_price = 0;
     this.reminder = "";
     this.price = 0;
-    quantityController.clear();
+    //quantityController.clear();
     designPageController.clear();
     addtionalPriceController.clear();
     reminderController.clear();
   }
 
+  Map<String, Map<String, Map<String, int>>> Fee = {
+    'A3': {
+      '단면': {
+        '200장': 19000,
+        '500장': 29000,
+        '1,000장': 49000,
+        '5,000장': 79000,
+        '10,000장': 129000
+      },
+      '양면': {
+        '200장': 320000,
+        '400장': 340000,
+        '600장': 360000,
+        '800장': 380000,
+        '1000장': 400000
+      }
+    },
+    'A4': {
+      '단면': {
+        '200장': 19000,
+        '400장': 29000,
+        '600장': 39000,
+        '800장': 49000,
+        '1,000장': 59000
+      },
+      '양면': {
+        '400장': 320000,
+        '800장': 340000,
+        '1200장': 360000,
+        '1600장': 380000,
+        '2000장': 400000
+      }
+    },
+    'B4': {
+      '단면': {
+        '200장': 19000,
+        '400장': 29000,
+        '600장': 39000,
+        '800장': 49000,
+        '1,000장': 59000
+      },
+      '양면': {
+        '400장': 340000,
+        '800장': 370000,
+        '1200장': 400000,
+        '1600장': 430000,
+        '2000장': 460000
+      }
+    },
+  };
+
+  calcFee() {
+    int? fee = 0;
+    int total_fee = 0;
+    if(size == 'A3') {
+      if(a3_quantity!='수량선택') fee = Fee[size]![side]![a3_quantity];
+      else {
+        price = 0;
+        return;
+      }
+    }
+    else {
+      if(quantity!='수량선택') fee = Fee[size]![side]![quantity];
+      else {
+        price = 0;
+        return;
+      }
+    }
+    if(fold ==  '4단이상'){
+      if(size == 'B4'){
+        total_fee = fee! + 140000;
+      }
+      else{
+        total_fee = fee! + 130000;
+      }
+    }
+    else total_fee = fee!;
+
+    if(paper_type == '수입지') {
+      if(size =='A3') total_fee += 50000;
+      else if(size =='A4') total_fee += 30000;
+      else if(size =='B4') total_fee += 80000;
+    }
+
+    price = total_fee + design_page! + addtional_price!;
+
+  }
+
   setSize(value) {
     size = value.toString();
+    calcFee();
   }
 
   setSide(value) {
     side = value.toString();
+    calcFee();
   }
 
+  setFold(value) {
+    fold = value.toString();
+    calcFee();
+  }
+
+  setPaperType(value) {
+    paper_type = value.toString();
+    calcFee();
+  }
+
+
+
   setQuantity(value) {
-    quantity = value;
+    quantity = value.toString();
+    calcFee();
+  }
+  setA3Quantity(value) {
+    a3_quantity = value.toString();
+    calcFee();
   }
 
   setDesignPage(value) {
     design_page = value;
+    calcFee();
   }
 
   setAdditionalPrice(value) {
     addtional_price = value;
+    calcFee();
   }
 
   setReminder(value) {

@@ -3,6 +3,7 @@ import 'package:daebok/estimate_model.dart';
 import 'package:daebok/estimate_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 
 import 'connection.dart';
 
@@ -49,6 +50,44 @@ class OrderDetail extends StatelessWidget {
                       '${item['customer']} 님',
                       style: TextStyle(fontSize: 30),
                     ),
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width - 20,
+                  decoration: BoxDecoration(
+                      border: Border.all(width: 3.0),
+                      borderRadius: BorderRadius.circular(20)),
+                  foregroundDecoration: BoxDecoration(
+                      border: Border.all(width: 3.0),
+                      borderRadius: BorderRadius.circular(12)),
+                  child: Column(
+                    children: [
+                      OrderListTitle(title: '상세정보'),
+                      Container(
+                        padding: EdgeInsets.only(left: 20),
+                        child: Column(children: [
+                          OrderListText(tag: '이름', value: item['customer']),
+                          OrderListText(
+                              tag: '전화번호', value: item['phoneNumber']),
+                          OrderListText(
+                              tag: '접수일자',
+                              value: DateFormat('yy/MM/dd')
+                                  .format(item['timestamp'].toDate())),
+                          OrderListText(
+                              tag: '납기일자',
+                              value: DateFormat('yy/MM/dd')
+                                  .format(item['endDate'].toDate())),
+                          OrderListText(tag: '금액', value: '${item['price']}원'),
+                          OrderListText(
+                              tag: '선금', value: '${item['prePaid']}원'),
+                          OrderListText(
+                              tag: '잔액', value: '${item['leftPrice']}원'),
+                          if (item['reminder'] != '')
+                            OrderListText(
+                                tag: '메모', value: '${item['reminder']}'),
+                        ]),
+                      ),
+                    ],
                   ),
                 ),
                 StreamBuilder(
